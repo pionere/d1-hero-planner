@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemSelectorDialog</class>
+ <widget class="QDialog">
+  <property name="windowTitle">
+   <string>Select Item</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QGroupBox">
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Type:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="itemTypeComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Loc:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QComboBox" name="itemLocComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Seed:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="seedWithRefreshButtonLayout">
+        <item>
+         <widget class="LineEditWidget" name="itemSeedEdit">
+          <property name="charWidth">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Index:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="itemIdxComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Level:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="LineEditWidget" name="itemLevelEdit">
+        <property name="charWidth">
+         <number>2</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Source:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QComboBox" name="itemSourceComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>Drop</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Smith</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Premium</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Wirt</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Adria</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Pepin</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crafted</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="4">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Quality:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="5">
+       <widget class="QComboBox" name="itemQualityComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+        <item>
+         <property name="text">
+          <string>None</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Normal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Good</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Unique</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox">
+     <layout class="QGridLayout" columnstretch="0,1,0,0">
+      <item row="0" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Unique:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="itemUniquesComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Prefix:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="itemPrefixComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QCheckBox" name="itemPrefixLimitedCheckBox">
+        <property name="tristate">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="AffixSliderWidget" name="itemPrefixLimitSlider">
+        <property name="minimumWidth">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Suffix:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="itemSuffixComboBox">
+        <property name="sizeAdjustPolicy">
+         <enum>QComboBox::AdjustToContents</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QCheckBox" name="itemSuffixLimitedCheckBox">
+        <property name="tristate">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="AffixSliderWidget" name="itemSuffixLimitSlider">
+        <property name="minimumWidth">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>AC:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QCheckBox" name="itemACLimitedCheckBox">
+        <property name="tristate">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="SliderWidget" name="itemACLimitSlider">
+        <property name="minimumWidth">
+         <number>100</number>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="generateButton">
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="itemPropertiesBox">
+       <layout class="QVBoxLayout" name="itemProperties">
+        <item alignment="Qt::AlignCenter">
+         <widget class="QLabel" name ="itemName"/>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="submitButton">
+       <property name="text">
+        <string>Submit</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="4" margin="4"/>
+ <resources/>
+ <connections/>
+ <buttongroups/>
+</ui>

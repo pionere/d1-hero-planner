@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ItemDetailsWidget</class>
+ <widget class="QWidget">
+  <layout class="QVBoxLayout">
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <widget class="QLabel">
+       <property name="minimumWidth">
+        <number>48</number>
+       </property>
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="invItemIndexComboBox">
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToContents</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="editNameButton">
+       <property name="minimumWidth">
+        <number>24</number>
+       </property>
+       <property name="maximumWidth">
+        <number>24</number>
+       </property>
+       <property name="toolTip">
+        <string>Rename the current item</string>
+       </property>
+       <property name="text">
+        <string notr="true">*</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="discardItemButton">
+       <property name="text">
+        <string>Discard Item</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="addItemButton">
+       <property name="text">
+        <string>Add New Item</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="itemDetailsGroupBox">
+     <layout class="QGridLayout">
+      <item row="1" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Type:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="LineEditWidget" name="itemTypeEdit">
+        <property name="charWidth">
+         <number>16</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Class:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="LineEditWidget" name="itemClassEdit">
+        <property name="charWidth">
+         <number>16</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Loc:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <widget class="LineEditWidget" name="itemLocEdit">
+        <property name="charWidth">
+         <number>16</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Seed:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="LineEditWidget" name="itemSeedEdit">
+        <property name="charWidth">
+         <number>16</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Index:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="LineEditWidget" name="itemIdxEdit">
+        <property name="charWidth">
+         <number>16</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Level:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="LineEditWidget" name="itemLevelEdit">
+        <property name="charWidth">
+         <number>2</number>
+        </property>
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Source:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="3">
+       <widget class="LineEditWidget" name="itemSourceEdit">
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="4">
+       <widget class="QLabel">
+        <property name="minimumWidth">
+         <number>48</number>
+        </property>
+        <property name="text">
+         <string>Quality:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="5">
+       <widget class="LineEditWidget" name="itemQualityEdit">
+        <property name="alignment">
+         <enum>Qt::AlignCenter</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+     <layout class="QHBoxLayout">
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="itemPropertiesBox">
+        <layout class="QHBoxLayout" name="itemProperties"/>
+       </widget>
+      </item>
+      <item>
+       <spacer>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectButton">
+       <property name="text">
+        <string>Select</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancelButton">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

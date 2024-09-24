@@ -1,0 +1,31 @@
+name: clang-format check
+
+#on: [ push, pull_request ]
+#on:
+#  push:
+#    branches:
+#      - master
+#    paths-ignore:
+#      - '*.md'
+#      - 'docs/**'
+#  pull_request:
+#    types: [ opened, synchronize ]
+
+jobs:
+  formatting-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Formatting Check (Source)
+      #uses: jidicula/clang-format-action@v4.11.0
+      uses: pionere/clang-format-action@v1
+      #continue-on-error: true
+      with:
+        clang-format-version: '13'
+        check-path: 'source'
+        fallback-style: 'webkit'
+        exclude-regex: '^source[/\]dungeon[/\]'

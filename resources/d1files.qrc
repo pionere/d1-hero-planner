@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>null.trn</file>
+        <file>default.pal</file>
+        <file>D1HeroPlanner.qss</file>
+    </qresource>
+</RCC>

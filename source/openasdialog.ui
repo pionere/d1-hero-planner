@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OpenAsDialog</class>
+ <widget class="QDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>0</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Open As</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout">
+   <item>
+    <widget class="QGroupBox">
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel">
+        <property name="text">
+         <string>Input File:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="LineEditWidget" name="inputFileEdit">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="inputFileBrowseButton">
+        <property name="text">
+         <string>Browse</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="heroSettingsGroupBox">
+     <property name="title">
+      <string>Hero Settings</string>
+     </property>
+     <layout class="QGridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel">
+        <property name="text">
+         <string>Hellfire:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QRadioButton" name="hellfireHeroYesRadioButton">
+          <property name="text">
+           <string>YES</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">hellfireHeroButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="hellfireHeroNoRadioButton">
+          <property name="text">
+           <string>NO</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">hellfireHeroButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="hellfireHeroAutoRadioButton">
+          <property name="text">
+           <string>Preserve</string>
+          </property>
+          <attribute name="buttonGroup">
+           <string notr="true">hellfireHeroButtonGroup</string>
+          </attribute>
+         </widget>
+        </item>
+        <item>
+         <spacer>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout">
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="openButton">
+       <property name="text">
+        <string>Open</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="openCancelButton">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="4" margin="4"/>
+ <resources/>
+ <connections/>
+ <buttongroups>
+  <buttongroup name="hellfireHeroButtonGroup"/>
+ </buttongroups>
+</ui>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PaletteWidget</class>
+ <widget class="QWidget">
+  <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout">
+     <property name="spacing">
+      <number>4</number>
+     </property>
+     <property name="leftMargin">
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="headerLabel">
+       <property name="minimumWidth">
+        <number>128</number>
+       </property>
+       <property name="maximumWidth">
+        <number>128</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget">
+       <layout class="QHBoxLayout" name="headerButtonsHorizontalLayout">
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox">
+     <layout class="QVBoxLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>6</number>
+      </property>
+      <property name="topMargin">
+       <number>1</number>
+      </property>
+      <property name="rightMargin">
+       <number>6</number>
+      </property>
+      <property name="bottomMargin">
+       <number>1</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QComboBox" name="pathComboBox"/>
+        </item>
+        <item>
+         <widget class="QComboBox" name="displayComboBox"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout">
+        <item>
+         <widget class="QGraphicsView" name="graphicsView">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed"/>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>196</width>
+            <height>196</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>196</width>
+            <height>196</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QVBoxLayout">
+          <item>
+           <layout class="QGridLayout">
+            <item row="0" column="0">
+             <widget class="QLabel">
+              <property name="text">
+               <string>Color:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1" colspan="2">
+             <widget class="LineEditWidget" name="colorLineEdit">
+              <property name="charWidth">
+               <number>8</number>
+              </property>
+              <property name="alignment">
+               <enum>Qt::AlignCenter</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QPushButton" name="colorPickPushButton">
+              <property name="text">
+               <string>Pick</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QPushButton" name="colorClearPushButton">
+              <property name="text">
+               <string>Clear</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel">
+              <property name="text">
+               <string>Index:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="LineEditWidget" name="indexLineEdit">
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="charWidth">
+               <number>7</number>
+              </property>
+              <property name="alignment">
+               <enum>Qt::AlignCenter</enum>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QLabel" name="translationIndexSep">
+              <property name="minimumWidth">
+               <number>8</number>
+              </property>
+              <property name="maximumWidth">
+               <number>8</number>
+              </property>
+              <property name="text">
+               <string notr="true">&gt;</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" colspan="2">
+             <widget class="LineEditWidget" name="translationIndexLineEdit">
+              <property name="charWidth">
+               <number>7</number>
+              </property>
+              <property name="maxLength">
+               <number>7</number>
+              </property>
+              <property name="toolTip">
+               <string>Enter the color index to which the selected color(s) should map to.</string>
+              </property>
+              <property name="alignment">
+               <enum>Qt::AlignCenter</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer>
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="informationLabel">
+            <property name="palette">
+             <palette>
+              <active>
+               <colorrole role="WindowText">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </active>
+              <inactive>
+               <colorrole role="WindowText">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>0</green>
+                  <blue>0</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </inactive>
+              <disabled>
+               <colorrole role="WindowText">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>120</red>
+                  <green>120</green>
+                  <blue>120</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </disabled>
+             </palette>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="4" margin="4"/>
+ <resources/>
+ <connections/>
+ <buttongroups/>
+</ui>
