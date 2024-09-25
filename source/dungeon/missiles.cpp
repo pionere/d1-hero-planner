@@ -701,7 +701,7 @@ int MissPlrHitByMonChance(int mtype, int dist, const MonsterStruct *mon, const D
 	int hper;
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = 30 + mon->_mHit + (2 * mon->_mLevel) - hero->getAC();
-		hper -= dist << 1; // MISDIST
+		hper -= abs(dist - 6) << 1; // MISDIST
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * mon->_mLevel;
 		hper -= 2 * hero->getLevel();
@@ -717,7 +717,8 @@ int MissMonHitByPlrChance(int mtype, int dist, const D1Hero *hero, const Monster
 	int hper;
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = hero->getHitChance() - mon->_mArmorClass;
-		hper -= (dist * dist >> 1); // MISDIST
+		// hper -= ((dist - 4) * (dist - 4) >> 1); // MISDIST
+		hper -= abs(dist - 6) << 1;
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * hero->getLevel();
 		hper -= 2 * mon->_mLevel;
@@ -735,7 +736,8 @@ int MissPlrHitByPlrChance(int mtype, int dist, const D1Hero *offHero, const D1He
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = offHero->getHitChance();
 		hper -= defHero->getAC();
-		hper -= (dist * dist >> 1); // MISDIST
+		// hper -= (dist * dist >> 1); // MISDIST
+		hper -= abs(dist - 6) << 1;
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * offHero->getLevel();
 		hper -= 2 * defHero->getLevel();
