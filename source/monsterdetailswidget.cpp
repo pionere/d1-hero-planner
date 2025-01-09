@@ -508,7 +508,8 @@ void MonsterDetailsWidget::updateFields()
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
                 if (mon->_mMaxDamage == 0)
                     continue;
-                if (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)
+                if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
+                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW))
                     continue;
                 if (mon->_mMaxDamage > maxDamUniq) {
                     maxDamUniq = mon->_mMaxDamage;
@@ -534,8 +535,8 @@ void MonsterDetailsWidget::updateFields()
                 InitLvlMonster(tt, numplrs, lb);
 
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
-                if (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)
-                    continue;
+                if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
+                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW))
                 if (mon->_mMaxDamage > maxDamNormal) {
                     maxDamNormal = mon->_mMaxDamage;
                     maxDamNormalType = tt;
