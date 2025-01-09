@@ -99,7 +99,7 @@ void ItemDetailsWidget::updateFields()
         // LogErrorF("ItemDetailsWidget init 4 %s (%d) %d", ItemName(is), is->_itype, i);
         itemsComboBox->addItem(ItemName(is), QVariant::fromValue((inv_item)i));
     }
-    ii = itemsComboBox->findData(ii);
+    ii = itemsComboBox->findData(QVariant::fromValue((inv_item)ii));
     if (ii < 0) ii = 0;
     itemsComboBox->setCurrentIndex(ii);
     itemsComboBox->adjustSize();
