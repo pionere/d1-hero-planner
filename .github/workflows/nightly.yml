@@ -182,9 +182,9 @@ jobs:
         echo '### **D1HeroPlanner**'       >> RELEASE_NOTE.md
         echo '_Filename_ | _Description_'   >> RELEASE_NOTE.md
         echo '------------ | -------------' >> RELEASE_NOTE.md
-        echo '[D1HeroPlanner-Windows-x64.zip](../../releases/download/dgt-nightly/D1HeroPlanner-Windows-x64.zip)   | D1HeroPlanner for `Windows x64`' >> RELEASE_NOTE.md
-        echo '[D1HeroPlanner-Windows-x86.zip](../../releases/download/dgt-nightly/D1HeroPlanner-Windows-x86.zip)   | D1HeroPlanner for `Windows x86`' >> RELEASE_NOTE.md
-        echo '[D1HeroPlanner-Linux-x64.zip](../../releases/download/dgt-nightly/D1HeroPlanner-Linux-x64.zip)   | D1HeroPlanner for `Linux x64`' >> RELEASE_NOTE.md
+        echo '[D1HeroPlanner-Windows-x64.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Windows-x64.zip)   | D1HeroPlanner for `Windows x64`' >> RELEASE_NOTE.md
+        echo '[D1HeroPlanner-Windows-x86.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Windows-x86.zip)   | D1HeroPlanner for `Windows x86`' >> RELEASE_NOTE.md
+        echo '[D1HeroPlanner-Linux-x64.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Linux-x64.zip)   | D1HeroPlanner for `Linux x64`' >> RELEASE_NOTE.md
 
     #- name: Show content of workspace
     #  run: find $RUNNER_WORKSPACE
@@ -194,7 +194,7 @@ jobs:
     - uses: pionere/delete-tag-and-release@v1
       with:
         delete_release: true
-        tag_name: dgt-nightly
+        tag_name: dhp-nightly
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -208,7 +208,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v2.0.8
       with:
-        tag_name: dgt-nightly
+        tag_name: dhp-nightly
         body_path: ${{ github.workspace }}/RELEASE_NOTE.md
         draft: false
         prerelease: true
