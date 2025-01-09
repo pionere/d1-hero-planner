@@ -537,6 +537,7 @@ void MonsterDetailsWidget::updateFields()
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW))
+                    continue;
                 if (mon->_mMaxDamage > maxDamNormal) {
                     maxDamNormal = mon->_mMaxDamage;
                     maxDamNormalType = tt;

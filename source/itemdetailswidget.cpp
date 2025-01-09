@@ -38,7 +38,7 @@ void ItemDetailsWidget::initialize(D1Hero *h, int ii)
     this->hero = h;
     this->invIdx = ii;
     this->currentItem = ii;
-
+    QMessageBox::critical(nullptr, "Error", QApplication::tr("ItemDetailsWidget:: init idx %1").arg(ii));
     // LogErrorF("ItemDetailsWidget init 5");
     this->updateFields();
     // LogErrorF("ItemDetailsWidget init 6");
@@ -55,6 +55,7 @@ void ItemDetailsWidget::updateFields()
     QComboBox *itemsComboBox = this->ui->invItemIndexComboBox;
 
     int ii = this->currentItem;
+    QMessageBox::critical(nullptr, "Error", QApplication::tr("ItemDetailsWidget:: current idx %1").arg(ii));
     itemsComboBox->clear();
     itemsComboBox->addItem(tr("None"), QVariant::fromValue(INVITEM_NONE));
     // LogErrorF("ItemDetailsWidget init 1 %d", ii);
@@ -99,7 +100,7 @@ void ItemDetailsWidget::updateFields()
         // LogErrorF("ItemDetailsWidget init 4 %s (%d) %d", ItemName(is), is->_itype, i);
         itemsComboBox->addItem(ItemName(is), QVariant::fromValue((inv_item)i));
     }
-    ii = itemsComboBox->findData(ii);
+    ii = itemsComboBox->findData(QVariant::fromValue((inv_item)ii));
     if (ii < 0) ii = 0;
     itemsComboBox->setCurrentIndex(ii);
     itemsComboBox->adjustSize();
