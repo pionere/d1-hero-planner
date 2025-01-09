@@ -492,6 +492,52 @@ void MonsterDetailsWidget::updateFields()
             lvlbonus -= uniqMonData[type].muLevel;
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
+        int maxDamNormal = 0, maxDamUniq = 0, avgDamNormal = 0, avgDamUniq = 0;
+        int maxDamNormalType, maxDamUniqType, avgDamNormalType, avgDamUniqType;
+        for (int n = 0; n < typesComboBox->count(); n++) {
+            int tt = typesComboBox->itemData(n).value<int>();
+            int lb = lvlbonus;
+            if (tt < 0) {
+                tt = -(tt + 1);
+                if (lvlrel)
+                    lb -= uniqMonData[tt].muLevel;
+                InitUniqMonster(tt, numplrs, lb, false);
+
+                MonsterStruct *mon = &monsters[MAX_MINIONS];
+                if (mon->_mMaxDamage > maxDamUniq) {
+                    maxDamUniq = mon->_mMaxDamage;
+                    maxDamUniqType = tt;
+                }
+                int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
+                if (avgDam > avgDamUniq) {
+                    avgDamUniq = avgDam;
+                    avgDamUniqType = tt;
+                }
+            } else {
+                tt = tt - 1;
+                if (lvlrel)
+                    lb -= monsterdata[tt].mLevel;
+                InitLvlMonster(tt, numplrs, lb);
+
+                MonsterStruct *mon = &monsters[MAX_MINIONS];
+                if (mon->_mMaxDamage > maxDamNormal) {
+                    maxDamNormal = mon->_mMaxDamage;
+                    maxDamNormalType = tt;
+                }
+                int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
+                if (avgDam > avgDamNormal) {
+                    avgDamNormal = avgDam;
+                    avgDamNormalType = tt;
+                }
+            }
+        }
+
+        QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : % 12")
+            .arg(uniqMonData[avgDamUniqType].mName).arg(avgDamUniqType).arg(avgDamUniq)
+            .arg(uniqMonData[maxDamUniqType].mName).arg(maxDamUniqType).arg(maxDamUniq)
+            .arg(uniqMonData[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
+            .arg(uniqMonData[maxDamNormalType].mName).arg(maxDamNormalType).arg(maxDamNormal));
+
         if (lvlrel)
             lvlbonus -= monsterdata[type].mLevel;
         InitLvlMonster(type, numplrs, lvlbonus);
