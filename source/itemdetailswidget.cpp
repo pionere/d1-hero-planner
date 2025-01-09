@@ -38,7 +38,7 @@ void ItemDetailsWidget::initialize(D1Hero *h, int ii)
     this->hero = h;
     this->invIdx = ii;
     this->currentItem = ii;
-    QMessageBox::critical(nullptr, "Error", QApplication::tr("ItemDetailsWidget:: init idx %1").arg(ii));
+
     // LogErrorF("ItemDetailsWidget init 5");
     this->updateFields();
     // LogErrorF("ItemDetailsWidget init 6");
@@ -55,7 +55,6 @@ void ItemDetailsWidget::updateFields()
     QComboBox *itemsComboBox = this->ui->invItemIndexComboBox;
 
     int ii = this->currentItem;
-    QMessageBox::critical(nullptr, "Error", QApplication::tr("ItemDetailsWidget:: current idx %1").arg(ii));
     itemsComboBox->clear();
     itemsComboBox->addItem(tr("None"), QVariant::fromValue(INVITEM_NONE));
     // LogErrorF("ItemDetailsWidget init 1 %d", ii);
@@ -110,7 +109,6 @@ void ItemDetailsWidget::updateFields()
     this->ui->discardItemButton->setEnabled(ii != INVITEM_NONE);
     // LogErrorF("updateFields 0 %d", ii);
     pi = ii == INVITEM_NONE ? nullptr : this->hero->item(ii);
-    QMessageBox::critical(nullptr, "Error", QApplication::tr("ItemDetailsWidget:: has%1 type%2 idx%3").arg(pi != nullptr).arg(pi != nullptr ? pi->_itype : -1).arg(ii));
     if (pi != nullptr && pi->_itype != ITYPE_NONE) {
         this->ui->editNameButton->setVisible(true);
         QString text;
