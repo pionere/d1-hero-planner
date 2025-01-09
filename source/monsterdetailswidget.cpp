@@ -493,9 +493,9 @@ void MonsterDetailsWidget::updateFields()
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
         int maxDamNormal = 0, maxDamUniq = 0, avgDamNormal = 0, avgDamUniq = 0;
-        int minAvgNormal = INT_MAX, minAvgUniq = INT_MAX;
+        int minDamNormal = INT_MAX, minDamUniq = INT_MAX, minAvgNormal = INT_MAX, minAvgUniq = INT_MAX;
         int maxDamNormalType = 0, maxDamUniqType = 0, avgDamNormalType = 0, avgDamUniqType = 0;
-        int minAvgNormalType = 0, minAvgUniqType = 0;
+        int minDamNormalType = 0, minDamUniqType = 0, minAvgNormalType = 0, minAvgUniqType = 0;
         for (int n = 0; n < typesComboBox->count(); n++) {
             int tt = typesComboBox->itemData(n).value<int>();
             int lb = lvlbonus;
@@ -506,9 +506,15 @@ void MonsterDetailsWidget::updateFields()
                 InitUniqMonster(tt, numplrs, lb, false);
 
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
+                if (mon->_mMaxDamage == 0)
+                    continue;
                 if (mon->_mMaxDamage > maxDamUniq) {
                     maxDamUniq = mon->_mMaxDamage;
                     maxDamUniqType = tt;
+                }
+                if (mon->_mMaxDamage < minDamUniq) {
+                    minDamUniq = mon->_mMaxDamage;
+                    minDamUniqType = tt;
                 }
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                 if (avgDam > avgDamUniq) {
@@ -530,6 +536,10 @@ void MonsterDetailsWidget::updateFields()
                     maxDamNormal = mon->_mMaxDamage;
                     maxDamNormalType = tt;
                 }
+                if (mon->_mMaxDamage < minDamNormal) {
+                    minDamNormal = mon->_mMaxDamage;
+                    minDamNormalType = tt;
+                }
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                 if (avgDam > avgDamNormal) {
                     avgDamNormal = avgDam;
@@ -542,13 +552,15 @@ void MonsterDetailsWidget::updateFields()
             }
         }
 
-        QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : %12 min u %13 (%14) : %15 n %16 (%17) : %18")
+        QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : %12 min avg u %13 (%14) : %15 n %16 (%17) : %18 minm u %19 (%20) : %21 n %22 (%23) : %24")
             .arg(uniqMonData[avgDamUniqType].mName).arg(avgDamUniqType).arg(avgDamUniq)
             .arg(uniqMonData[maxDamUniqType].mName).arg(maxDamUniqType).arg(maxDamUniq)
             .arg(monsterdata[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
             .arg(monsterdata[maxDamNormalType].mName).arg(maxDamNormalType).arg(maxDamNormal)
             .arg(uniqMonData[minAvgUniqType].mName).arg(minAvgUniqType).arg(minAvgUniq)
             .arg(monsterdata[minAvgNormalType].mName).arg(minAvgNormalType).arg(minAvgNormal)
+            .arg(uniqMonData[minDamUniqType].mName).arg(minDamUniqType).arg(minDamUniq)
+            .arg(monsterdata[minDamNormalType].mName).arg(minDamNormalType).arg(minDamNormal)
         );
 
         if (lvlrel)
