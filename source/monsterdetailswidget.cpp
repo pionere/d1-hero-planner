@@ -493,7 +493,7 @@ void MonsterDetailsWidget::updateFields()
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
         int maxDamNormal = 0, maxDamUniq = 0, avgDamNormal = 0, avgDamUniq = 0;
-        int maxDamNormalType, maxDamUniqType, avgDamNormalType, avgDamUniqType;
+        int maxDamNormalType = 0, maxDamUniqType = 0, avgDamNormalType = 0, avgDamUniqType = 0;
         for (int n = 0; n < typesComboBox->count(); n++) {
             int tt = typesComboBox->itemData(n).value<int>();
             int lb = lvlbonus;
@@ -535,8 +535,8 @@ void MonsterDetailsWidget::updateFields()
         QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : % 12")
             .arg(uniqMonData[avgDamUniqType].mName).arg(avgDamUniqType).arg(avgDamUniq)
             .arg(uniqMonData[maxDamUniqType].mName).arg(maxDamUniqType).arg(maxDamUniq)
-            .arg(uniqMonData[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
-            .arg(uniqMonData[maxDamNormalType].mName).arg(maxDamNormalType).arg(maxDamNormal));
+            .arg(monsterdata[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
+            .arg(monsterdata[maxDamNormalType].mName).arg(maxDamNormalType).arg(maxDamNormal));
 
         if (lvlrel)
             lvlbonus -= monsterdata[type].mLevel;
