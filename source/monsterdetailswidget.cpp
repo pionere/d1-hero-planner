@@ -575,13 +575,6 @@ void MonsterDetailsWidget::updateFields()
             }
         }
 
-        typedef struct MonDamage {
-            int type;
-            int minValue;
-            int maxValue;
-        } MonDamage;
-        std::map<int, std::vector<MonDamage>> normalMaxMons, uniqMaxMons;
-        std::map<int, std::vector<MonDamage>> normalAvgMons, uniqAvgMons;
         LogErrorF("Normal Monsters (max):");
         for (auto it = normalMaxMons.begin(); it != normalMaxMons.end(); it++) {
             for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
