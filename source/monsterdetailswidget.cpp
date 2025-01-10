@@ -521,7 +521,7 @@ void MonsterDetailsWidget::updateFields()
                     continue;
 
                 MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage};
-                uniqMaxMons[mon->_mMaxDamage].insert(monDmg);
+                uniqMaxMons[mon->_mMaxDamage].push_back(monDmg);
                 if (mon->_mMaxDamage > maxDamUniq) {
                     maxDamUniq = mon->_mMaxDamage;
                     maxDamUniqType = tt;
@@ -531,7 +531,7 @@ void MonsterDetailsWidget::updateFields()
                     minDamUniqType = tt;
                 }
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                uniqAvgMons[avgDam].insert(monDmg);
+                uniqAvgMons[avgDam].push_back(monDmg);
                 if (avgDam > avgDamUniq) {
                     avgDamUniq = avgDam;
                     avgDamUniqType = tt;
@@ -553,7 +553,7 @@ void MonsterDetailsWidget::updateFields()
                     continue;
 
                 MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage};
-                normalMaxMons[mon->_mMaxDamage].insert(monDmg);
+                normalMaxMons[mon->_mMaxDamage].push_back(monDmg);
                 if (mon->_mMaxDamage > maxDamNormal) {
                     maxDamNormal = mon->_mMaxDamage;
                     maxDamNormalType = tt;
@@ -563,7 +563,7 @@ void MonsterDetailsWidget::updateFields()
                     minDamNormalType = tt;
                 }
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                normalAvgMons[avgDam].insert(monDmg);
+                normalAvgMons[avgDam].push_back(monDmg);
                 if (avgDam > avgDamNormal) {
                     avgDamNormal = avgDam;
                     avgDamNormalType = tt;
