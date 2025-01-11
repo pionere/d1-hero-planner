@@ -557,6 +557,7 @@ void MonsterDetailsWidget::updateFields()
                     }
                     MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
                     (*uniqMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
+                    int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                     (*uniqAvgMonsMagic)[avgDam].push_back(monDmg);
                     continue;
                 }
@@ -620,6 +621,7 @@ void MonsterDetailsWidget::updateFields()
                     }
                     MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
                     (*normalMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
+                    int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                     (*normalAvgMonsMagic)[avgDam].push_back(monDmg);
                     continue;
                 }
