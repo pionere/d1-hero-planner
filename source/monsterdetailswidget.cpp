@@ -532,6 +532,7 @@ void MonsterDetailsWidget::updateFields()
                     int mres = missiledata[mon->_mAI.aiType == AI_MAGE ? MIS_MAGE : mon->_mAI.aiParam1].mResist;
                     switch (mon->_mAI.aiParam1) {
                     case MIS_LIGHTNINGC:
+                    case MIS_LIGHTNINGC2:
                     case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
                     }
                     std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
@@ -553,7 +554,11 @@ void MonsterDetailsWidget::updateFields()
                         uniqMaxMonsMagic = &uniqMaxMagicMons;
                         uniqAvgMonsMagic = &uniqAvgMagicMons;
                         break;
-                    default: LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
+                    default:
+                        if (mon->_mAI.aiParam1 == MIS_APOCAC2) {
+                            LogErrorF("Apoc damage %d - %d (%d)", mon->_mMinDamage, mon->_mMaxDamage, (mon->_mMinDamage + mon->_mMaxDamage) / 2);
+                        } else
+                            LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
                     }
                     MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
                     (*uniqMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
