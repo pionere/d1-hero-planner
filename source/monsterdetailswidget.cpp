@@ -562,7 +562,8 @@ void MonsterDetailsWidget::updateFields()
                         } else
                             LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
                     }
-                } else if (mon->_mAI.aiType == AI_ROUNDRANGED
+                } else if (mon->_mAI.aiType == AI_SKELBOW
+                        || mon->_mAI.aiType == AI_ROUNDRANGED
                         || mon->_mAI.aiType == AI_ROUNDRANGED2
                         || mon->_mAI.aiType == AI_RANGED) {
                     uniqMaxMonsMagic = &uniqMaxRangedMons;
@@ -622,7 +623,8 @@ void MonsterDetailsWidget::updateFields()
                             LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres);
                         continue;
                     }
-                } else if (mon->_mAI.aiType == AI_ROUNDRANGED
+                } else if (mon->_mAI.aiType == AI_SKELBOW
+                        || mon->_mAI.aiType == AI_ROUNDRANGED
                         || mon->_mAI.aiType == AI_ROUNDRANGED2
                         || mon->_mAI.aiType == AI_RANGED) {
                     normalMaxMonsMagic = &normalMaxRangedMons;
