@@ -525,6 +525,8 @@ void MonsterDetailsWidget::updateFields()
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
                 if (mon->_mMaxDamage == 0)
                     continue;
+                std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
+                std::map<int, std::vector<MonDamage>>* uniqAvgMonsMagic;
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_ROUNDRANGED2 && mon->_mAI.aiParam1 != MIS_ARROW)
@@ -537,8 +539,6 @@ void MonsterDetailsWidget::updateFields()
                     case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
                     case MIS_INFERNOC: mres = MISR_FIRE; break;
                     }
-                    std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
-                    std::map<int, std::vector<MonDamage>>* uniqAvgMonsMagic;
                     switch (mres) {
                     case MISR_LIGHTNING:
                         uniqMaxMonsMagic = &uniqMaxLghtMons;
@@ -584,6 +584,8 @@ void MonsterDetailsWidget::updateFields()
                 InitLvlMonster(tt, numplrs, lb);
 
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
+                std::map<int, std::vector<MonDamage>> *normalMaxMonsMagic;
+                std::map<int, std::vector<MonDamage>> *normalAvgMonsMagic;
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_ROUNDRANGED2 && mon->_mAI.aiParam1 != MIS_ARROW)
@@ -596,8 +598,6 @@ void MonsterDetailsWidget::updateFields()
                     case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
                     case MIS_INFERNOC: mres = MISR_FIRE; break;
                     }
-                    std::map<int, std::vector<MonDamage>> *normalMaxMonsMagic;
-                    std::map<int, std::vector<MonDamage>> *normalAvgMonsMagic;
                     switch (mres) {
                     case MISR_LIGHTNING:
                         normalMaxMonsMagic = &normalMaxLghtMons;
