@@ -493,10 +493,6 @@ void MonsterDetailsWidget::updateFields()
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
         if (lvlbonus != 0) {
-        int maxDamNormal = 0, maxDamUniq = 0, avgDamNormal = 0, avgDamUniq = 0;
-        int minDamNormal = INT_MAX, minDamUniq = INT_MAX, minAvgNormal = INT_MAX, minAvgUniq = INT_MAX;
-        int maxDamNormalType = 0, maxDamUniqType = 0, avgDamNormalType = 0, avgDamUniqType = 0;
-        int minDamNormalType = 0, minDamUniqType = 0, minAvgNormalType = 0, minAvgUniqType = 0;
         typedef struct MonDamage {
             int type;
             int minValue;
@@ -505,6 +501,9 @@ void MonsterDetailsWidget::updateFields()
         } MonDamage;
         std::map<int, std::vector<MonDamage>> normalMaxMons, uniqMaxMons;
         std::map<int, std::vector<MonDamage>> normalAvgMons, uniqAvgMons;
+
+        std::map<int, std::vector<MonDamage>> normalMaxRangedMons, uniqMaxRangedMons;
+        std::map<int, std::vector<MonDamage>> normalAvgRangedMons, uniqAvgRangedMons;
 
         std::map<int, std::vector<MonDamage>> normalMaxFireMons, uniqMaxFireMons;
         std::map<int, std::vector<MonDamage>> normalAvgFireMons, uniqAvgFireMons;
@@ -528,6 +527,7 @@ void MonsterDetailsWidget::updateFields()
                     continue;
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
+                 || (mon->_mAI.aiType == AI_ROUNDRANGED2 && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)) {
 
                     int mres = missiledata[mon->_mAI.aiType == AI_MAGE ? MIS_MAGE : mon->_mAI.aiParam1].mResist;
@@ -535,6 +535,7 @@ void MonsterDetailsWidget::updateFields()
                     case MIS_LIGHTNINGC:
                     case MIS_LIGHTNINGC2:
                     case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
+                    case MIS_INFERNOC: mres = MISR_FIRE; break;
                     }
                     std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
                     std::map<int, std::vector<MonDamage>>* uniqAvgMonsMagic;
@@ -561,33 +562,21 @@ void MonsterDetailsWidget::updateFields()
                         } else
                             LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
                     }
-                    MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK]};
-                    (*uniqMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
-                    int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                    (*uniqAvgMonsMagic)[avgDam].push_back(monDmg);
-                    continue;
+                } else if (mon->_mAI.aiType == AI_ROUNDRANGED
+                        || mon->_mAI.aiType == AI_ROUNDRANGED2
+                        || mon->_mAI.aiType == AI_RANGED) {
+                    uniqMaxMonsMagic = &uniqMaxRangedMons;
+                    uniqAvgMonsMagic = &uniqAvgRangedMons;
+                } else {
+                    uniqMaxMonsMagic = &uniqMaxMons;
+                    uniqAvgMonsMagic = &uniqAvgMons;
                 }
 
                 MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK]};
-                uniqMaxMons[mon->_mMaxDamage].push_back(monDmg);
-                if (mon->_mMaxDamage > maxDamUniq) {
-                    maxDamUniq = mon->_mMaxDamage;
-                    maxDamUniqType = tt;
-                }
-                if (mon->_mMaxDamage < minDamUniq && mon->_mMinDamage != mon->_mMaxDamage) {
-                    minDamUniq = mon->_mMaxDamage;
-                    minDamUniqType = tt;
-                }
+                (*uniqMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                uniqAvgMons[avgDam].push_back(monDmg);
-                if (avgDam > avgDamUniq) {
-                    avgDamUniq = avgDam;
-                    avgDamUniqType = tt;
-                }
-                if (avgDam < minAvgUniq) {
-                    minAvgUniq = avgDam;
-                    minAvgUniqType = tt;
-                }
+                (*uniqAvgMonsMagic)[avgDam].push_back(monDmg);
+                uniqMaxMons[mon->_mMaxDamage].push_back(monDmg);
             } else {
                 tt = tt - 1;
                 if (lvlrel)
@@ -597,6 +586,7 @@ void MonsterDetailsWidget::updateFields()
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
+                 || (mon->_mAI.aiType == AI_ROUNDRANGED2 && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)) {
 
                     int mres = missiledata[mon->_mAI.aiType == AI_MAGE ? MIS_MAGE : mon->_mAI.aiParam1].mResist;
@@ -604,6 +594,7 @@ void MonsterDetailsWidget::updateFields()
                     case MIS_LIGHTNINGC:
                     case MIS_LIGHTNINGC2:
                     case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
+                    case MIS_INFERNOC: mres = MISR_FIRE; break;
                     }
                     std::map<int, std::vector<MonDamage>> *normalMaxMonsMagic;
                     std::map<int, std::vector<MonDamage>> *normalAvgMonsMagic;
@@ -631,33 +622,20 @@ void MonsterDetailsWidget::updateFields()
                             LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres);
                         continue;
                     }
-                    MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK]};
-                    (*normalMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
-                    int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                    (*normalAvgMonsMagic)[avgDam].push_back(monDmg);
-                    continue;
+                } else if (mon->_mAI.aiType == AI_ROUNDRANGED
+                        || mon->_mAI.aiType == AI_ROUNDRANGED2
+                        || mon->_mAI.aiType == AI_RANGED) {
+                    normalMaxMonsMagic = &normalMaxRangedMons;
+                    normalAvgMonsMagic = &normalAvgRangedMons;
+                } else {
+                    normalMaxMonsMagic = &normalMaxMons;
+                    normalAvgMonsMagic = &normalAvgMons;
                 }
 
-                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK]};
-                normalMaxMons[mon->_mMaxDamage].push_back(monDmg);
-                if (mon->_mMaxDamage > maxDamNormal) {
-                    maxDamNormal = mon->_mMaxDamage;
-                    maxDamNormalType = tt;
-                }
-                if (mon->_mMaxDamage < minDamNormal) {
-                    minDamNormal = mon->_mMaxDamage;
-                    minDamNormalType = tt;
-                }
+                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK] };
+                (*normalMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
-                normalAvgMons[avgDam].push_back(monDmg);
-                if (avgDam > avgDamNormal) {
-                    avgDamNormal = avgDam;
-                    avgDamNormalType = tt;
-                }
-                if (avgDam < minAvgNormal) {
-                    minAvgNormal = avgDam;
-                    minAvgNormalType = tt;
-                }
+                (*normalAvgMonsMagic)[avgDam].push_back(monDmg);
             }
         }
 
@@ -682,6 +660,32 @@ void MonsterDetailsWidget::updateFields()
             }
             LogErrorF("Unique Monsters (avg):");
             for (auto it = uniqAvgMons.begin(); it != uniqAvgMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d, frames%d)", vit->type, it->first, vit->minValue, vit->maxValue, vit->frames);
+                }
+            }
+        }
+        { // ranged
+            LogErrorF("Normal Monsters (ranged-max):");
+            for (auto it = normalMaxRangedMons.begin(); it != normalMaxRangedMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d (frames%d)", vit->type, vit->minValue, vit->maxValue, vit->frames);
+                }
+            }
+            LogErrorF("Normal Monsters (ranged-avg):");
+            for (auto it = normalAvgRangedMons.begin(); it != normalAvgRangedMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d, frames%d)", vit->type, it->first, vit->minValue, vit->maxValue, vit->frames);
+                }
+            }
+            LogErrorF("Unique Monsters (ranged-max):");
+            for (auto it = uniqMaxRangedMons.begin(); it != uniqMaxRangedMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d (frames%d)", vit->type, vit->minValue, vit->maxValue, vit->frames);
+                }
+            }
+            LogErrorF("Unique Monsters (ranged-avg):");
+            for (auto it = uniqAvgRangedMons.begin(); it != uniqAvgRangedMons.end(); it++) {
                 for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
                     LogErrorF("Type: %d Damage: %d (%d - %d, frames%d)", vit->type, it->first, vit->minValue, vit->maxValue, vit->frames);
                 }
@@ -792,16 +796,6 @@ void MonsterDetailsWidget::updateFields()
             }
         }
 
-        /*QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : %12 min avg u %13 (%14) : %15 n %16 (%17) : %18 minm u %19 (%20) : %21 n %22 (%23) : %24")
-            .arg(uniqMonData[avgDamUniqType].mName).arg(avgDamUniqType).arg(avgDamUniq)
-            .arg(uniqMonData[maxDamUniqType].mName).arg(maxDamUniqType).arg(maxDamUniq)
-            .arg(monsterdata[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
-            .arg(monsterdata[maxDamNormalType].mName).arg(maxDamNormalType).arg(maxDamNormal)
-            .arg(uniqMonData[minAvgUniqType].mName).arg(minAvgUniqType).arg(minAvgUniq)
-            .arg(monsterdata[minAvgNormalType].mName).arg(minAvgNormalType).arg(minAvgNormal)
-            .arg(uniqMonData[minDamUniqType].mName).arg(minDamUniqType).arg(minDamUniq)
-            .arg(monsterdata[minDamNormalType].mName).arg(minDamNormalType).arg(minDamNormal)
-        );*/
         }
         if (lvlrel)
             lvlbonus -= monsterdata[type].mLevel;
