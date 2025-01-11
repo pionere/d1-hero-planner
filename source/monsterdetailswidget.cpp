@@ -492,6 +492,7 @@ void MonsterDetailsWidget::updateFields()
             lvlbonus -= uniqMonData[type].muLevel;
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
+        if (lvlbonus != 0) {
         int maxDamNormal = 0, maxDamUniq = 0, avgDamNormal = 0, avgDamUniq = 0;
         int minDamNormal = INT_MAX, minDamUniq = INT_MAX, minAvgNormal = INT_MAX, minAvgUniq = INT_MAX;
         int maxDamNormalType = 0, maxDamUniqType = 0, avgDamNormalType = 0, avgDamUniqType = 0;
@@ -503,6 +504,15 @@ void MonsterDetailsWidget::updateFields()
         } MonDamage;
         std::map<int, std::vector<MonDamage>> normalMaxMons, uniqMaxMons;
         std::map<int, std::vector<MonDamage>> normalAvgMons, uniqAvgMons;
+
+        std::map<int, std::vector<MonDamage>> normalMaxFireMons, uniqMaxFireMons;
+        std::map<int, std::vector<MonDamage>> normalAvgFireMons, uniqAvgFireMons;
+        std::map<int, std::vector<MonDamage>> normalMaxLghtMons, uniqMaxLghtMons;
+        std::map<int, std::vector<MonDamage>> normalAvgLghtMons, uniqAvgLghtMons;
+        std::map<int, std::vector<MonDamage>> normalMaxMagicMons, uniqMaxMagicMons;
+        std::map<int, std::vector<MonDamage>> normalAvgMagicMons, uniqAvgMagicMons;
+        std::map<int, std::vector<MonDamage>> normalMaxAcidMons, uniqMaxAcidMons;
+        std::map<int, std::vector<MonDamage>> normalAvgAcidMons, uniqAvgAcidMons;
         for (int n = 0; n < typesComboBox->count(); n++) {
             int tt = typesComboBox->itemData(n).value<int>();
             int lb = lvlbonus;
@@ -517,10 +527,41 @@ void MonsterDetailsWidget::updateFields()
                     continue;
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
-                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW))
-                    continue;
+                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)) {
 
-                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage};
+                    int mres = missiledata[mon->_mAI.aiType == AI_MAGE ? MIS_MAGE : mon->_mAI.aiParam1].mResist;
+                    switch (mon->_mAI.aiParam1) {
+                    case MIS_LIGHTNINGC:
+                    case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
+                    }
+                    std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
+                    std::map<int, std::vector<MonDamage>>* uniqAvgMonsMagic;
+                    switch (mres) {
+                    case MISR_LIGHTNING:
+                        uniqMaxMonsMagic = &uniqMaxLghtMons;
+                        uniqAvgMonsMagic = &uniqAvgLghtMons;
+                        break;
+                    case MISR_ACID:
+                        uniqMaxMonsMagic = &uniqMaxAcidMons;
+                        uniqAvgMonsMagic = &uniqAvgAcidMons;
+                        break;
+                    case MISR_FIRE:
+                        uniqMaxMonsMagic = &uniqMaxFireMons;
+                        uniqAvgMonsMagic = &uniqAvgFireMons;
+                        break;
+                    case MISR_MAGIC:
+                        uniqMaxMonsMagic = &uniqMaxMagicMons;
+                        uniqAvgMonsMagic = &uniqAvgMagicMons;
+                        break;
+                    default: LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
+                    }
+                    MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
+                    (*uniqMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
+                    (*uniqAvgMonsMagic)[avgDam].push_back(monDmg);
+                    continue;
+                }
+
+                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
                 uniqMaxMons[mon->_mMaxDamage].push_back(monDmg);
                 if (mon->_mMaxDamage > maxDamUniq) {
                     maxDamUniq = mon->_mMaxDamage;
@@ -549,10 +590,41 @@ void MonsterDetailsWidget::updateFields()
                 MonsterStruct *mon = &monsters[MAX_MINIONS];
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
-                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW))
-                    continue;
+                 || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)) {
 
-                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage};
+                    int mres = missiledata[mon->_mAI.aiType == AI_MAGE ? MIS_MAGE : mon->_mAI.aiParam1].mResist;
+                    switch (mon->_mAI.aiParam1) {
+                    case MIS_LIGHTNINGC:
+                    case MIS_CBOLTC: mres = MISR_LIGHTNING; break;
+                    }
+                    std::map<int, std::vector<MonDamage>> *normalMaxMonsMagic;
+                    std::map<int, std::vector<MonDamage>> *normalAvgMonsMagic;
+                    switch (mres) {
+                    case MISR_LIGHTNING:
+                        normalMaxMonsMagic = &normalMaxLghtMons;
+                        normalAvgMonsMagic = &normalAvgLghtMons;
+                        break;
+                    case MISR_ACID:
+                        normalMaxMonsMagic = &normalMaxAcidMons;
+                        normalAvgMonsMagic = &normalAvgAcidMons;
+                        break;
+                    case MISR_FIRE:
+                        normalMaxMonsMagic = &normalMaxFireMons;
+                        normalAvgMonsMagic = &normalAvgFireMons;
+                        break;
+                    case MISR_MAGIC:
+                        normalMaxMonsMagic = &normalMaxMagicMons;
+                        normalAvgMonsMagic = &normalAvgMagicMons;
+                        break;
+                    default: LogErrorF("Unknown missile damage type:%d res%d", mon->_mAI.aiParam1, mres); continue;
+                    }
+                    MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
+                    (*normalMaxMonsMagic)[mon->_mMaxDamage].push_back(monDmg);
+                    (*normalAvgMonsMagic)[avgDam].push_back(monDmg);
+                    continue;
+                }
+
+                MonDamage monDmg = { tt, mon->_mMinDamage, mon->_mMaxDamage };
                 normalMaxMons[mon->_mMaxDamage].push_back(monDmg);
                 if (mon->_mMaxDamage > maxDamNormal) {
                     maxDamNormal = mon->_mMaxDamage;
@@ -575,32 +647,138 @@ void MonsterDetailsWidget::updateFields()
             }
         }
 
-        LogErrorF("Normal Monsters (max):");
-        for (auto it = normalMaxMons.begin(); it != normalMaxMons.end(); it++) {
-            for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
-                LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+        { // physical
+            LogErrorF("Normal Monsters (max):");
+            for (auto it = normalMaxMons.begin(); it != normalMaxMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Normal Monsters (avg):");
+            for (auto it = normalAvgMons.begin(); it != normalAvgMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (max):");
+            for (auto it = uniqMaxMons.begin(); it != uniqMaxMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (avg):");
+            for (auto it = uniqAvgMons.begin(); it != uniqAvgMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
             }
         }
-        LogErrorF("Normal Monsters (avg):");
-        for (auto it = normalAvgMons.begin(); it != normalAvgMons.end(); it++) {
-            for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
-                LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+        { // fire
+            LogErrorF("Normal Monsters (fire-max):");
+            for (auto it = normalMaxFireMons.begin(); it != normalMaxFireMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Normal Monsters (fire-avg):");
+            for (auto it = normalAvgFireMons.begin(); it != normalAvgFireMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (fire-max):");
+            for (auto it = uniqMaxFireMons.begin(); it != uniqMaxFireMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (fire-avg):");
+            for (auto it = uniqAvgFireMons.begin(); it != uniqAvgFireMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
             }
         }
-        LogErrorF("Unique Monsters (max):");
-        for (auto it = uniqMaxMons.begin(); it != uniqMaxMons.end(); it++) {
-            for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
-                LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+        { // ligthning
+            LogErrorF("Normal Monsters (lght-max):");
+            for (auto it = normalMaxLghtMons.begin(); it != normalMaxLghtMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Normal Monsters (lght-avg):");
+            for (auto it = normalAvgLghtMons.begin(); it != normalAvgLghtMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (lght-max):");
+            for (auto it = uniqMaxLghtMons.begin(); it != uniqMaxLghtMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (lght-avg):");
+            for (auto it = uniqAvgLghtMons.begin(); it != uniqAvgLghtMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
             }
         }
-        LogErrorF("Unique Monsters (avg):");
-        for (auto it = uniqAvgMons.begin(); it != uniqAvgMons.end(); it++) {
-            for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
-                LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+        { // magic
+            LogErrorF("Normal Monsters (magic-max):");
+            for (auto it = normalMaxMagicMons.begin(); it != normalMaxMagicMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Normal Monsters (magic-avg):");
+            for (auto it = normalAvgMagicMons.begin(); it != normalAvgMagicMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (magic-max):");
+            for (auto it = uniqMaxMagicMons.begin(); it != uniqMaxMagicMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (magic-avg):");
+            for (auto it = uniqAvgMagicMons.begin(); it != uniqAvgMagicMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+        }
+        { // acid
+            LogErrorF("Normal Monsters (acid-max):");
+            for (auto it = normalMaxAcidMons.begin(); it != normalMaxAcidMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Normal Monsters (acid-avg):");
+            for (auto it = normalAvgAcidMons.begin(); it != normalAvgAcidMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (acid-max):");
+            for (auto it = uniqMaxAcidMons.begin(); it != uniqMaxAcidMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d - %d", vit->type, vit->minValue, vit->maxValue);
+                }
+            }
+            LogErrorF("Unique Monsters (acid-avg):");
+            for (auto it = uniqAvgAcidMons.begin(); it != uniqAvgAcidMons.end(); it++) {
+                for (auto vit = it->second.begin(); vit != it->second.end(); vit++) {
+                    LogErrorF("Type: %d Damage: %d (%d - %d)", vit->type, it->first, vit->minValue, vit->maxValue);
+                }
             }
         }
 
-        QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : %12 min avg u %13 (%14) : %15 n %16 (%17) : %18 minm u %19 (%20) : %21 n %22 (%23) : %24")
+        /*QMessageBox::critical(nullptr, "Error", QApplication::tr("MonsterDetailsWidget:: unique avg %1 (%2) : %3 max %4 (%5) : %6 normal avg %7 (%8) : %9 max %10 (%11) : %12 min avg u %13 (%14) : %15 n %16 (%17) : %18 minm u %19 (%20) : %21 n %22 (%23) : %24")
             .arg(uniqMonData[avgDamUniqType].mName).arg(avgDamUniqType).arg(avgDamUniq)
             .arg(uniqMonData[maxDamUniqType].mName).arg(maxDamUniqType).arg(maxDamUniq)
             .arg(monsterdata[avgDamNormalType].mName).arg(avgDamNormalType).arg(avgDamNormal)
@@ -609,8 +787,8 @@ void MonsterDetailsWidget::updateFields()
             .arg(monsterdata[minAvgNormalType].mName).arg(minAvgNormalType).arg(minAvgNormal)
             .arg(uniqMonData[minDamUniqType].mName).arg(minDamUniqType).arg(minDamUniq)
             .arg(monsterdata[minDamNormalType].mName).arg(minDamNormalType).arg(minDamNormal)
-        );
-
+        );*/
+        }
         if (lvlrel)
             lvlbonus -= monsterdata[type].mLevel;
         InitLvlMonster(type, numplrs, lvlbonus);
