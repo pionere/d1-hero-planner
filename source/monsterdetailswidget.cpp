@@ -501,7 +501,7 @@ void MonsterDetailsWidget::updateFields()
             int frames;
             int toHit;
         } MonHealth;
-#define OFFENSIVE 1
+#define OFFENSIVE 0
         typedef struct MonDamage {
             const char* name;
             int type;
