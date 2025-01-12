@@ -529,6 +529,7 @@ void MonsterDetailsWidget::updateFields()
                 std::map<int, std::vector<MonDamage>>* uniqMaxMonsMagic;
                 std::map<int, std::vector<MonDamage>>* uniqAvgMonsMagic;
                 if (mon->_mAI.aiType == AI_MAGE || mon->_mAI.aiType == AI_COUNSLR
+                 || mon->_mAI.aiType == AI_LAZHELP || mon->_mAI.aiType == AI_LAZARUS || mon->_mAI.aiType == AI_ZHAR
                  || (mon->_mAI.aiType == AI_ROUNDRANGED && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_ROUNDRANGED2 && mon->_mAI.aiParam1 != MIS_ARROW)
                  || (mon->_mAI.aiType == AI_RANGED && mon->_mAI.aiParam1 != MIS_ARROW)) {
