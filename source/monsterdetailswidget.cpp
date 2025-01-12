@@ -599,7 +599,7 @@ void MonsterDetailsWidget::updateFields()
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                 (*uniqAvgMonsMagic)[avgDam].push_back(monDmg);
 #else
-                int minHp = mon->_mmaxhp >> 6; // mapMonTypes[mon->_mMTidx].cmMinHP;
+                int minHp = mon->_mmaxhp; // mapMonTypes[mon->_mMTidx].cmMinHP;
                 int maxHp = minHp; // mapMonTypes[mon->_mMTidx].cmMaxHP;
                 MonHealth monHp = { mon->_mName, tt, minHp, maxHp, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK], mon->_mArmorClass };
                 (*uniqMaxMonsMagic)[maxHp].push_back(monHp);
@@ -671,8 +671,8 @@ void MonsterDetailsWidget::updateFields()
                 int avgDam = (mon->_mMinDamage + mon->_mMaxDamage) / 2;
                 (*normalAvgMonsMagic)[avgDam].push_back(monDmg);
 #else
-                int minHp = mapMonTypes[mon->_mMTidx].cmMinHP;
-                int maxHp = mapMonTypes[mon->_mMTidx].cmMaxHP;
+                int minHp = mon->_mhitpoints; //  mapMonTypes[mon->_mMTidx].cmMinHP;
+                int maxHp = mon->_mmaxhp; // mapMonTypes[mon->_mMTidx].cmMaxHP;
                 MonHealth monHp = { mon->_mName, tt, minHp, maxHp, monfiledata[monsterdata[mapMonTypes[mon->_mMTidx].cmType].moFileNum].moAnimFrames[MA_ATTACK], mon->_mArmorClass };
                 (*normalMaxMonsMagic)[maxHp].push_back(monHp);
                 int avgHp = (minHp + maxHp) / 2;
