@@ -498,8 +498,8 @@ void MonsterDetailsWidget::updateFields()
             int type;
             int minValue;
             int maxValue;
-            int toHit;
             int frames;
+            int toHit;
         } MonHealth;
 #define OFFENSIVE 1
         typedef struct MonDamage {
@@ -507,8 +507,8 @@ void MonsterDetailsWidget::updateFields()
             int type;
             int minValue;
             int maxValue;
-            int toHit;
             int frames;
+            int toHit;
         } MonDamage;
 #if OFFENSIVE
         typedef MonDamage EntryType;
