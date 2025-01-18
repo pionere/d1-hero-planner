@@ -122,7 +122,7 @@ static void displayDamage(QLabel *label, int minDam, int maxDam)
 
 static std::pair<RANGE, RANGE> monLevelRange(int mtype, int dtype)
 {
-    std::pair<RANGE, RANGE> result = { DLV_INVALID, DLV_INVALID };
+    std::pair<RANGE, RANGE> result = std::pair<RANGE, RANGE>({ DLV_INVALID, DLV_INVALID }, { DLV_INVALID, DLV_INVALID });
     //if (dtype != DTYPE_TOWN) {
         for (int n = 0; n < NUM_STDLVLS; n++) {
             if (!IsHellfireGame && AllLevels[n].dType > DTYPE_HELL) continue;
@@ -456,7 +456,7 @@ void MonsterDetailsWidget::updateFields()
     int dtype = this->ui->dunTypeComboBox->currentIndex();
     for (int i = 0; i < NUM_MTYPES; i++) {
         const std::pair<RANGE, RANGE> ranges = monLevelRange(i, dtype);
-        if (range.first.from == DLV_INVALID && range.second.from == DLV_INVALID)
+        if (ranges.first.from == DLV_INVALID && ranges.second.from == DLV_INVALID)
             continue;
         /*if (loc != DTYPE_TOWN) {
             int n;
