@@ -120,20 +120,55 @@ static void displayDamage(QLabel *label, int minDam, int maxDam)
     }
 }
 
-static RANGE monLevelRange(int mtype, int dtype)
+static std::pair<RANGE, RANGE> monLevelRange(int mtype, int dtype)
 {
-    RANGE result = { DLV_INVALID, DLV_INVALID };
+    std::pair<RANGE, RANGE> result = { DLV_INVALID, DLV_INVALID };
     //if (dtype != DTYPE_TOWN) {
-        for (int n = 0; n < NUM_FIXLVLS; n++) {
+        for (int n = 0; n < NUM_STDLVLS; n++) {
             if (!IsHellfireGame && AllLevels[n].dType > DTYPE_HELL) continue;
             if (dtype != DTYPE_TOWN && AllLevels[n].dType != dtype) continue;
             for (int m = 0; AllLevels[n].dMonTypes[m] != MT_INVALID; m++) {
                 if (AllLevels[n].dMonTypes[m] == mtype) {
-                    if (result.from == DLV_INVALID)
-                        result.from = n;
-                    result.to = n;
+                    if (result.first.from == DLV_INVALID)
+                        result.first.from = n;
+                    result.first.to = n;
                     break;
                 }
+            }
+            if ((n == questlist[Q_WARLORD]._qdlvl && (mtype == MT_BBLACK))
+             || (n == questlist[Q_BETRAYER]._qdlvl && (mtype == MT_RSUCC || mtype == MT_BMAGE))
+             || (n == questlist[Q_BLOOD]._qdlvl && (mtype == MT_NRHINO))
+             || (n == questlist[Q_ANVIL]._qdlvl && (mtype == MT_DRHINO || mtype == MT_GGOATBW))
+             || (n == questlist[Q_BANNER]._qdlvl && (mtype == MT_NFAT || mtype == MT_BFALLSD))
+             || (n == questlist[Q_BLIND]._qdlvl && (mtype == MT_YSNEAK))
+             || (n == DLV_HELL4 && (mtype == MT_GBLACK || mtype == MT_BMAGE || mtype == MT_NBLACK || mtype == MT_DIABLO))
+             || (n == DLV_NEST2 && (mtype == MT_HORKSPWN))
+             || (n == DLV_NEST3 && (mtype == MT_HORKSPWN || mtype == MT_HORKDMN))
+             || (n == DLV_NEST4 && (mtype == MT_DEFILER))
+             || (n == DLV_CRYPT4 && (mtype == MT_ARCHLICH || mtype == MT_NAKRUL))) {
+                if (result.first.from == DLV_INVALID)
+                    result.first.from = n;
+                result.first.to = n;
+            }
+        }
+        for (int n = NUM_STDLVLS; n < NUM_SETLVLS; n++) {
+            if (!IsHellfireGame && AllLevels[n].dType > DTYPE_HELL) continue;
+            if (dtype != DTYPE_TOWN && AllLevels[n].dType != dtype) continue;
+            for (int m = 0; AllLevels[n].dMonTypes[m] != MT_INVALID; m++) {
+                if (AllLevels[n].dMonTypes[m] == mtype) {
+                    if (result.second.from == DLV_INVALID)
+                        result.second.from = n;
+                    result.second.to = n;
+                    break;
+                }
+            }
+            if ((n == questlist[Q_PWATER]._qslvl && (mtype == MT_NGOATBW || mtype == MT_DFALLSP || mtype == MT_YFALLSD || mtype == MT_NGOATMC))
+             || (n == questlist[Q_SKELKING]._qslvl && (mtype == MT_TSKELBW || mtype == MT_RSKELBW || mtype == MT_XSKELBW || mtype == MT_RSKELSD || mtype == MT_RSKELAX))
+             || (n == questlist[Q_BETRAYER]._qslvl && (mtype == MT_RSUCC || mtype == MT_BMAGE))
+             || (n == questlist[Q_BCHAMB]._qslvl && (mtype == MT_XSKELSD || mtype == MT_BSNEAK || mtype == MT_NRHINO))) {
+                if (result.second.from == DLV_INVALID)
+                    result.second.from = n;
+                result.second.to = n;
             }
         }
     //} else {
@@ -420,8 +455,8 @@ void MonsterDetailsWidget::updateFields()
     
     int dtype = this->ui->dunTypeComboBox->currentIndex();
     for (int i = 0; i < NUM_MTYPES; i++) {
-        RANGE range = monLevelRange(i, dtype);
-        if (range.from == DLV_INVALID)
+        const std::pair<RANGE, RANGE> ranges = monLevelRange(i, dtype);
+        if (range.first.from == DLV_INVALID && range.second.from == DLV_INVALID)
             continue;
         /*if (loc != DTYPE_TOWN) {
             int n;
@@ -472,8 +507,23 @@ void MonsterDetailsWidget::updateFields()
         minion &= this->ui->minionCheckBox->isChecked();
     } else {
         type = type - 1;
-        RANGE range = monLevelRange(type, dtype);
-        typesComboBox->setToolTip(tr("Dungeon Level %1-%2").arg(range.from).arg(range.to));
+        const std::pair<RANGE, RANGE> ranges = monLevelRange(type, dtype);
+        QString tooltip;
+        if (ranges.first.from != DLV_INVALID) {
+            if (ranges.first.from == ranges.first.to)
+                tooltip = tr("Dungeon Level %1").arg(ranges.first.from);
+            else
+                tooltip = tr("Dungeon Level %1-%2").arg(ranges.first.from).arg(ranges.first.to);
+        }
+        if (ranges.second.from != DLV_INVALID) {
+            if (ranges.first.from != DLV_INVALID)
+                tooltip += " ";
+            if (ranges.second.from == ranges.second.to)
+                tooltip += tr("Set Level %1").arg(ranges.second.from);
+            else
+                tooltip += tr("Set Level %1-%2").arg(ranges.second.from).arg(ranges.second.to);
+        }
+        typesComboBox->setToolTip(tooltip);
         this->ui->minionCheckBox->setVisible(false);
     }
     bool multi = this->hero->isMulti();
