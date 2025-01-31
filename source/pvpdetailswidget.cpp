@@ -190,7 +190,7 @@ void PvPDetailsWidget::updateFields()
         if ((offHero->getSkillFlags() & SFLAG_BLOCK) && (defDmg.hth || (defDmg.mis && defDmg.blockMis))) {
             hper = offHero->getBlockChance();
             if (hper != 0) {
-                hper -= 2 * defHero->getLevel();
+                hper -= 2 * 2 * defHero->getLevel();
                 hper = CheckHit(hper);
             }
         }
@@ -207,7 +207,7 @@ void PvPDetailsWidget::updateFields()
         if ((defHero->getSkillFlags() & SFLAG_BLOCK) && (offDmg.hth || (offDmg.mis && offDmg.blockMis))) {
             hper = defHero->getBlockChance();
             if (hper != 0) {
-                hper -= 2 * offHero->getLevel();
+                hper -= 2 * 2 * offHero->getLevel();
                 hper = CheckHit(hper);
             }
         }
