@@ -510,11 +510,11 @@ void MonsterDetailsWidget::updateFields()
         const std::pair<int, int> ml = uniqMonLevel(type, dtype);
         QString tooltip;
         if (ml.first != DLV_INVALID)
-            tooltip = tr("Dungeon Level %1").arg(ml.first);
+            tooltip = tr("Dungeon Level %1 (%2)").arg(AllLevels[ml.first].dLevelName).arg(ml.first);
         if (ml.second != DLV_INVALID) {
             if (ml.first != DLV_INVALID)
                 tooltip += " ";
-            tooltip += tr("Set Level %1").arg(ml.second);
+            tooltip += tr("Set Level %1 (%2)").arg(AllLevels[ml.second].dLevelName).arg(ml.second);
         }
         typesComboBox->setToolTip(tooltip);
         minion = (uniqMonData[type].mUnqFlags & UMF_GROUP) != 0;
@@ -526,7 +526,7 @@ void MonsterDetailsWidget::updateFields()
         QString tooltip;
         if (ranges.first.from != DLV_INVALID) {
             if (ranges.first.from == ranges.first.to)
-                tooltip = tr("Dungeon Level %1").arg(ranges.first.from);
+                tooltip = tr("Dungeon Level %1 (%2)").arg(AllLevels[ranges.first.from].dLevelName).arg(ranges.first.from);
             else
                 tooltip = tr("Dungeon Level %1-%2").arg(ranges.first.from).arg(ranges.first.to);
         }
@@ -534,7 +534,7 @@ void MonsterDetailsWidget::updateFields()
             if (ranges.first.from != DLV_INVALID)
                 tooltip += " ";
             if (ranges.second.from == ranges.second.to)
-                tooltip += tr("Set Level %1").arg(ranges.second.from);
+                tooltip += tr("Set Level %1 (%2)").arg(AllLevels[ranges.second.from].dLevelName).arg(ranges.second.from);
             else
                 tooltip += tr("Set Level %1-%2").arg(ranges.second.from).arg(ranges.second.to);
         }
