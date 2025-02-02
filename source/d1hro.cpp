@@ -187,7 +187,7 @@ static void RecreateHeroItems(ItemStruct *is, int numItems)
             if (tmpItem._itype == items[MAXITEMS]._itype && tmpItem._iMiscId == items[MAXITEMS]._iMiscId && tmpItem._iClass == items[MAXITEMS]._iClass) {
                 // preserve the name
                 if (tmpItem._iPrePower == items[MAXITEMS]._iPrePower && tmpItem._iSufPower == tmpItem._iSufPower && tmpItem._iUid == items[MAXITEMS]._iUid)
-                    memcpy(pi->_iName, tmpItem._iName, sizeof(tmpItem._iName));
+                    memcpy(items[MAXITEMS]._iName, tmpItem._iName, sizeof(tmpItem._iName));
                 // TODO: preserve stats?
                 /*if (tmpItem._iMaxDur < items[MAXITEMS]._iMaxDur)
                     items[MAXITEMS]._iMaxDur = tmpItem._iMaxDur;
