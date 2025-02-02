@@ -559,7 +559,7 @@ void MonsterDetailsWidget::updateFields()
             lvlbonus -= uniqMonData[type].muLevel;
         InitUniqMonster(type, numplrs, lvlbonus, minion);
     } else {
-        if (lvlbonus != 0) {
+        if (lvlbonus != 0 && false) {
         typedef struct MonHealth {
             const char* name;
             int type;
