@@ -182,10 +182,12 @@ static std::pair<int, int> uniqMonLevel(int uniqindex, int dtype)
     const UniqMonData &mon = uniqMonData[uniqindex];
     std::pair<int, int> result = std::pair<int, int>(DLV_INVALID, DLV_INVALID);
     int ml = mon.muLevelIdx;
-    if (ml < NUM_STDLVLS)
-        result.first = ml;
-    else
-        result.second = ml;
+    if (ml != 0) {
+        if (ml < NUM_STDLVLS)
+            result.first = ml;
+        else
+            result.second = ml;
+    }
     switch (uniqindex) {
     case UMT_GARBUD:                                                                break;
     case UMT_SKELKING:   result.second = SL_SKELKING;                               break;
