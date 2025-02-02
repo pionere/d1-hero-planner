@@ -182,9 +182,10 @@ void LoadFileWithMem(const char* pszName, BYTE* p)
 
 void SStrCopy(char* dest, const char* src, int max_length)
 {
-	if (memccpy(dest, src, '\0', max_length) == NULL)
-		dest[max_length - 1] = '\0';
-	//strncpy(dest, src, max_length);
+	int result = snprintf(dest, max_length, "%s", src);
+	if (result >= max_length)
+		result = max_length - 1;
+	// return result;
 }
 
 DEVILUTION_END_NAMESPACE

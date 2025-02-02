@@ -1183,7 +1183,12 @@ int D1Hero::getBlockChance() const
 
 int D1Hero::getGetHit() const
 {
-    return players[this->pnum]._pIGetHit >> 6;
+    return players[this->pnum]._pIAbsAnyHit >> 6;
+}
+
+int D1Hero::getGetPhysHit() const
+{
+    return players[this->pnum]._pIAbsPhyHit >> 6;
 }
 
 int D1Hero::getLifeSteal() const

@@ -112,6 +112,7 @@ public:
     int getAC() const;
     int getBlockChance() const;
     int getGetHit() const;
+    int getGetPhysHit() const;
     int getLifeSteal() const;
     int getManaSteal() const;
     int getArrowVelBonus() const;
