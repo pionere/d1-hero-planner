@@ -178,17 +178,26 @@ static void RecreateHeroItems(ItemStruct *is, int numItems)
 {
     for (int i = 0; i < numItems; i++, is++) {
         if (is->_itype != ITYPE_NONE && is->_itype != ITYPE_PLACEHOLDER && is->_itype != ITYPE_GOLD && is->_iMiscId != IMISC_EAR) {
-            auto tmpId = is->_iIdentified;
-            auto tmpDur = is->_iDurability;
-            auto tmpMaxDur = is->_iMaxDur;
-            auto tmpCh = is->_iCharges;
-            auto tmpMaxCh = is->_iMaxCharges;
+            ItemStruct tmpItem;
+            memcpy(&tmpItem, is, sizeof(ItemStruct));
+
             RecreateItem(is->_iSeed, is->_iIdx, is->_iCreateInfo);
-            items[MAXITEMS]._iIdentified = tmpId;
-            items[MAXITEMS]._iDurability = tmpDur;
-            items[MAXITEMS]._iMaxDur = tmpMaxDur;
-            items[MAXITEMS]._iCharges = tmpCh;
-            items[MAXITEMS]._iMaxCharges = tmpMaxCh;
+
+            items[MAXITEMS]._iIdentified = tmpItem._iIdentified;
+            if (tmpItem._itype == items[MAXITEMS]._itype && tmpItem._iMiscId == items[MAXITEMS]._iMiscId && tmpItem._iClass == items[MAXITEMS]._iClass) {
+                // preserve the name
+                if (tmpItem._iPrePower == items[MAXITEMS]._iPrePower && tmpItem._iSufPower == tmpItem._iSufPower && tmpItem._iUid == items[MAXITEMS]._iUid)
+                    memcpy(pi->_iName, tmpItem._iName, sizeof(tmpItem._iName));
+                // TODO: preserve stats?
+                /*if (tmpItem._iMaxDur < items[MAXITEMS]._iMaxDur)
+                    items[MAXITEMS]._iMaxDur = tmpItem._iMaxDur;
+                if (tmpItem._iDurability < items[MAXITEMS]._iDurability)
+                    items[MAXITEMS]._iDurability = tmpItem._iDurability;
+                if (tmpItem._iMaxCharges < items[MAXITEMS]._iMaxCharges)
+                    items[MAXITEMS]._iMaxCharges = tmpItem._iMaxCharges;
+                if (tmpItem._iCharges < items[MAXITEMS]._iCharges)
+                    items[MAXITEMS]._iCharges = tmpItem._iCharges;*/
+            }
             memcpy(is, &items[MAXITEMS], sizeof(ItemStruct));
         }
     }

@@ -27,6 +27,7 @@ public:
     D1Pal *getPalette() const;
     void setPalette(D1Pal *pal);
     void update();
+    void calcInv();
 
     QImage getEquipmentImage(int ii) const;
     const ItemStruct *item(int ii) const;
@@ -160,7 +161,6 @@ public:
 private:
     D1Hero() = default;
     void rebalance();
-    void calcInv();
 
     int pnum;
     QString filePath;
