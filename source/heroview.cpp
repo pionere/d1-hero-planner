@@ -482,7 +482,7 @@ void HeroView::on_gameDifficultyComboBox_activated(int index)
 {
     gnDifficulty = index;
 
-    this->hero->update(); // update resists
+    this->hero->calcInv(); // update(); // update resists
 
     dMainWindow().updateWindow();
 }
