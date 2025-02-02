@@ -169,7 +169,7 @@ typedef struct ItemStruct {
 	int _ivalue;
 	int _iIvalue;
 	int _iAC;
-	int _iFlags;	// item_special_effect
+	int _iPLFlags; // item_special_effect
 	int _iCharges;
 	int _iMaxCharges;
 	int _iDurability;
