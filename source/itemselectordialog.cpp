@@ -276,6 +276,7 @@ static QString AffixPowerName(int power)
     case IPL_DAMP:           result = QApplication::tr("damage %");              break;
     case IPL_TOHIT_DAMP:     result = QApplication::tr("to hit + damage");       break;
     case IPL_ACP:            result = QApplication::tr("armor %");               break;
+    case IPL_TOBLOCK:        result = QApplication::tr("block %");               break;
     case IPL_FIRERES:        result = QApplication::tr("fire res.");             break;
     case IPL_LIGHTRES:       result = QApplication::tr("light res.");            break;
     case IPL_MAGICRES:       result = QApplication::tr("magic res.");            break;
@@ -294,7 +295,8 @@ static QString AffixPowerName(int power)
     case IPL_DEX:            result = QApplication::tr("dexterity");             break;
     case IPL_VIT:            result = QApplication::tr("vitality");              break;
     case IPL_ATTRIBS:        result = QApplication::tr("attributes");            break;
-    case IPL_GETHIT:         result = QApplication::tr("get hit");               break;
+    case IPL_ABS_ANYHIT:     result = QApplication::tr("get hit");               break;
+    case IPL_ABS_PHYHIT:     result = QApplication::tr("get phys. hit");         break;
     case IPL_LIFE:           result = QApplication::tr("life");                  break;
     case IPL_MANA:           result = QApplication::tr("mana");                  break;
     case IPL_DUR:            result = QApplication::tr("durability +");          break;

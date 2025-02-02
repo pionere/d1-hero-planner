@@ -92,7 +92,7 @@ inline static BYTE BaseCastSpeed(unsigned flags)
  *  ISPL_FASTERATTACK:  +3
  *  ISPL_FASTESTATTACK: +4
  */
-inline static BYTE BaseAttackSpeed(unsigned flags)
+/*inline static BYTE BaseAttackSpeed(unsigned flags)
 {
 	BYTE res = 0;
 
@@ -107,7 +107,7 @@ inline static BYTE BaseAttackSpeed(unsigned flags)
 	}
 
 	return res;
-}
+}*/
 
 /*
  * Calculate the arrow-velocity bonus gained from attack-speed modifiers.
@@ -116,7 +116,7 @@ inline static BYTE BaseAttackSpeed(unsigned flags)
  *  ISPL_FASTERATTACK:  +4
  *  ISPL_FASTESTATTACK: +8
  */
-inline static int ArrowVelBonus(unsigned flags)
+/*inline static int ArrowVelBonus(unsigned flags)
 {
 	flags &= (ISPL_QUICKATTACK | ISPL_FASTATTACK | ISPL_FASTERATTACK | ISPL_FASTESTATTACK);
 	//if (flags != 0) {
@@ -127,7 +127,7 @@ inline static int ArrowVelBonus(unsigned flags)
 		flags /= ISPL_QUICKATTACK;
 	//}
 	return flags;
-}
+}*/
 
 static void ValidateActionSkills(int pnum, BYTE type, uint64_t mask)
 {
@@ -172,8 +172,10 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	BOOL idi = TRUE; // items are identified
 
+	int asb = 0;    // bonus to attack speed
 	int tac = 0;    // armor class
 	int btohit = 0; // bonus chance to hit
+	int btoblk = 0; // bonus chance to block
 
 	int iflgs = ISPL_NONE; // item_special_effect flags
 
@@ -192,7 +194,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	// temporary values to calculate armor class/damage of the current item
 	int cac, cdmod, cdmodp, mindam, maxdam;
-	int ghit = 0; // increased damage from enemies
+	int absAnyHit = 0; // increased hit damage taken
+	int absPhyHit = 0; // increased physical hit damage taken
 	BYTE manasteal = 0;
 	BYTE lifesteal = 0;
 
@@ -238,6 +241,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			if (pi->_iMagical != ITEM_QUALITY_NORMAL) {
 				idi &= pi->_iIdentified;
 				btohit += pi->_iPLToHit;
+				btoblk += pi->_iPLToBlk;
 				iflgs |= pi->_iPLFlags;
 
 				sadd += pi->_iPLStr;
@@ -248,7 +252,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 				lr += pi->_iPLLR;
 				mr += pi->_iPLMR;
 				ar += pi->_iPLAR;
-				ghit += pi->_iPLGetHit;
+				asb += pi->_iPLAtkSpdMod;
+				absAnyHit += pi->_iPLAbsAnyHit;
+				absPhyHit += pi->_iPLAbsPhyHit;
 				lrad += pi->_iPLLight;
 				ihp += pi->_iPLHP;
 				imana += pi->_iPLMana;
@@ -324,7 +330,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pIFlags = iflgs;
 	plr._pInfraFlag = /*(iflgs & ISPL_INFRAVISION) != 0 ||*/ plr._pTimer[PLTR_INFRAVISION] > 0;
 	plr._pHasUnidItem = !idi;
-	plr._pIGetHit = ghit << 6;
+	plr._pIAbsAnyHit = absAnyHit << 6;
+	plr._pIAbsPhyHit = absPhyHit << 6;
 	plr._pILifeSteal = lifesteal;
 	plr._pIManaSteal = manasteal;
 
@@ -533,6 +540,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			maxpc = maxpc * 5 / 8;
 		//}
 		cc >>= 1;
+		asb >>= 1;
 	}
 	plr._pISlMinDam = minsl;
 	plr._pISlMaxDam = maxsl;
@@ -543,7 +551,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pICritChance = std::min((unsigned)UCHAR_MAX, cc);
 
 	// calculate block chance
-	plr._pIBlockChance = (plr._pSkillFlags & SFLAG_BLOCK) ? std::min(plr._pStrength, plr._pDexterity) : 0;
+	plr._pIBlockChance = (plr._pSkillFlags & SFLAG_BLOCK) ? btoblk + std::min(plr._pStrength, plr._pDexterity) : 0;
 
 	// calculate walk speed
 	plr._pIWalkSpeed = WalkSpeed(plr._pIFlags);
@@ -552,13 +560,13 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pIRecoverySpeed = RecoverySpeed(plr._pIFlags);
 
 	// calculate base attack speed
-	plr._pIBaseAttackSpeed = BaseAttackSpeed(plr._pIFlags);
+	plr._pIBaseAttackSpeed = asb; // BaseAttackSpeed(plr._pIFlags);
 
 	// calculate base cast speed
 	plr._pIBaseCastSpeed = BaseCastSpeed(plr._pIFlags);
 
 	// calculate arrow velocity bonus
-	av = ArrowVelBonus(plr._pIFlags);
+	//av = ArrowVelBonus(plr._pIFlags);
 	/*  No other velocity bonus for the moment, otherwise POINT_BLANK and FAR_SHOT do not work well...
 #ifdef HELLFIRE
 	if (plr._pClass == PC_ROGUE)
@@ -571,6 +579,15 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	else if (plr._pClass == PC_WARRIOR)
 		av += (plr._pLevel - 1) >> 3;
 #endif*/
+	av = plr._pIBaseAttackSpeed;
+	if (plr._pClass == PC_ROGUE)
+		av++;
+	else if (plr._pClass == PC_SORCERER)
+		av--;
+#ifdef HELLFIRE
+	else if (plr._pClass == PC_MONK)
+		av--;
+#endif
 	plr._pIArrowVelBonus = av;
 
 	static_assert(SPL_NULL == 0, "CalcPlrItemVals expects SPL_NULL == 0.");
@@ -1261,8 +1278,11 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		is->_iPLDex = r;
 		is->_iPLVit = r;
 		break;
-	case IPL_GETHIT:
-		is->_iPLGetHit = -r;
+	case IPL_ABS_ANYHIT:
+		is->_iPLAbsAnyHit = -r;
+		break;
+	case IPL_ABS_PHYHIT:
+		is->_iPLAbsPhyHit = -r;
 		break;
 	case IPL_LIFE:
 		is->_iPLHP = r << 6;
@@ -1320,12 +1340,13 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		is->_iPLFlags |= ISPL_PENETRATE_PHYS;
 		break;
 	case IPL_FASTATTACK:
-		static_assert((ISPL_QUICKATTACK & (ISPL_QUICKATTACK - 1)) == 0, "Optimized SaveItemPower depends simple flag-like attack-speed modifiers.");
+		/*static_assert((ISPL_QUICKATTACK & (ISPL_QUICKATTACK - 1)) == 0, "Optimized SaveItemPower depends simple flag-like attack-speed modifiers.");
 		static_assert(ISPL_QUICKATTACK == ISPL_FASTATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers I.");
 		static_assert(ISPL_FASTATTACK == ISPL_FASTERATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers II.");
 		static_assert(ISPL_FASTERATTACK == ISPL_FASTESTATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers III.");
 		// assert((unsigned)(r - 1) < 4);
-			is->_iPLFlags |= ISPL_QUICKATTACK << (r - 1);
+		is->_iPLFlags |= ISPL_QUICKATTACK << (r - 1);*/
+		is->_iPLAtkSpdMod = r;
 		break;
 	case IPL_FASTRECOVER:
 		static_assert((ISPL_FASTRECOVER & (ISPL_FASTRECOVER - 1)) == 0, "Optimized SaveItemPower depends simple flag-like hit-recovery modifiers.");
@@ -1794,6 +1815,9 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 	case IPL_ACP:
 		snprintf(tempstr, sizeof(tempstr), "%+d%% armor", is->_iPLAC);
 		break;
+	case IPL_TOBLOCK:
+		snprintf(tempstr, sizeof(tempstr), "%+d%% block chance", is->_iPLToBlk);
+		break;
 	case IPL_FIRERES:
 		//if (is->_iPLFR < 75)
 			snprintf(tempstr, sizeof(tempstr), "resist fire: %+d%%", is->_iPLFR);
@@ -1875,8 +1899,11 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 	case IPL_ATTRIBS:
 		snprintf(tempstr, sizeof(tempstr), "%+d to all attributes", is->_iPLStr);
 		break;
-	case IPL_GETHIT:
-		snprintf(tempstr, sizeof(tempstr), "%+d damage from enemies", is->_iPLGetHit);
+	case IPL_ABS_ANYHIT:
+		snprintf(tempstr, sizeof(tempstr), "%+d damage taken", is->_iPLAbsAnyHit);
+		break;
+	case IPL_ABS_PHYHIT:
+		snprintf(tempstr, sizeof(tempstr), "%+d phys. damage taken", is->_iPLAbsPhyHit);
 		break;
 	case IPL_LIFE:
 		snprintf(tempstr, sizeof(tempstr), "hit points: %+d", is->_iPLHP >> 6);
@@ -1929,15 +1956,18 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		copy_cstr(tempstr, "penetrates target's armor");
 		break;
 	case IPL_FASTATTACK:
-		if (is->_iPLFlags & ISPL_FASTESTATTACK)
+		/*if (is->_iPLFlags & ISPL_FASTESTATTACK)
 			copy_cstr(tempstr, "fastest attack");
 		else if (is->_iPLFlags & ISPL_FASTERATTACK)
 			copy_cstr(tempstr, "faster attack");
 		else if (is->_iPLFlags & ISPL_FASTATTACK)
 			copy_cstr(tempstr, "fast attack");
 		else // if (is->_iPLFlags & ISPL_QUICKATTACK)
-			copy_cstr(tempstr, "quick attack");
-		break;
+			copy_cstr(tempstr, "quick attack");*/
+	{
+		int v = (is->_iPLAtkSpdMod < 0 ? 12 : 24) * is->_iPLAtkSpdMod;
+		snprintf(tempstr, sizeof(tempstr), "%+d%% attack speed", v);
+	} break;
 	case IPL_FASTRECOVER:
 		if (is->_iPLFlags & ISPL_FASTESTRECOVER)
 			copy_cstr(tempstr, "fastest hit recovery");

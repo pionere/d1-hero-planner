@@ -150,7 +150,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
 	BOOL _iIdentified;
 	int _ivalue;
 	int _iIvalue;
-	int _iFlags;	// item_special_effect
+	int _iPLFlags; // item_special_effect
 	int _iCharges;
 	int _iMaxCharges;
 	int _iDurability;
@@ -158,6 +158,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
 	int _iPLDam;
 	int _iPLToHit;
 	int _iPLAC;
+	int _iPLToBlk;
 	int _iPLStr;
 	int _iPLMag;
 	int _iPLDex;
@@ -168,8 +169,10 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
 	int _iPLAR;
 	int _iPLMana;
 	int _iPLHP;
+	int _iPLAtkSpdMod;
 	int _iPLDamMod;
-	int _iPLGetHit;
+	int _iPLAbsAnyHit;
+	int _iPLAbsPhyHit;
 	int8_t _iPLLight;
 	int8_t _iPLSkillLevels;
 	BYTE _iPLSkill;
