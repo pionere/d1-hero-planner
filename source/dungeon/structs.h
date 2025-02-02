@@ -361,8 +361,10 @@ typedef struct PlayerStruct {
 	BYTE _pIRecoverySpeed;
 	BYTE _pIBaseCastSpeed;
 	BYTE _pAlign_B1;
-	int _pIGetHit;
-	BYTE _pIBaseAttackSpeed;
+	int _pIAbsAnyHit; // absorbed hit damage
+	int _pIAbsPhyHit; // absorbed physical hit damage
+	// int _pIAlign_64;
+	int8_t _pIBaseAttackSpeed;
 	int8_t _pIArrowVelBonus; // _pISplCost in vanilla code
 	BYTE _pILifeSteal;
 	BYTE _pIManaSteal;
