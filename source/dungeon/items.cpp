@@ -1104,7 +1104,7 @@ int GetItemSpell(int idx)
 	BYTE ss[NUM_SPELLS];
 
 	ns = 0;
-	for (bs = 0; bs < NUM_SPELLS; bs++) {
+	for (bs = 0; bs < (IsHellfireGame ? NUM_SPELLS : NUM_SPELLS_DIABLO); bs++) {
 		if (spelldata[bs].sManaCost != 0) { // TODO: use sSkillFlags ?
 			// assert(!IsMultiGame || bs != SPL_RESURRECT);
 			ss[ns] = bs;
