@@ -159,7 +159,7 @@ void ItemDetailsWidget::updateFields()
         // LogErrorF("updateFields 4 %d", pi->_iSeed);
         this->ui->itemSeedEdit->setText(QString::number(pi->_iSeed));
         // LogErrorF("updateFields 5 %d", pi->_iIdx);
-        this->ui->itemIdxEdit->setText(QString("%1 (%2)").arg(pi->_iIdx < NUM_IDI ? AllItemsList[pi->_iIdx].iName : "").arg(pi->_iIdx));
+        this->ui->itemIdxEdit->setText(QString("%1 (%2)").arg(pi->_iIdx < NUM_IDI ? AllItemList[pi->_iIdx].iName : "").arg(pi->_iIdx));
         // LogErrorF("updateFields 6 %d", pi->_iCreateInfo & CF_LEVEL);
         this->ui->itemLevelEdit->setText(QString::number(pi->_iCreateInfo & CF_LEVEL));
         // LogErrorF("updateFields 7 %d", (pi->_iCreateInfo & CF_TOWN) >> 8);

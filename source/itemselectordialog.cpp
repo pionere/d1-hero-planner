@@ -205,7 +205,7 @@ void ItemSelectorDialog::updateFilters()
     int itype = typeComboBox->currentData().value<int>();
     // QMessageBox::critical(this, "Error", tr("updateFilters filter idx by loc %1 type %2.").arg(iloc).arg(itype));
     for (int i = 0; i < NUM_IDI; ++i) {
-        const ItemData &id = AllItemsList[i];
+        const ItemData &id = AllItemList[i];
         //if (id.iClass != this->is->_iClass) {
         //    continue;
         //}
@@ -376,7 +376,7 @@ void ItemSelectorDialog::updateFields()
     // idxComboBox->setCurrentIndex(idxComboBox->findData(this->is->_iIdx));
 
     int idx = idxComboBox->currentData().value<int>();
-    bool drop = AllItemsList[idx].iRnd != 0;
+    bool drop = AllItemList[idx].iRnd != 0;
     if (idx != this->is->_iIdx) {
         this->is->_iIdx = idx;
         this->is->_itype = ITYPE_NONE;
@@ -404,7 +404,7 @@ void ItemSelectorDialog::updateFields()
     this->itemProps->setVisible(this->is->_itype != ITYPE_NONE);
 
     // update whish-lists
-    int flgs = GetItemBonusFlags(AllItemsList[idx].itype /* this->is->_itype*/, IMISC_NONE/* this->is->_iMiscId*/);
+    int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, IMISC_NONE/* this->is->_iMiscId*/);
     int source = (ci & CF_TOWN) >> 8;
     int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
     int lvl = ci & CF_LEVEL;
@@ -413,15 +413,15 @@ void ItemSelectorDialog::updateFields()
     Qt::CheckState cs;
 
     // add possible AC range
-    active = AllItemsList[idx].iMinAC != AllItemsList[idx].iMaxAC;
+    active = AllItemList[idx].iMinAC != AllItemList[idx].iMaxAC;
     cs = this->ui->itemACLimitedCheckBox->checkState();
     this->ui->itemACLimitedCheckBox->setEnabled(active);
     this->ui->itemACLimitedCheckBox->setToolTip(cs == Qt::Unchecked ? tr("unrestricted") : (cs == Qt::PartiallyChecked ? tr("lower limited to:") : tr("upper limited to:")));
     this->ui->itemACLimitSlider->setEnabled(cs != Qt::Unchecked && active);
     if (active) {
         int minval, maxval;
-        minval = AllItemsList[idx].iMinAC;
-        maxval = AllItemsList[idx].iMaxAC;
+        minval = AllItemList[idx].iMinAC;
+        maxval = AllItemList[idx].iMaxAC;
         this->ui->itemACLimitSlider->setMinimum(minval);
         this->ui->itemACLimitSlider->setMaximum(maxval);
         if (this->resetSlider & 4) {
@@ -439,7 +439,7 @@ void ItemSelectorDialog::updateFields()
     if ((ci & ~CF_LEVEL) != 0) {
         for (int i = 0; i < (this->hero->isHellfire() ? NUM_UITEM : NUM_UITEM_DIABLO); i++) {
             const UniqItemData &uid = UniqueItemList[i];
-            if (uid.UIUniqType == AllItemsList[idx].iUniqType && uid.UIMinLvl <= lvl) {
+            if (uid.UIUniqType == AllItemList[idx].iUniqType && uid.UIMinLvl <= lvl) {
                 uniqComboBox->addItem(uid.UIName, QVariant::fromValue(i));
             }
         }
@@ -466,7 +466,7 @@ void ItemSelectorDialog::updateFields()
         if ((ci & ~CF_LEVEL) != 0) {
             int alvl = lvl;
             if (flgs != PLT_MISC) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
-                alvl = alvl > AllItemsList[idx].iMinMLvl ? alvl - AllItemsList[idx].iMinMLvl : 0;
+                alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
             si = 0;
             for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
                 if ((flgs & pres->PLIType)
@@ -768,8 +768,8 @@ bool ItemSelectorDialog::recreateItem()
     int sufIdx = this->ui->itemSuffixComboBox->currentData().value<int>();
     int acLowest = 0, acHighest = INT_MAX;
     if (this->ui->itemACLimitSlider->isEnabled()) {
-        acLowest = AllItemsList[wIdx].iMinAC;
-        acHighest = AllItemsList[wIdx].iMaxAC;
+        acLowest = AllItemList[wIdx].iMinAC;
+        acHighest = AllItemList[wIdx].iMaxAC;
         int val = this->ui->itemACLimitSlider->value();
         if (this->ui->itemACLimitedCheckBox->checkState() == Qt::PartiallyChecked) {
             acLowest = val;
