@@ -407,7 +407,7 @@ static int InitBaseMonster(int type, int numplrs, int lvlBonus)
     } else if (gnDifficulty == DIFF_HELL) {
         lvlBonus += HELL_LEVEL_BONUS;
     }
-    currLvl._dLevelBonus = lvlBonus;
+    currLvl._dLevelBonus = lvlBonus >= 0 ? lvlBonus : 0;
     AddMonsterType(type, false);
     InitMonster(mnum, 0, mtidx, 0, 0);
     return mnum;
