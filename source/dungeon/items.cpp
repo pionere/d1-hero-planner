@@ -358,6 +358,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		}*/
 	}
 
+	ihp <<= 6;
+	imana <<= 6;
+
 	ihp += vadd << (6 + 1); // BUGFIX: blood boil can cause negative shifts here (see line 557)
 	imana += madd << (6 + 1);
 
@@ -1285,10 +1288,10 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		is->_iPLAbsPhyHit = -r;
 		break;
 	case IPL_LIFE:
-		is->_iPLHP = r << 6;
+		is->_iPLHP = r;
 		break;
 	case IPL_MANA:
-		is->_iPLMana = r << 6;
+		is->_iPLMana = r;
 		break;
 	case IPL_DUR:
 		r2 = r * is->_iMaxDur / 100;
@@ -1906,10 +1909,10 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		snprintf(tempstr, sizeof(tempstr), "%+d phys. damage taken", is->_iPLAbsPhyHit);
 		break;
 	case IPL_LIFE:
-		snprintf(tempstr, sizeof(tempstr), "hit points: %+d", is->_iPLHP >> 6);
+		snprintf(tempstr, sizeof(tempstr), "hit points: %+d", is->_iPLHP);
 		break;
 	case IPL_MANA:
-		snprintf(tempstr, sizeof(tempstr), "mana: %+d", is->_iPLMana >> 6);
+		snprintf(tempstr, sizeof(tempstr), "mana: %+d", is->_iPLMana);
 		break;
 	case IPL_DUR:
 	case IPL_DUR_CURSE:

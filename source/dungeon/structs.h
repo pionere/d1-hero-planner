@@ -177,7 +177,6 @@ typedef struct ItemStruct {
 	int _iPLDam;
 	int _iPLToHit;
 	int _iPLAC;
-	int _iPLToBlk;
 	int _iPLStr;
 	int _iPLMag;
 	int _iPLDex;
@@ -188,10 +187,11 @@ typedef struct ItemStruct {
 	int _iPLAR;
 	int _iPLMana;
 	int _iPLHP;
-	int _iPLAtkSpdMod;
+	BYTE _iPLToBlk;
+	int8_t _iPLAtkSpdMod;
+	BYTE _iPLAbsAnyHit;
+	int8_t _iPLAbsPhyHit;
 	int _iPLDamMod;
-	int _iPLAbsAnyHit;
-	int _iPLAbsPhyHit;
 	int8_t _iPLLight;
 	int8_t _iPLSkillLevels;
 	BYTE _iPLSkill;
