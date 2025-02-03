@@ -1207,6 +1207,9 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 	case IPL_ACP:
 		is->_iPLAC = r;
 		break;
+	case IPL_TOBLOCK:
+		is->_iPLToBlk = r;
+		break;
 	case IPL_FIRERES:
 		is->_iPLFR = r;
 		break;
