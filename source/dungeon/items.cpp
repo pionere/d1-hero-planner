@@ -2246,6 +2246,12 @@ bool SwapPlrItem(int pnum, int dst_ii, int src_ii)
     if (src_ii != INVITEM_NONE) {
         si = PlrItem(pnum, src_ii);
         // LogErrorF("SwapPlrItem swap 0 %d:%d", dst_ii, src_ii);
+        if (dst_ii == INVITEM_NONE) {
+            if (si->_itype == ITYPE_NONE)
+                return false;
+            si->_itype = ITYPE_NONE;
+            return true;
+        }
     } else {
         si = &items[MAXITEMS];
         si->_itype = ITYPE_NONE;

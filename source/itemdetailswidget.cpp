@@ -230,7 +230,7 @@ void ItemDetailsWidget::on_discardItemButton_clicked()
 
     int ii = itemsComboBox->currentData().value<int>();
 
-    this->hero->swapInvItem(ii, INVITEM_NONE);
+    this->hero->swapInvItem(INVITEM_NONE, ii);
 
     // updateComboBox ...
     this->initialize(this->hero, this->invIdx);
