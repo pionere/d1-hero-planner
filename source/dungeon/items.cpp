@@ -2197,6 +2197,10 @@ static void BubbleSwapItem(ItemStruct* a, ItemStruct* b)
 	copy_pod(*b, h);
 }
 
+/*
+ * dst_ii: the destination of the item (inv_item). INVITEM_NONE to discard the source item
+ * src_ii: the source of the item (inv_item). INVITEM_NONE to place the destination item somewhere in the inventory
+ */
 bool SwapPlrItem(int pnum, int dst_ii, int src_ii)
 {
     if (dst_ii == src_ii) {
@@ -2208,11 +2212,17 @@ bool SwapPlrItem(int pnum, int dst_ii, int src_ii)
     if (src_ii != INVITEM_NONE) {
         si = PlrItem(pnum, src_ii);
         // LogErrorF("SwapPlrItem swap 0 %d:%d", dst_ii, src_ii);
+        if (dst_ii == INVITEM_NONE) {
+            if (si->_itype == ITYPE_NONE)
+                return false;
+            si->_itype = ITYPE_NONE;
+            return true;
+        }
     } else {
         si = &items[MAXITEMS];
         si->_itype = ITYPE_NONE;
         // LogErrorF("SwapPlrItem swap 1 %d:%d", dst_ii, src_ii);
-        if (dst_ii < INVITEM_INV_FIRST) { // INVITEM_BODY_LAST
+        //if (dst_ii < INVITEM_INV_FIRST) { // INVITEM_BODY_LAST
             for (int ii = INVITEM_INV_FIRST; ii <= INVITEM_INV_LAST; ii++) {
                 ItemStruct *ci = PlrItem(pnum, ii);
                 if (ci->_itype == ITYPE_NONE) {
@@ -2221,7 +2231,7 @@ bool SwapPlrItem(int pnum, int dst_ii, int src_ii)
                     break;
                 }
             }
-        }
+        //}
     }
 
     ItemStruct* di = PlrItem(pnum, dst_ii);
