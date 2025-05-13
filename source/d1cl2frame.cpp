@@ -5,19 +5,28 @@
 
 #include "progressdialog.h"
 
-bool D1Cl2Frame::load(D1GfxFrame &frame, const QByteArray rawData, const OpenAsParam &params)
+int D1Cl2Frame::load(D1GfxFrame &frame, const QByteArray rawData, const OpenAsParam &params)
 {
     unsigned width = 0;
+    bool clipped = false;
     frame.width = width;
+    clipped = true;
 
     // check if a positive width was found
     if (frame.width == 0)
-        return rawData.size() == 0;
+        return rawData.size() == 0 ? (clipped ? 1 : 0) : -1;
 
     // READ {CL2 FRAME DATA}
     int frameDataStartOffset = 0;
-    if (frame.clipped && rawData.size() >= SUB_HEADER_SIZE)
-        frameDataStartOffset = SwapLE16(*(const quint16 *)rawData.constData());
+    if (clipped) {
+        if (rawData.size() != 0) {
+            if (rawData.size() == 1)
+                return -2;
+            frameDataStartOffset = SwapLE16(*(const quint16 *)rawData.constData());
+            if (frameDataStartOffset > rawData.size())
+                return -2;
+        }
+    }
 
     std::vector<std::vector<D1GfxPixel>> pixels;
     std::vector<D1GfxPixel> pixelLine;
@@ -67,10 +76,13 @@ bool D1Cl2Frame::load(D1GfxFrame &frame, const QByteArray rawData, const OpenAsP
             }
         }
     }
+    if (!pixelLine.empty()) {
+        return -2;
+    }
+
     for (auto it = pixels.rbegin(); it != pixels.rend(); ++it) {
         frame.pixels.push_back(std::move(*it));
     }
     frame.height = frame.pixels.size();
-
-    return true;
+    return clipped ? 1 : 0;
 }

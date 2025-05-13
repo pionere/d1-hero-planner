@@ -79,7 +79,6 @@ public:
     D1GfxPixel getPixel(int x, int y) const;
     std::vector<std::vector<D1GfxPixel>> &getPixels() const;
     bool setPixel(int x, int y, const D1GfxPixel pixel);
-    bool isClipped() const;
     D1CEL_FRAME_TYPE getFrameType() const;
     void setFrameType(D1CEL_FRAME_TYPE type);
     bool addTo(const D1GfxFrame &frame);
@@ -94,8 +93,6 @@ protected:
     int width = 0;
     int height = 0;
     std::vector<std::vector<D1GfxPixel>> pixels;
-    // fields of cel/cl2-frames
-    bool clipped = false;
     // fields of tileset-frames
     D1CEL_FRAME_TYPE frameType = D1CEL_FRAME_TYPE::TransparentSquare;
     // fields of smk-frames
@@ -163,6 +160,8 @@ public:
 
     D1CEL_TYPE getType() const;
     void setType(D1CEL_TYPE type);
+    bool isClipped() const;
+    bool setClipped(bool clipped);
     bool isUpscaled() const;
     void setUpscaled(bool upscaled);
     unsigned getFrameLen() const;
@@ -182,9 +181,6 @@ public:
     int getFrameHeight(int frameIndex) const;
     bool setFrameType(int frameIndex, D1CEL_FRAME_TYPE frameType);
 
-private:
-    bool isClipped(int frameIndex) const;
-
 protected:
     D1CEL_TYPE type = D1CEL_TYPE::V1_REGULAR;
     QString gfxFilePath;
@@ -192,6 +188,8 @@ protected:
     D1Pal *palette = nullptr;
     std::vector<std::pair<int, int>> groupFrameIndices;
     QList<D1GfxFrame *> frames;
+    // fields of cel/cl2-frames
+    bool clipped = false;
     // fields of tilesets
     bool upscaled = false;
     // fields of smk
