@@ -27,7 +27,6 @@ unsigned CalcPlrDam(int pnum, BYTE mRes, unsigned damage);
 int GetBaseMissile(int mtype);
 BYTE GetMissileElement(int mtype);
 const char *GetElementColor(BYTE mRes);
-int GetArrowVelocity(int misource);
 
 inline int CheckHit(int hitper)
 {

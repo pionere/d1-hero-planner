@@ -162,16 +162,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="misBaseNoBlockCheckBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>can not be blocked</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QCheckBox" name="misBaseDotCheckBox">
              <property name="enabled">
               <bool>false</bool>
@@ -198,6 +188,16 @@
              </property>
              <property name="toolTip">
               <string>Interacts with Shroud</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="misBaseGuidedCheckBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>guided missile</string>
              </property>
             </widget>
            </item>
@@ -233,16 +233,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="misNoBlockCheckBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>can not be blocked</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QCheckBox" name="misDotCheckBox">
              <property name="enabled">
               <bool>false</bool>
@@ -269,6 +259,16 @@
              </property>
              <property name="toolTip">
               <string>Interacts with Shroud</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="misGuidedCheckBox">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>guided missile</string>
              </property>
             </widget>
            </item>

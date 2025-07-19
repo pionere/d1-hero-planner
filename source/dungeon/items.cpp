@@ -85,50 +85,6 @@ inline static BYTE BaseCastSpeed(unsigned flags)
 	return res;
 }
 
-/*
- * Calculate the base attack speed from attack-speed modifiers.
- *  ISPL_QUICKATTACK:   +1
- *  ISPL_FASTATTACK:    +2
- *  ISPL_FASTERATTACK:  +3
- *  ISPL_FASTESTATTACK: +4
- */
-inline static BYTE BaseAttackSpeed(unsigned flags)
-{
-	BYTE res = 0;
-
-	if (flags & ISPL_FASTESTATTACK) {
-		res = 4;
-	} else if (flags & ISPL_FASTERATTACK) {
-		res = 3;
-	} else if (flags & ISPL_FASTATTACK) {
-		res = 2;
-	} else if (flags & ISPL_QUICKATTACK) {
-		res = 1;
-	}
-
-	return res;
-}
-
-/*
- * Calculate the arrow-velocity bonus gained from attack-speed modifiers.
- *  ISPL_QUICKATTACK:   +1
- *  ISPL_FASTATTACK:    +2
- *  ISPL_FASTERATTACK:  +4
- *  ISPL_FASTESTATTACK: +8
- */
-inline static int ArrowVelBonus(unsigned flags)
-{
-	flags &= (ISPL_QUICKATTACK | ISPL_FASTATTACK | ISPL_FASTERATTACK | ISPL_FASTESTATTACK);
-	//if (flags != 0) {
-		static_assert((ISPL_QUICKATTACK & (ISPL_QUICKATTACK - 1)) == 0, "Optimized ArrowVelBonus depends simple flag-like attack-speed modifiers.");
-		static_assert(ISPL_QUICKATTACK == ISPL_FASTATTACK / 2, "ArrowVelBonus depends on ordered attack-speed modifiers I.");
-		static_assert(ISPL_FASTATTACK == ISPL_FASTERATTACK / 2, "ArrowVelBonus depends on ordered attack-speed modifiers II.");
-		static_assert(ISPL_FASTERATTACK == ISPL_FASTESTATTACK / 2, "ArrowVelBonus depends on ordered attack-speed modifiers III.");
-		flags /= ISPL_QUICKATTACK;
-	//}
-	return flags;
-}
-
 static void ValidateActionSkills(int pnum, BYTE type, uint64_t mask)
 {
 	PlayerStruct* p;
@@ -165,15 +121,16 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	BYTE gfx;       // graphics
 	int wt;         // weapon-type
 	bool bf;        // blockflag
-	int av;         // arrow velocity bonus
 	unsigned pdmod; // player damage mod
 
 	int i;
 
 	BOOL idi = TRUE; // items are identified
 
+	int asb = 0;    // bonus to attack speed
 	int tac = 0;    // armor class
 	int btohit = 0; // bonus chance to hit
+	int btoblk = 0; // bonus chance to block
 
 	int iflgs = ISPL_NONE; // item_special_effect flags
 
@@ -181,8 +138,6 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	int madd = 0; // added magic
 	int dadd = 0; // added dexterity
 	int vadd = 0; // added vitality
-
-	uint64_t spl = 0; // bitarray for all enabled/active spells
 
 	int br = gnDifficulty * -10;
 	int fr = br; // fire resistance
@@ -192,7 +147,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	// temporary values to calculate armor class/damage of the current item
 	int cac, cdmod, cdmodp, mindam, maxdam;
-	int ghit = 0; // increased damage from enemies
+	int absAnyHit = 0; // absorbed hit-damage
+	int absPhyHit = 0; // absorbed physical hit damage
 	BYTE manasteal = 0;
 	BYTE lifesteal = 0;
 
@@ -228,9 +184,6 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	pi = plr._pInvBody;
 	for (i = NUM_INVLOC; i != 0; i--, pi++) {
 		if (pi->_itype != ITYPE_NONE && pi->_iStatFlag) {
-			if (pi->_iSpell != SPL_NULL) {
-				spl |= SPELL_MASK(pi->_iSpell);
-			}
 			cac = pi->_iAC;
 			cdmod = 0;
 			cdmodp = 0;
@@ -238,6 +191,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			if (pi->_iMagical != ITEM_QUALITY_NORMAL) {
 				idi &= pi->_iIdentified;
 				btohit += pi->_iPLToHit;
+				btoblk += pi->_iPLToBlk;
 				iflgs |= pi->_iPLFlags;
 
 				sadd += pi->_iPLStr;
@@ -248,7 +202,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 				lr += pi->_iPLLR;
 				mr += pi->_iPLMR;
 				ar += pi->_iPLAR;
-				ghit += pi->_iPLGetHit;
+				asb += pi->_iPLAtkSpdMod;
+				absAnyHit += pi->_iPLAbsAnyHit;
+				absPhyHit += pi->_iPLAbsPhyHit;
 				lrad += pi->_iPLLight;
 				ihp += pi->_iPLHP;
 				imana += pi->_iPLMana;
@@ -311,48 +267,26 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		}
 	}
 
-	if (plr._pTimer[PLTR_RAGE] > 0) {
-		sadd += 2 * plr._pLevel;
-		dadd += plr._pLevel;
-		vadd += 2 * plr._pLevel;
-	}
-	plr._pStrength = std::max(0, sadd + plr._pBaseStr);
-	plr._pMagic = std::max(0, madd + plr._pBaseMag);
-	plr._pDexterity = std::max(0, dadd + plr._pBaseDex);
-	plr._pVitality = std::max(0, vadd + plr._pBaseVit);
-
-	plr._pIFlags = iflgs;
-	plr._pInfraFlag = /*(iflgs & ISPL_INFRAVISION) != 0 ||*/ plr._pTimer[PLTR_INFRAVISION] > 0;
 	plr._pHasUnidItem = !idi;
-	plr._pIGetHit = ghit << 6;
+	plr._pIAbsAnyHit = absAnyHit << 6;
+	plr._pIAbsPhyHit = absPhyHit << 6;
 	plr._pILifeSteal = lifesteal;
 	plr._pIManaSteal = manasteal;
 
-	pdmod = (1 << 9) + (32 * plr._pMagic);
-	plr._pIFMinDam = fmin * pdmod >> (-6 + 9);
-	plr._pIFMaxDam = fmax * pdmod >> (-6 + 9);
-	plr._pILMinDam = lmin * pdmod >> (-6 + 9);
-	plr._pILMaxDam = lmax * pdmod >> (-6 + 9);
-	plr._pIMMinDam = mmin * pdmod >> (-6 + 9);
-	plr._pIMMaxDam = mmax * pdmod >> (-6 + 9);
-	plr._pIAMinDam = amin * pdmod >> (-6 + 9);
-	plr._pIAMaxDam = amax * pdmod >> (-6 + 9);
-
-	plr._pISpells = spl;
-	if (pnum == mypnum)
-		ValidateActionSkills(pnum, RSPLTYPE_CHARGES, spl);
-
-	lrad = std::max(2, std::min(MAX_LIGHT_RAD, lrad));
-	if (plr._pLightRad != lrad) {
-		plr._pLightRad = lrad;
-		/*if (Loadgfx) {
-			ChangeLightRadius(plr._plid, lrad);
-			ChangeVisionRadius(plr._pvid, std::max(PLR_MIN_VISRAD, lrad));
-		}*/
-	}
-
 	ihp += vadd << (6 + 1); // BUGFIX: blood boil can cause negative shifts here (see line 557)
 	imana += madd << (6 + 1);
+
+	plr._pIFlags = iflgs;
+	// plr._pInfraFlag = (iflgs & ISPL_INFRAVISION) != 0 || plr._pTimer[PLTR_INFRAVISION] > 0;
+
+	// calculate walk speed
+	plr._pIWalkSpeed = WalkSpeed(iflgs);
+
+	// calculate (hit-)recovery speed
+	plr._pIRecoverySpeed = RecoverySpeed(iflgs);
+
+	// calculate base cast speed
+	plr._pIBaseCastSpeed = BaseCastSpeed(iflgs);
 
 	if (iflgs & ISPL_LIFETOMANA) {
 		ihp -= plr._pMaxHPBase >> 1;
@@ -394,6 +328,30 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	plr._pMana = imana + plr._pManaBase;
 	plr._pMaxMana = imana + plr._pMaxManaBase;
+
+	sadd += plr._pBaseStr;
+	madd += plr._pBaseMag;
+	dadd += plr._pBaseDex;
+	vadd += plr._pBaseVit;
+	plr._pStrength = std::max(0, sadd);
+	plr._pMagic = std::max(0, madd);
+	plr._pDexterity = std::max(0, dadd);
+	plr._pVitality = std::max(0, vadd);
+	if (plr._pTimer[PLTR_RAGE] > 0) {
+		sadd += 2 * plr._pLevel;
+		dadd += plr._pLevel;
+		vadd += 2 * plr._pLevel;
+	}
+
+	pdmod = (1 << 9) + (32 * plr._pMagic);
+	plr._pIFMinDam = fmin * pdmod >> (-6 + 9);
+	plr._pIFMaxDam = fmax * pdmod >> (-6 + 9);
+	plr._pILMinDam = lmin * pdmod >> (-6 + 9);
+	plr._pILMaxDam = lmax * pdmod >> (-6 + 9);
+	plr._pIMMinDam = mmin * pdmod >> (-6 + 9);
+	plr._pIMMaxDam = mmax * pdmod >> (-6 + 9);
+	plr._pIAMinDam = amin * pdmod >> (-6 + 9);
+	plr._pIAMaxDam = amax * pdmod >> (-6 + 9);
 
 	wLeft = &plr._pInvBody[INVLOC_HAND_LEFT];
 	wRight = &plr._pInvBody[INVLOC_HAND_RIGHT];
@@ -440,7 +398,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	maxdam = plr._pMaxHP >> (2 + 1 - 1); // ~1/4 hp - halved by resists, doubled by MissToPlr
 	if (wRight->_itype == ITYPE_SHIELD && wRight->_iStatFlag
 	 && (gfx == ANIM_ID_UNARMED || gfx == ANIM_ID_SWORD || gfx == ANIM_ID_MACE)) {
-		tac += ((plr._pDexterity - (1 << 7)) * wRight->_iAC) >> 7;
+		tac += ((dadd - (1 << 7)) * wRight->_iAC) >> 7;
 		bf = true;
 		static_assert((int)ANIM_ID_UNARMED + 1 == (int)ANIM_ID_UNARMED_SHIELD, "CalcPlrItemVals uses inc to set gfx with shield I.");
 		static_assert((int)ANIM_ID_SWORD + 1 == (int)ANIM_ID_SWORD_SHIELD, "CalcPlrItemVals uses inc to set gfx with shield II.");
@@ -474,14 +432,14 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	// calculate bonuses
 	cc = cc * (btochit + 100) / 50;
 	plr._pIBaseHitBonus = btohit == 0 ? IBONUS_NONE : (btohit >= 0 ? IBONUS_POSITIVE : IBONUS_NEGATIVE);
-	plr._pIEvasion = plr._pDexterity / 5 + 2 * plr._pLevel;
+	plr._pIEvasion = dadd / 5 + 2 * plr._pLevel;
 	plr._pIAC = tac + plr._pIEvasion;
 	btohit += 50; // + plr._pLevel;
 	if (wt == SFLAG_MELEE) {
-		btohit += 20 + (plr._pDexterity >> 1);
+		btohit += 20 + (dadd >> 1);
 	} else {
 		// assert(wt == SFLAG_RANGED);
-		btohit += plr._pDexterity;
+		btohit += dadd;
 	}
 	plr._pIHitChance = btohit;
 
@@ -496,23 +454,23 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	// calculate the damages for each type
 	if (maxsl != 0) {
-		pdmod = 512 + plr._pStrength * 6 + plr._pDexterity * 2;
+		pdmod = 512 + sadd * 6 + dadd * 2;
 		minsl = minsl * pdmod / (100 * 512 / 64);
 		maxsl = maxsl * pdmod / (100 * 512 / 64);
 	}
 	if (maxbl != 0) {
 		if (wLeft->_itype == ITYPE_STAFF)
-			pdmod = 512 + plr._pStrength * 4 + plr._pDexterity * 4;
+			pdmod = 512 + sadd * 4 + dadd * 4;
 		else
-			pdmod = 512 + plr._pStrength * 6 + plr._pVitality * 2;
+			pdmod = 512 + sadd * 6 + vadd * 2;
 		minbl = minbl * pdmod / (100 * 512 / 64);
 		maxbl = maxbl * pdmod / (100 * 512 / 64);
 	}
 	if (maxpc != 0) {
 		if (wLeft->_itype == ITYPE_BOW)
-			pdmod = 512 + plr._pDexterity * 8;
+			pdmod = 512 + dadd * 8;
 		else // dagger
-			pdmod = 512 + plr._pStrength * 2 + plr._pDexterity * 6;
+			pdmod = 512 + sadd * 2 + dadd * 6;
 		minpc = minpc * pdmod / (100 * 512 / 64);
 		maxpc = maxpc * pdmod / (100 * 512 / 64);
 	}
@@ -531,6 +489,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			maxpc = maxpc * 5 / 8;
 		//}
 		cc >>= 1;
+		asb >>= 1;
 	}
 	plr._pISlMinDam = minsl;
 	plr._pISlMaxDam = maxsl;
@@ -539,37 +498,10 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pIPcMinDam = minpc;
 	plr._pIPcMaxDam = maxpc;
 	plr._pICritChance = cc;
+	plr._pIBaseAttackSpeed = asb;
 
 	// calculate block chance
-	plr._pIBlockChance = (plr._pSkillFlags & SFLAG_BLOCK) ? std::min(plr._pStrength, plr._pDexterity) : 0;
-
-	// calculate walk speed
-	plr._pIWalkSpeed = WalkSpeed(plr._pIFlags);
-
-	// calculate (hit-)recovery speed
-	plr._pIRecoverySpeed = RecoverySpeed(plr._pIFlags);
-
-	// calculate base attack speed
-	plr._pIBaseAttackSpeed = BaseAttackSpeed(plr._pIFlags);
-
-	// calculate base cast speed
-	plr._pIBaseCastSpeed = BaseCastSpeed(plr._pIFlags);
-
-	// calculate arrow velocity bonus
-	av = ArrowVelBonus(plr._pIFlags);
-	/*  No other velocity bonus for the moment, otherwise POINT_BLANK and FAR_SHOT do not work well...
-#ifdef HELLFIRE
-	if (plr._pClass == PC_ROGUE)
-		av += (plr._pLevel - 1) >> 2;
-	else if (plr._pClass == PC_WARRIOR || plr._pClass == PC_BARD)
-		av += (plr._pLevel - 1) >> 3;
-#else
-	if (plr._pClass == PC_ROGUE)
-		av += (plr._pLevel - 1) >> 2;
-	else if (plr._pClass == PC_WARRIOR)
-		av += (plr._pLevel - 1) >> 3;
-#endif*/
-	plr._pIArrowVelBonus = av;
+	plr._pIBlockChance = (plr._pSkillFlags & SFLAG_BLOCK) ? btoblk + std::min(sadd, dadd) : 0;
 
 	static_assert(SPL_NULL == 0, "CalcPlrItemVals expects SPL_NULL == 0.");
 	for (i = 1; i < NUM_SPELLS; i++) {
@@ -581,6 +513,17 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		//}
 		plr._pSkillLvl[i] = skillLvl;
 	}
+
+	lrad = std::max(2, std::min(MAX_LIGHT_RAD, lrad));
+	if (plr._pLightRad != lrad) {
+		plr._pLightRad = lrad;
+		/*if (Loadgfx) {
+			ChangeLightRadius(plr._plid, lrad);
+			ChangeVisionRadius(plr._pvid, std::max(PLR_MIN_VISRAD, lrad));
+		}*/
+	}
+
+	CalcPlrCharges(pnum);
 #if 0
 	if (plr._pmode == PM_DEATH || plr._pmode == PM_DYING) {
 		PlrSetHp(pnum, 0);
@@ -598,7 +541,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	}
 
 	if (pnum == mypnum)
-		gbRedrawFlags = REDRAW_ALL; // gbRedrawFlags |= REDRAW_HP_FLASK | REDRAW_MANA_FLASK;
+		gbRedrawFlags = REDRAW_RECALC_FLASKS; // gbRedrawFlags |= REDRAW_RECALC_FLASKS | REDRAW_SPELL_ICON;
 #else
     plr._pgfxnum = gfx;
 #endif
@@ -652,7 +595,7 @@ void CalcPlrCharges(int pnum)
 
 	pi = plr._pInvBody;
 	for (i = NUM_INVLOC; i > 0; i--, pi++) {
-		if (pi->_itype != ITYPE_NONE && pi->_iCharges > 0 && pi->_iStatFlag)
+		if (pi->_itype != ITYPE_NONE/* && pi->_iCharges > 0 && pi->_iSpell != NULL*/ && pi->_iStatFlag)
 			mask |= SPELL_MASK(pi->_iSpell);
 	}
 	plr._pISpells = mask;
@@ -746,10 +689,13 @@ void CalcPlrInv(int pnum, bool Loadgfx)
 
 void SetItemData(int ii, int idata)
 {
-	ItemStruct* is;
+	SetItemSData(&items[ii], idata);
+}
+
+void SetItemSData(ItemStruct* is, int idata)
+{
 	const ItemData* ids;
 
-	is = &items[ii];
 	// zero-initialize struct
 	memset(is, 0, sizeof(*is));
 
@@ -789,12 +735,6 @@ void SetItemData(int ii, int idata)
 	//is->_iMagical = ITEM_QUALITY_NORMAL;
 	static_assert(SPL_NULL == 0, "Zero-fill expects SPL_NULL == 0.");
 	//is->_iPLSkill = SPL_NULL;
-}
-
-void SetItemSData(ItemStruct* is, int idata)
-{
-	SetItemData(MAXITEMS, idata);
-	copy_pod(*is, items[MAXITEMS]);
 }
 
 /**
@@ -1160,15 +1100,17 @@ static int PLVal(const AffixData* affix, int pv)
 	if (dp != 0) {
 		dv = maxv - minv;
 		if (dv != 0)
-			rv += dv * (100 * (pv - p1) / dp) / 100;
+			rv += dv * (pv - p1) / dp;
 	}
 	return rv;
 }
 
 static int SaveItemPower(int ii, int power, int param1, int param2)
 {
-	ItemStruct* is = &items[ii];
-	int r2;	
+	ItemStruct* is;
+	int r2;
+
+	is = &items[ii];
 	const int r = param1 == param2 ? param1 : RandRangeLow(param1, param2);
 	switch (power) {
 	case IPL_TOHIT:
@@ -1184,6 +1126,9 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		break;
 	case IPL_ACP:
 		is->_iPLAC = r;
+		break;
+	case IPL_TOBLOCK:
+		is->_iPLToBlk = r;
 		break;
 	case IPL_FIRERES:
 		is->_iPLFR = r;
@@ -1216,6 +1161,7 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		break;
 	case IPL_SKILLLVL:
 		is->_iPLSkillLvl = r;
+		static_assert(NUM_SPELLS < UINT8_MAX, "Skill-index can not be stored in a BYTE field.");
 		is->_iPLSkill = GetItemSpell();
 		break;
 	case IPL_SKILLLEVELS:
@@ -1259,8 +1205,11 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		is->_iPLDex = r;
 		is->_iPLVit = r;
 		break;
-	case IPL_GETHIT:
-		is->_iPLGetHit = -r;
+	case IPL_ABS_ANYHIT:
+		is->_iPLAbsAnyHit = r;
+		break;
+	case IPL_ABS_PHYHIT:
+		is->_iPLAbsPhyHit = r;
 		break;
 	case IPL_LIFE:
 		is->_iPLHP = r << 6;
@@ -1271,12 +1220,6 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 	case IPL_DUR:
 		r2 = r * is->_iMaxDur / 100;
 		is->_iDurability = is->_iMaxDur = is->_iMaxDur + r2;
-		break;
-	case IPL_CRYSTALLINE:
-		is->_iPLDam = r * 2;
-		// no break
-	case IPL_DUR_CURSE:
-		is->_iDurability = is->_iMaxDur = r < 100 ? (is->_iMaxDur - r * is->_iMaxDur / 100) : 1;
 		break;
 	case IPL_INDESTRUCTIBLE:
 		is->_iDurability = is->_iMaxDur = DUR_INDESTRUCTIBLE;
@@ -1318,12 +1261,7 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		is->_iPLFlags |= ISPL_PENETRATE_PHYS;
 		break;
 	case IPL_FASTATTACK:
-		static_assert((ISPL_QUICKATTACK & (ISPL_QUICKATTACK - 1)) == 0, "Optimized SaveItemPower depends simple flag-like attack-speed modifiers.");
-		static_assert(ISPL_QUICKATTACK == ISPL_FASTATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers I.");
-		static_assert(ISPL_FASTATTACK == ISPL_FASTERATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers II.");
-		static_assert(ISPL_FASTERATTACK == ISPL_FASTESTATTACK / 2, "SaveItemPower depends on ordered attack-speed modifiers III.");
-		// assert((unsigned)(r - 1) < 4);
-			is->_iPLFlags |= ISPL_QUICKATTACK << (r - 1);
+		is->_iPLAtkSpdMod = r;
 		break;
 	case IPL_FASTRECOVER:
 		static_assert((ISPL_FASTRECOVER & (ISPL_FASTRECOVER - 1)) == 0, "Optimized SaveItemPower depends simple flag-like hit-recovery modifiers.");
@@ -1371,6 +1309,10 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 		break;
 	case IPL_ACMOD:
 		is->_iAC += r;
+		break;
+	case IPL_CRYSTALLINE:
+		is->_iPLDam = r * 2;
+		is->_iDurability = is->_iMaxDur = r < 100 ? (is->_iMaxDur - r * is->_iMaxDur / 100) : 1;
 		break;
 	case IPL_MANATOLIFE:
 		is->_iPLFlags |= ISPL_MANATOLIFE;
@@ -1513,16 +1455,16 @@ static void GetItemBonus(int ii, unsigned lvl, BYTE range, bool onlygood, bool a
 		flgs = PLT_SHLD;
 		break;
 	case ITYPE_LARMOR:
-		flgs = PLT_ARMO | PLT_LARMOR;
+		flgs = PLT_LARMOR;
 		break;
 	case ITYPE_HELM:
-		flgs = PLT_ARMO;
+		flgs = PLT_HELM;
 		break;
 	case ITYPE_MARMOR:
-		flgs = PLT_ARMO | PLT_MARMOR;
+		flgs = PLT_MARMOR;
 		break;
 	case ITYPE_HARMOR:
-		flgs = PLT_ARMO | PLT_HARMOR;
+		flgs = PLT_HARMOR;
 		break;
 	case ITYPE_STAFF:
 		flgs = PLT_STAFF;
@@ -1792,6 +1734,9 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 	case IPL_ACP:
 		snprintf(tempstr, sizeof(tempstr), "%+d%% armor", is->_iPLAC);
 		break;
+	case IPL_TOBLOCK:
+		snprintf(tempstr, sizeof(tempstr), "%+d%% block chance", is->_iPLToBlk);
+		break;
 	case IPL_FIRERES:
 		//if (is->_iPLFR < 75)
 			snprintf(tempstr, sizeof(tempstr), "resist fire: %+d%%", is->_iPLFR);
@@ -1835,29 +1780,24 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		copy_cstr(tempstr, "extra charges");
 		break;
 	case IPL_FIREDAM:
-		if (is->_iPLFMinDam != is->_iPLFMaxDam)
-			snprintf(tempstr, sizeof(tempstr), "fire damage: %d-%d", is->_iPLFMinDam, is->_iPLFMaxDam);
-		else
-			snprintf(tempstr, sizeof(tempstr), "fire damage: %d", is->_iPLFMinDam);
-		break;
 	case IPL_LIGHTDAM:
-		if (is->_iPLLMinDam != is->_iPLLMaxDam)
-			snprintf(tempstr, sizeof(tempstr), "lightning damage: %d-%d", is->_iPLLMinDam, is->_iPLLMaxDam);
-		else
-			snprintf(tempstr, sizeof(tempstr), "lightning damage: %d", is->_iPLLMinDam);
-		break;
 	case IPL_MAGICDAM:
-		if (is->_iPLMMinDam != is->_iPLMMaxDam)
-			snprintf(tempstr, sizeof(tempstr), "magic damage: %d-%d", is->_iPLMMinDam, is->_iPLMMaxDam);
-		else
-			snprintf(tempstr, sizeof(tempstr), "magic damage: %d", is->_iPLMMinDam);
-		break;
 	case IPL_ACIDDAM:
-		if (is->_iPLAMinDam != is->_iPLAMaxDam)
-			snprintf(tempstr, sizeof(tempstr), "acid damage: %d-%d", is->_iPLAMinDam, is->_iPLAMaxDam);
+	{
+		const char* element;
+		BYTE mindam, maxdam;
+		switch (plidx) {
+		case IPL_FIREDAM:  element = "fire";      mindam = is->_iPLFMinDam; maxdam = is->_iPLFMaxDam; break;
+		case IPL_LIGHTDAM: element = "lightning"; mindam = is->_iPLLMinDam; maxdam = is->_iPLLMaxDam; break;
+		case IPL_MAGICDAM: element = "magic";     mindam = is->_iPLMMinDam; maxdam = is->_iPLMMaxDam; break;
+		case IPL_ACIDDAM:  element = "acid";      mindam = is->_iPLAMinDam; maxdam = is->_iPLAMaxDam; break;
+		default: ASSUME_UNREACHABLE;                                                                  break;
+		}
+		if (mindam != maxdam)
+			snprintf(tempstr, sizeof(tempstr), "%s damage: %d-%d", element, mindam, maxdam);
 		else
-			snprintf(tempstr, sizeof(tempstr), "acid damage: %d", is->_iPLAMinDam);
-		break;
+			snprintf(tempstr, sizeof(tempstr), "%s damage: %d", element, mindam);
+	} break;
 	case IPL_STR:
 		snprintf(tempstr, sizeof(tempstr), "%+d to strength", is->_iPLStr);
 		break;
@@ -1873,8 +1813,11 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 	case IPL_ATTRIBS:
 		snprintf(tempstr, sizeof(tempstr), "%+d to all attributes", is->_iPLStr);
 		break;
-	case IPL_GETHIT:
-		snprintf(tempstr, sizeof(tempstr), "%+d damage from enemies", is->_iPLGetHit);
+	case IPL_ABS_ANYHIT:
+		snprintf(tempstr, sizeof(tempstr), "%+d damage taken", -is->_iPLAbsAnyHit);
+		break;
+	case IPL_ABS_PHYHIT:
+		snprintf(tempstr, sizeof(tempstr), "%+d phys. damage taken", -is->_iPLAbsPhyHit);
 		break;
 	case IPL_LIFE:
 		snprintf(tempstr, sizeof(tempstr), "hit points: %+d", is->_iPLHP >> 6);
@@ -1883,7 +1826,6 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		snprintf(tempstr, sizeof(tempstr), "mana: %+d", is->_iPLMana >> 6);
 		break;
 	case IPL_DUR:
-	case IPL_DUR_CURSE:
 	case IPL_SETDUR:
 		copy_cstr(tempstr, "altered durability");
 		break;
@@ -1927,15 +1869,10 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		copy_cstr(tempstr, "penetrates target's armor");
 		break;
 	case IPL_FASTATTACK:
-		if (is->_iPLFlags & ISPL_FASTESTATTACK)
-			copy_cstr(tempstr, "fastest attack");
-		else if (is->_iPLFlags & ISPL_FASTERATTACK)
-			copy_cstr(tempstr, "faster attack");
-		else if (is->_iPLFlags & ISPL_FASTATTACK)
-			copy_cstr(tempstr, "fast attack");
-		else // if (is->_iPLFlags & ISPL_QUICKATTACK)
-			copy_cstr(tempstr, "quick attack");
-		break;
+	{
+		int v = (is->_iPLAtkSpdMod < 0 ? 12 : 24) * is->_iPLAtkSpdMod;
+		snprintf(tempstr, sizeof(tempstr), "%+d%% attack speed", v);
+	} break;
 	case IPL_FASTRECOVER:
 		if (is->_iPLFlags & ISPL_FASTESTRECOVER)
 			copy_cstr(tempstr, "fastest hit recovery");
@@ -1976,7 +1913,7 @@ static void PrintEquipmentPower(BYTE plidx, const ItemStruct* is)
 		snprintf(tempstr, sizeof(tempstr), "armor class: %d", is->_iAC);
 		break;
 	case IPL_CRYSTALLINE:
-		snprintf(tempstr, sizeof(tempstr), "low dur, %+d%% damage", is->_iPLDam);
+		snprintf(tempstr, sizeof(tempstr), "alt. dur, %+d%% damage", is->_iPLDam);
 		break;
 	case IPL_MANATOLIFE:
 		copy_cstr(tempstr, "50% Mana moved to Health");

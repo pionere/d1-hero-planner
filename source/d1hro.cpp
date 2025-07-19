@@ -1181,9 +1181,14 @@ int D1Hero::getBlockChance() const
     return players[this->pnum]._pIBlockChance;
 }
 
-int D1Hero::getGetHit() const
+int D1Hero::getAbsAnyHit() const
 {
-    return players[this->pnum]._pIGetHit >> 6;
+    return players[this->pnum]._pIAbsAnyHit >> 6;
+}
+
+int D1Hero::getAbsPhyHit() const
+{
+    return players[this->pnum]._pIAbsPhyHit >> 6;
 }
 
 int D1Hero::getLifeSteal() const
@@ -1194,16 +1199,6 @@ int D1Hero::getLifeSteal() const
 int D1Hero::getManaSteal() const
 {
     return players[this->pnum]._pIManaSteal;
-}
-
-int D1Hero::getArrowVelBonus() const
-{
-    return players[this->pnum]._pIArrowVelBonus;
-}
-
-int D1Hero::getArrowVelocity() const
-{
-    return GetArrowVelocity(this->pnum);
 }
 
 int D1Hero::getHitChance() const

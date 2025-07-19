@@ -319,8 +319,8 @@ static MonsterDamage GetMonsterDamage(const MonsterStruct *mon, int dist, const 
         // result.resHth = MISR_NONE;
         int mindam = mon->_mMinDamage;
         int maxdam = mon->_mMaxDamage;
-        mindam += hero->getGetHit();
-        maxdam += hero->getGetHit();
+        mindam += hero->getAbsAnyHit() + hero->getAbsPhyHit();
+        maxdam += hero->getAbsAnyHit() + hero->getAbsPhyHit();
         if (mindam < 1)
             mindam = 1;
         if (maxdam < 1)
@@ -332,15 +332,15 @@ static MonsterDamage GetMonsterDamage(const MonsterStruct *mon, int dist, const 
     if (flash) {
         result.hth = true;
         result.resHth = GetMissileElement(MIS_FLASH);
-        result.blockHth = !(missiledata[MIS_FLASH].mdFlags & MIF_NOBLOCK);
+        result.blockHth = !(missiledata[MIS_FLASH].mdFlags & MIF_AREA);
         int mindam, maxdam;
         GetMissileDamage(MIS_FLASH, mon, &mindam, &maxdam);
         mindam = hero->calcPlrDam(result.resHth, mindam);
         maxdam = hero->calcPlrDam(result.resHth, maxdam);
         if (maxdam != 0) {
             if (!(missiledata[MIS_FLASH].mdFlags & MIF_DOT)) {
-                mindam += hero->getGetHit();
-                maxdam += hero->getGetHit();
+                mindam += hero->getAbsAnyHit();
+                maxdam += hero->getAbsAnyHit();
                 if (mindam < 1)
                     mindam = 1;
                 if (maxdam < 1)
@@ -357,8 +357,8 @@ static MonsterDamage GetMonsterDamage(const MonsterStruct *mon, int dist, const 
         result.blockMis = true;
         int mindam = mon->_mMinDamage2;
         int maxdam = mon->_mMaxDamage2;
-        mindam += hero->getGetHit();
-        maxdam += hero->getGetHit();
+        mindam += hero->getAbsAnyHit() + hero->getAbsPhyHit();
+        maxdam += hero->getAbsAnyHit() + hero->getAbsPhyHit();
         if (mindam < 1)
             mindam = 1;
         if (maxdam < 1)
@@ -372,15 +372,18 @@ static MonsterDamage GetMonsterDamage(const MonsterStruct *mon, int dist, const 
         result.mis = true;
         mtype = GetBaseMissile(mtype);
         result.resMis = GetMissileElement(mtype);
-        result.blockMis = !(missiledata[mtype].mdFlags & MIF_NOBLOCK);
+        result.blockMis = !(missiledata[mtype].mdFlags & MIF_AREA);
         int mindam, maxdam;
         GetMissileDamage(mtype, mon, &mindam, &maxdam);
         mindam = hero->calcPlrDam(result.resMis, mindam);
         maxdam = hero->calcPlrDam(result.resMis, maxdam);
         if (maxdam != 0) {
             if (!(missiledata[mtype].mdFlags & MIF_DOT)) {
-                mindam += hero->getGetHit();
-                maxdam += hero->getGetHit();
+                int hitmod = hero->getAbsAnyHit();
+                if (result.resMis == MISR_SLASH || result.resMis == MISR_BLUNT || result.resMis == MISR_PUNCTURE)
+                    hitmod += hero->getAbsPhyHit();
+                mindam += hitmod;
+                maxdam += hitmod;
                 if (mindam < 1)
                     mindam = 1;
                 if (maxdam < 1)
@@ -423,7 +426,7 @@ static PlayerDamage GetPlayerDamage(const D1Hero *hero, int sn, int dist, const 
         int mtype = spelldata[sn].sMissile;
         mtype = GetBaseMissile(mtype);
         result.resMis = GetMissileElement(mtype);
-        result.blockMis = !(missiledata[mtype].mdFlags & MIF_NOBLOCK);
+        result.blockMis = !(missiledata[mtype].mdFlags & MIF_AREA);
         int mindam, maxdam;
         hero->getMonSkillDamage(sn, sl, dist, mon, &mindam, &maxdam);
         result.minMis = mindam;

@@ -188,7 +188,10 @@ typedef struct ItemStruct {
 	int _iPLMana;
 	int _iPLHP;
 	int _iPLDamMod;
-	int _iPLGetHit;
+	BYTE _iPLToBlk;
+	int8_t _iPLAtkSpdMod;
+	int8_t _iPLAbsAnyHit;
+	int8_t _iPLAbsPhyHit;
 	int8_t _iPLLight;
 	int8_t _iPLSkillLevels;
 	BYTE _iPLSkill;
@@ -206,8 +209,6 @@ typedef struct ItemStruct {
 	BYTE _iPLMMaxDam;
 	BYTE _iPLAMinDam;
 	BYTE _iPLAMaxDam;
-	int _iVAdd;
-	int _iVMult;
 } ItemStruct;
 
 //////////////////////////////////////////////////
@@ -227,7 +228,6 @@ typedef struct PlrAnimStruct {
 
 typedef struct PlayerStruct {
 	int _pmode; // PLR_MODE
-	int8_t _pWalkpath[MAX_PATH_LENGTH + 1];
 	int _pDestAction;
 	int _pDestParam1;
 	int _pDestParam2;
@@ -330,9 +330,9 @@ typedef struct PlayerStruct {
 	int _pMana;      // the current mana of the player
 	int _pMaxMana;   // the maximum mana of the player
 	BYTE _pSkillLvl[64]; // the skill levels of the player
-	uint64_t _pISpells; // Bitmask of skills available via equipped items (staff)
-	BYTE _pSkillFlags;    // Bitmask of allowed skill-types (SFLAG_*)
-	BOOLEAN _pInfraFlag;
+	uint64_t _pISpells;  // Bitmask of skills available via equipped items (staff)
+	BYTE _pSkillFlags;   // Bitmask of allowed skill-types (SFLAG_*)
+	BOOLEAN _pInfraFlag; // unused
 	BYTE _pgfxnum; // Bitmask indicating what variant of the sprite the player is using. Lower byte define weapon (anim_weapon_id) and higher values define armour (starting with anim_armor_id)
 	BOOLEAN _pHasUnidItem; // whether the player has an unidentified (magic) item equipped
 	int _pISlMinDam; // min slash-damage (swords, axes)
@@ -353,14 +353,15 @@ typedef struct PlayerStruct {
 	BYTE _pIBaseHitBonus; // indicator whether the base BonusToHit of the items is positive/negative/neutral
 	BYTE _pICritChance; // 200 == 100%
 	uint16_t _pIBlockChance;
-	unsigned _pIFlags;
+	unsigned _pIFlags; // item_special_effect
 	BYTE _pIWalkSpeed;
 	BYTE _pIRecoverySpeed;
 	BYTE _pIBaseCastSpeed;
 	BYTE _pAlign_B1;
-	int _pIGetHit;
-	BYTE _pIBaseAttackSpeed;
-	int8_t _pIArrowVelBonus; // _pISplCost in vanilla code
+	int _pIAbsAnyHit; // absorbed hit damage
+	int _pIAbsPhyHit; // absorbed physical hit damage
+	int8_t _pIBaseAttackSpeed;
+	BYTE _pAlign_B2;
 	BYTE _pILifeSteal;
 	BYTE _pIManaSteal;
 	int _pIFMinDam; // min fire damage (item's added fire damage)
@@ -384,18 +385,22 @@ typedef struct MissileData {
 	BYTE mdFlags; // missile_flags
 	BYTE mResist; // missile_resistance
 	BYTE mFileNum; // missile_gfx_id
-	BOOLEAN mDrawFlag;
 	int mlSFX; // sound effect when a missile is launched (_sfx_id)
 	int miSFX; // sound effect on impact (_sfx_id)
 	BYTE mlSFXCnt; // number of launch sound effects to choose from
 	BYTE miSFXCnt; // number of impact sound effects to choose from
+	BYTE mdPrSpeed; // speed of the projectile
+	BYTE mdRange; // default range of the missile
 } MissileData;
 
 typedef struct MisFileData {
-	int mfAnimFAmt;
 	const char* mfName;
 	const char* mfAnimTrans;
-	int mfFlags; // missile_anim_flags
+	int mfAnimFAmt;
+	BOOLEAN mfDrawFlag;
+	BOOLEAN mfAnimFlag;
+	BOOLEAN mfLightFlag;
+	BOOLEAN mfPreFlag;
 	BYTE mfAnimFrameLen[16];
 	BYTE mfAnimLen[16];
 	int mfAnimWidth;
@@ -407,6 +412,7 @@ typedef struct MisFileData {
 //////////////////////////////////////////////////
 
 typedef struct MonAnimStruct {
+	// BYTE* maAnimData[NUM_DIRS];
 	int maFrames;
 	int maFrameLen;
 } MonAnimStruct;
@@ -1081,7 +1087,7 @@ typedef struct _uiheroinfo {
 	BYTE hiIdx;
 	BYTE hiLevel;
 	BYTE hiClass;
-	BYTE hiRank;
+	BOOLEAN hiSaveFile;
 	char hiName[16];
 	int16_t hiStrength;
 	int16_t hiMagic;

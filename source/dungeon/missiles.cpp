@@ -991,26 +991,18 @@ const char *GetElementColor(BYTE mRes)
 	return color;
 }
 
-int GetArrowVelocity(int misource)
-{
-    int av = MIS_SHIFTEDVEL(32);
-    av += MIS_SHIFTEDVEL((int)plx(misource)._pIArrowVelBonus);
-
-    return av;
-}
-
 #ifdef HELLFIRE
 int AddFireRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddLightRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddNovaRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddWaveRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddStoneRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddHorkSpawn(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddLightwall(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFireexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddRingC(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddFireball2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 #endif
+int AddDone(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
@@ -1032,7 +1024,6 @@ int AddBloodBoil(int mi, int sx, int sy, int dx, int dy, int midir, int micaster
 int AddBleed(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFireWave(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMeteor(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
@@ -1101,6 +1092,7 @@ void MI_Chain(int mi) { }
 void MI_Misexp(int mi) { }
 void MI_MiniExp(int mi) { }
 void MI_LongExp(int mi) { }
+void MI_ExtExp(int mi) { }
 void MI_Acidsplat(int mi) { }
 void MI_Stone(int mi) { }
 void MI_Shroud(int mi) { }
@@ -1114,6 +1106,5 @@ void MI_InfernoC(int mi) { }
 //void MI_FireTrap(int mi) { }
 void MI_Cbolt(int mi) { }
 void MI_Elemental(int mi) { }
-void MI_Resurrect(int mi) { }
 
 DEVILUTION_END_NAMESPACE
