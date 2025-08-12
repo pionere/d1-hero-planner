@@ -54,7 +54,8 @@ jobs:
         path: build\Release\${{ env.PROJECT_NAME }}.exe
 
     - name: Upload translations
-      if: ${{ !env.ACT }}
+      #if: ${{ !env.ACT }}
+      if: false
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.PROJECT_NAME }}-Translations
