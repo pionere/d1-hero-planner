@@ -6,394 +6,327 @@
     <message>
         <location filename="../source/herodetailswidget.ui" line="112"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Név:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="132"/>
         <source>Class:</source>
-        <translation type="unfinished"></translation>
+        <translation>Osztály:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="140"/>
         <source>Warrior</source>
-        <translation type="unfinished">Harcos</translation>
+        <translation>Harcos</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="145"/>
         <source>Rogue</source>
-        <translation type="unfinished">Vadász</translation>
+        <translation>Zsivány</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="150"/>
         <source>Sorcerer</source>
-        <translation type="unfinished"></translation>
+        <translation>Varázsló</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="155"/>
         <source>Monk</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerzetes</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="160"/>
         <source>Bard</source>
-        <translation type="unfinished"></translation>
+        <translation>Dalnok</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="165"/>
         <source>Barbarian</source>
-        <translation type="unfinished"></translation>
+        <translation>Barbár</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="176"/>
         <source>Level:</source>
-        <translation type="unfinished">Szint:</translation>
+        <translation>Szint:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="191"/>
         <source>Decrease level</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse a szintet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="217"/>
         <source>Increase level</source>
-        <translation type="unfinished"></translation>
+        <translation>Növelje a szintet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="237"/>
         <source>Rank:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rang:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="254"/>
         <source>Stat Points:</source>
-        <translation type="unfinished"></translation>
+        <translation>Elosztható pontok:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="269"/>
         <source>Life:</source>
-        <translation type="unfinished"></translation>
+        <translation>Élet:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="284"/>
         <source>Decrease life</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse az életet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="303"/>
         <source>Restore life</source>
-        <translation type="unfinished"></translation>
+        <translation>Állítsa vissza az életet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="323"/>
         <source>Mana:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mana:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="340"/>
         <source>Strength:</source>
-        <translation type="unfinished"></translation>
+        <translation>Erő:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="353"/>
         <source>Decrease strength</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse az erőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="379"/>
         <source>Increase strength</source>
-        <translation type="unfinished"></translation>
+        <translation>Növelje az erőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="392"/>
         <source>Dexterity:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ügyesség:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="405"/>
         <source>Decrease dexterity</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse az ügyességet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="431"/>
         <source>Increase dexterity</source>
-        <translation type="unfinished"></translation>
+        <translation>Növelje az ügyességet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="444"/>
         <source>Magic:</source>
-        <translation type="unfinished"></translation>
+        <translation>Varázserő:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="457"/>
         <source>Decrease magic</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse a varázserőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="483"/>
         <source>Increase magic</source>
-        <translation type="unfinished"></translation>
+        <translation>Növelje a varázserőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="496"/>
         <source>Vitality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Életerő</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="509"/>
         <source>Decrease vitality</source>
-        <translation type="unfinished"></translation>
+        <translation>Csökkentse az életerőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="535"/>
         <source>Increase vitality</source>
-        <translation type="unfinished"></translation>
+        <translation>Növelje az életerőt</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="550"/>
         <source>Resists:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ellenállások:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="640"/>
         <source>Speed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebesség:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="649"/>
         <source>Walk</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="652"/>
-        <source>color:gray;</source>
-        <translation type="unfinished"></translation>
+        <translation>Séta</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="659"/>
         <source>Attack</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="662"/>
-        <location filename="../source/herodetailswidget.ui" line="776"/>
-        <source>color:red;</source>
-        <translation type="unfinished"></translation>
+        <translation>Támadás</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="669"/>
         <source>Cast</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="672"/>
-        <source>color:#3090C7;</source>
-        <translation type="unfinished"></translation>
+        <translation>Varázslás</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="679"/>
         <source>Recovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyógyulás</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="682"/>
-        <source>color:brown;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/herodetailswidget.ui" line="718"/>
+        <source>Hit damage modifier (Any/Physical)</source>
+        <translation>Találati sérülés módosító (Bármely/Fizikai)</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="689"/>
-        <source>Arrow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="692"/>
-        <source>color:purple;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="704"/>
+        <location filename="../source/herodetailswidget.ui" line="694"/>
         <source>Light:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fény:</translation>
+    </message>
+    <message>
+        <location filename="../source/herodetailswidget.ui" line="701"/>
+        <source>Light radius</source>
+        <translation>Fénysugár</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="711"/>
-        <source>Light radius</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="721"/>
         <source>Get Hit:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sérülés módosító:</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="728"/>
-        <source>Hit damage modifier</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="738"/>
         <source>Armor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Páncél:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="751"/>
+        <location filename="../source/herodetailswidget.ui" line="741"/>
         <source>Evasion:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kitérés:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="764"/>
+        <location filename="../source/herodetailswidget.ui" line="754"/>
         <source>Leech:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinyerés:</translation>
+    </message>
+    <message>
+        <location filename="../source/herodetailswidget.ui" line="763"/>
+        <source>Life</source>
+        <translation>Élet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="773"/>
-        <source>Life</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="783"/>
         <source>Mana</source>
-        <translation type="unfinished"></translation>
+        <translation>Mana</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="786"/>
-        <location filename="../source/herodetailswidget.ui" line="884"/>
-        <source>color:blue;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="798"/>
+        <location filename="../source/herodetailswidget.ui" line="788"/>
         <source>Hit Chance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Találati esély:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="811"/>
+        <location filename="../source/herodetailswidget.ui" line="801"/>
         <source>Block Chance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokkolás esélye:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="824"/>
+        <location filename="../source/herodetailswidget.ui" line="814"/>
         <source>Crit. Chance:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kritikus esély:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="837"/>
+        <location filename="../source/herodetailswidget.ui" line="827"/>
         <source>Damage:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebzés:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="844"/>
+        <location filename="../source/herodetailswidget.ui" line="834"/>
         <source>Total Damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Teljes sebzés</translation>
+    </message>
+    <message>
+        <location filename="../source/herodetailswidget.ui" line="841"/>
+        <source>Slash Damage</source>
+        <translation>Vágási sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="851"/>
-        <source>Slash Damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="854"/>
-        <source>color:#B87333;</source>
-        <translation type="unfinished"></translation>
+        <source>Blunt Damage</source>
+        <translation>Tompa sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="861"/>
-        <source>Blunt Damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="864"/>
-        <source>color:maroon;</source>
-        <translation type="unfinished"></translation>
+        <source>Pierce Damage</source>
+        <translation>Szúrt sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="871"/>
-        <source>Pierce Damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="874"/>
-        <source>color:olive;</source>
-        <translation type="unfinished"></translation>
+        <source>Magic Damage</source>
+        <translation>Varázs sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="881"/>
-        <source>Magic Damage</source>
-        <translation type="unfinished"></translation>
+        <source>Fire Damage</source>
+        <translation>Tűz sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="891"/>
-        <source>Fire Damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="894"/>
-        <source>color:orange;</source>
-        <translation type="unfinished"></translation>
+        <source>Lightning Damage</source>
+        <translation>Villám sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="901"/>
-        <source>Lightning Damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="904"/>
-        <source>color:#FBB117;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="911"/>
         <source>Acid Damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Savas sebzés</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="914"/>
-        <source>color:green;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="924"/>
         <source>Charge:</source>
-        <translation type="unfinished"></translation>
+        <translation>Rárontás:</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.ui" line="931"/>
+        <location filename="../source/herodetailswidget.ui" line="921"/>
         <source>Charge Damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Rárontás sebzése</translation>
+    </message>
+    <message>
+        <location filename="../source/herodetailswidget.ui" line="933"/>
+        <source>The hero loses life over time</source>
+        <translation>A hős folyamatosan veszít az életerejéből</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="943"/>
-        <source>The hero loses life over time</source>
-        <translation type="unfinished"></translation>
+        <source>Knocks back on hit</source>
+        <translation>Visszalök találat esetén</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="953"/>
-        <source>Knocks back on hit</source>
-        <translation type="unfinished"></translation>
+        <source>Hits bypass the physical resistance of the monsters.</source>
+        <translation>A találatok megkerülik a szörnyek fizikai ellenállását.</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="963"/>
-        <source>Hits bypass the physical resistance of the monsters.</source>
-        <translation type="unfinished"></translation>
+        <source>The player can not bleed</source>
+        <translation>A játékos nem vérezhet</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="973"/>
-        <source>The player can not bleed</source>
-        <translation type="unfinished"></translation>
+        <source>Increased chance to cause bleeding</source>
+        <translation>Fokozott esély a vérzés kialakulására</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="983"/>
-        <source>Increased chance to cause bleeding</source>
-        <translation type="unfinished"></translation>
+        <source>Attacks have reduced stun threshold</source>
+        <translation>A támadásnak alacsonyabb a kábítási küszöbe</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.ui" line="993"/>
-        <source>Attacks have reduced stun threshold</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.ui" line="1003"/>
         <source>Can not have mana</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem lehet manája</translation>
     </message>
 </context>
 <context>
@@ -401,88 +334,88 @@
     <message>
         <location filename="../source/heroview.ui" line="60"/>
         <source>Hellfire:</source>
-        <translation type="unfinished">Hellfire:</translation>
+        <translation>Hellfire:</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="67"/>
         <source>Check if it is for a hellfire game</source>
-        <translation type="unfinished">Jelöld be hellfire játék esetén</translation>
+        <translation>Jelöld be Hellfire játék esetén</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="77"/>
         <source>Multi:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hálózati:</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="84"/>
         <source>Check if it is for a multiplayer game</source>
-        <translation type="unfinished">Jelöld be többjátékos mód esetén</translation>
+        <translation>Jelöld be többjátékos mód esetén</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="94"/>
         <source>Speed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebesség:</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="101"/>
         <source>Game speed</source>
-        <translation type="unfinished"></translation>
+        <translation>A játék sebessége</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="105"/>
         <location filename="../source/heroview.ui" line="139"/>
         <source>Normal</source>
-        <translation type="unfinished">Normál</translation>
+        <translation>Normál</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="110"/>
         <source>Fast</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyors</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="115"/>
         <source>Faster</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyorsabb</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="120"/>
         <source>Fastest</source>
-        <translation type="unfinished"></translation>
+        <translation>Leggyorsabb</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="131"/>
         <source>Difficulty:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nehézség:</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="144"/>
         <source>Nigthmare</source>
-        <translation type="unfinished"></translation>
+        <translation>Lidércnyomás</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="149"/>
         <source>Hell</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokol</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="157"/>
         <source>Skills</source>
-        <translation type="unfinished"></translation>
+        <translation>Készségek</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="164"/>
         <source>Monsters</source>
-        <translation type="unfinished">Szörnyek</translation>
+        <translation>Szörnyek</translation>
     </message>
     <message>
         <location filename="../source/heroview.ui" line="171"/>
         <source>PvP</source>
-        <translation type="unfinished"></translation>
+        <translation>PvP</translation>
     </message>
     <message>
-        <location filename="../source/heroview.cpp" line="515"/>
+        <location filename="../source/heroview.cpp" line="514"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyik sem</translation>
     </message>
 </context>
 <context>
@@ -490,250 +423,250 @@
     <message>
         <location filename="../source/itemdetailswidget.ui" line="14"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Név:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="34"/>
         <source>Rename the current item</source>
-        <translation type="unfinished"></translation>
+        <translation>Nevezze át az aktuális tárgyat</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="51"/>
         <source>Discard Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Elveti a tárgyat</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="58"/>
         <source>Add New Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Új tárgy hozzáadása</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="73"/>
         <source>Type:</source>
-        <translation type="unfinished">Típus:</translation>
+        <translation>Típus:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="96"/>
         <source>Class:</source>
-        <translation type="unfinished"></translation>
+        <translation>Osztály:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="119"/>
         <source>Loc:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hely:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="142"/>
         <source>Seed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mag:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="165"/>
         <source>Index:</source>
-        <translation type="unfinished">Index:</translation>
+        <translation>Index:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="188"/>
         <source>Level:</source>
-        <translation type="unfinished">Szint:</translation>
+        <translation>Szint:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="211"/>
         <source>Source:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forrás:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="231"/>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minőség:</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="283"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Válassza ki</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.ui" line="290"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="57"/>
-        <location filename="../source/itemdetailswidget.cpp" line="136"/>
-        <location filename="../source/itemdetailswidget.cpp" line="178"/>
+        <location filename="../source/itemdetailswidget.cpp" line="59"/>
+        <location filename="../source/itemdetailswidget.cpp" line="138"/>
+        <location filename="../source/itemdetailswidget.cpp" line="180"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="116"/>
-        <source>Sword</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="117"/>
-        <source>Axe</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyik sem</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="118"/>
-        <source>Bow</source>
-        <translation type="unfinished"></translation>
+        <source>Sword</source>
+        <translation>Kard</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="119"/>
-        <source>Mace</source>
-        <translation type="unfinished"></translation>
+        <source>Axe</source>
+        <translation>Balta</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="120"/>
-        <source>Staff</source>
-        <translation type="unfinished"></translation>
+        <source>Bow</source>
+        <translation>Íj</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="121"/>
-        <source>Shield</source>
-        <translation type="unfinished"></translation>
+        <source>Mace</source>
+        <translation>Buzogány</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="122"/>
-        <location filename="../source/itemdetailswidget.cpp" line="151"/>
-        <source>Helm</source>
-        <translation type="unfinished"></translation>
+        <source>Staff</source>
+        <translation>Bot</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="123"/>
-        <source>Light Armor</source>
-        <translation type="unfinished"></translation>
+        <source>Shield</source>
+        <translation>Pajzs</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="124"/>
-        <source>Medium Armor</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemdetailswidget.cpp" line="153"/>
+        <source>Helm</source>
+        <translation>Sisak</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="125"/>
-        <source>Heavy Armor</source>
-        <translation type="unfinished"></translation>
+        <source>Light Armor</source>
+        <translation>Könnyű páncél</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="126"/>
-        <location filename="../source/itemdetailswidget.cpp" line="139"/>
-        <source>Misc</source>
-        <translation type="unfinished"></translation>
+        <source>Medium Armor</source>
+        <translation>Közepes páncél</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="127"/>
-        <location filename="../source/itemdetailswidget.cpp" line="140"/>
-        <source>Gold</source>
-        <translation type="unfinished"></translation>
+        <source>Heavy Armor</source>
+        <translation>Nehéz páncél</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="128"/>
-        <location filename="../source/itemdetailswidget.cpp" line="152"/>
-        <source>Ring</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemdetailswidget.cpp" line="141"/>
+        <source>Misc</source>
+        <translation>Egyéb</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="129"/>
-        <location filename="../source/itemdetailswidget.cpp" line="153"/>
-        <source>Amulet</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemdetailswidget.cpp" line="142"/>
+        <source>Gold</source>
+        <translation>Arany</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="130"/>
+        <location filename="../source/itemdetailswidget.cpp" line="154"/>
+        <source>Ring</source>
+        <translation>Gyűrű</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="131"/>
+        <location filename="../source/itemdetailswidget.cpp" line="155"/>
+        <source>Amulet</source>
+        <translation>Amulett</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="132"/>
         <source>Placeholder</source>
-        <translation type="unfinished"></translation>
+        <translation>Helyőrző</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="137"/>
+        <location filename="../source/itemdetailswidget.cpp" line="139"/>
         <source>Weapon</source>
-        <translation type="unfinished"></translation>
+        <translation>Fegyver</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="138"/>
-        <location filename="../source/itemdetailswidget.cpp" line="150"/>
+        <location filename="../source/itemdetailswidget.cpp" line="140"/>
+        <location filename="../source/itemdetailswidget.cpp" line="152"/>
         <source>Armor</source>
-        <translation type="unfinished"></translation>
+        <translation>Páncél</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="141"/>
+        <location filename="../source/itemdetailswidget.cpp" line="143"/>
         <source>Quest</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="147"/>
-        <source>Unequipable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="148"/>
-        <source>One handed</source>
-        <translation type="unfinished"></translation>
+        <translation>Küldetés</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="149"/>
+        <source>Unequipable</source>
+        <translation>Nem hordható</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="150"/>
+        <source>One handed</source>
+        <translation>Egykezes</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="151"/>
         <source>Two handed</source>
-        <translation type="unfinished"></translation>
+        <translation>Kétkezes</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="154"/>
+        <location filename="../source/itemdetailswidget.cpp" line="156"/>
         <source>Belt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="166"/>
-        <source>Drop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="167"/>
-        <source>Smith Normal</source>
-        <translation type="unfinished"></translation>
+        <translation>Öv</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="168"/>
-        <source>Smith Premium</source>
-        <translation type="unfinished"></translation>
+        <source>Drop</source>
+        <translation>Dobott</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="169"/>
-        <source>Wirt</source>
-        <translation type="unfinished"></translation>
+        <source>Smith Normal</source>
+        <translation>Kovács Normál</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="170"/>
-        <source>Adria</source>
-        <translation type="unfinished"></translation>
+        <source>Smith Premium</source>
+        <translation>Kovács Prémium</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="171"/>
-        <source>Pepin</source>
-        <translation type="unfinished"></translation>
+        <source>Wirt</source>
+        <translation>Wirt</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="172"/>
+        <source>Adria</source>
+        <translation>Adria</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="173"/>
+        <source>Pepin</source>
+        <translation>Pepin</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="174"/>
         <source>Crafted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="179"/>
-        <source>Normal</source>
-        <translation type="unfinished">Normál</translation>
-    </message>
-    <message>
-        <location filename="../source/itemdetailswidget.cpp" line="180"/>
-        <source>Good</source>
-        <translation type="unfinished"></translation>
+        <translation>Készített</translation>
     </message>
     <message>
         <location filename="../source/itemdetailswidget.cpp" line="181"/>
-        <source>Unique</source>
-        <translation type="unfinished"></translation>
+        <source>Normal</source>
+        <translation>Normál</translation>
     </message>
     <message>
-        <location filename="../source/itemdetailswidget.cpp" line="221"/>
+        <location filename="../source/itemdetailswidget.cpp" line="182"/>
+        <source>Good</source>
+        <translation>Jó</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="183"/>
+        <source>Unique</source>
+        <translation>Egyedülálló</translation>
+    </message>
+    <message>
+        <location filename="../source/itemdetailswidget.cpp" line="223"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Név</translation>
     </message>
 </context>
 <context>
@@ -741,72 +674,72 @@
     <message>
         <location filename="../source/itempropertieswidget.ui" line="32"/>
         <source>Prefix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Előtag:</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.ui" line="42"/>
         <source>Suffix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utótag:</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.ui" line="88"/>
         <source>Req.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kv.:</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="32"/>
         <source>Damage:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sérülés:</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="38"/>
         <source>-</source>
-        <translation type="unfinished"></translation>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="39"/>
         <source>Slash</source>
-        <translation type="unfinished"></translation>
+        <translation>Vágás</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="40"/>
         <source>Blunt</source>
-        <translation type="unfinished"></translation>
+        <translation>Tompa</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="41"/>
         <source>Slash/Blunt</source>
-        <translation type="unfinished"></translation>
+        <translation>Vágás/Tompa</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="42"/>
         <source>Puncture</source>
-        <translation type="unfinished"></translation>
+        <translation>Szúrás</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="44"/>
         <source>Type: %1. Base crit. chance: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Típus: %1. Alap kritikus esély: %2</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="47"/>
         <source>Armor:</source>
-        <translation type="unfinished"></translation>
+        <translation>Páncél:</translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="127"/>
         <source>%1 Str  </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Erő  </translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="129"/>
         <source>%1 Mag  </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Mág  </translation>
     </message>
     <message>
         <location filename="../source/itempropertieswidget.cpp" line="131"/>
         <source>%1 Dex  </source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Ügy  </translation>
     </message>
 </context>
 <context>
@@ -814,299 +747,299 @@
     <message>
         <location filename="../source/itemselectordialog.ui" line="6"/>
         <source>Select Item</source>
-        <translation type="unfinished"></translation>
+        <translation>Válassza ki a tárgyat</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="21"/>
         <source>Type:</source>
-        <translation type="unfinished">Típus:</translation>
+        <translation>Típus:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="38"/>
         <source>Loc:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hely:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="55"/>
         <source>Seed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Mag:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="76"/>
         <source>Index:</source>
-        <translation type="unfinished">Index:</translation>
+        <translation>Index:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="93"/>
         <source>Level:</source>
-        <translation type="unfinished">Szint:</translation>
+        <translation>Szint:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="113"/>
         <source>Source:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forrás:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="124"/>
         <source>Drop</source>
-        <translation type="unfinished"></translation>
+        <translation>Dobott</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="129"/>
         <source>Smith</source>
-        <translation type="unfinished"></translation>
+        <translation>Kovács</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="134"/>
         <source>Premium</source>
-        <translation type="unfinished"></translation>
+        <translation>Prémium</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="139"/>
         <source>Wirt</source>
-        <translation type="unfinished"></translation>
+        <translation>Wirt</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="144"/>
         <source>Adria</source>
-        <translation type="unfinished"></translation>
+        <translation>Adria</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="149"/>
         <source>Pepin</source>
-        <translation type="unfinished"></translation>
+        <translation>Pepin</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="154"/>
         <source>Crafted</source>
-        <translation type="unfinished"></translation>
+        <translation>Készített</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="165"/>
         <source>Quality:</source>
-        <translation type="unfinished"></translation>
+        <translation>Minőség:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="176"/>
-        <location filename="../source/itemselectordialog.cpp" line="445"/>
-        <location filename="../source/itemselectordialog.cpp" line="482"/>
-        <location filename="../source/itemselectordialog.cpp" line="483"/>
+        <location filename="../source/itemselectordialog.cpp" line="449"/>
+        <location filename="../source/itemselectordialog.cpp" line="486"/>
+        <location filename="../source/itemselectordialog.cpp" line="487"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyik sem</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="181"/>
         <source>Normal</source>
-        <translation type="unfinished">Normál</translation>
+        <translation>Normál</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="186"/>
         <source>Good</source>
-        <translation type="unfinished"></translation>
+        <translation>Jó</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="191"/>
         <source>Unique</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyedülálló</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="208"/>
         <source>Unique:</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyedülálló:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="225"/>
         <source>Prefix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Előtag:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="259"/>
         <source>Suffix:</source>
-        <translation type="unfinished"></translation>
+        <translation>Utótag:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="293"/>
         <source>AC:</source>
-        <translation type="unfinished"></translation>
+        <translation>PO:</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="329"/>
-        <location filename="../source/itemselectordialog.cpp" line="29"/>
+        <location filename="../source/itemselectordialog.cpp" line="32"/>
         <source>Generate</source>
-        <translation type="unfinished">Generálás</translation>
+        <translation>Generálás</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="381"/>
         <source>Submit</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehet</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.ui" line="388"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="84"/>
-        <location filename="../source/itemselectordialog.cpp" line="111"/>
-        <location filename="../source/itemselectordialog.cpp" line="141"/>
-        <location filename="../source/itemselectordialog.cpp" line="173"/>
-        <source>Helm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="88"/>
-        <location filename="../source/itemselectordialog.cpp" line="92"/>
-        <location filename="../source/itemselectordialog.cpp" line="116"/>
-        <location filename="../source/itemselectordialog.cpp" line="168"/>
-        <location filename="../source/itemselectordialog.cpp" line="175"/>
-        <source>Ring</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="96"/>
-        <location filename="../source/itemselectordialog.cpp" line="112"/>
-        <location filename="../source/itemselectordialog.cpp" line="144"/>
-        <location filename="../source/itemselectordialog.cpp" line="174"/>
-        <source>Amulet</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="101"/>
-        <source>Weapon / Shield</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="102"/>
+        <location filename="../source/itemselectordialog.cpp" line="87"/>
         <location filename="../source/itemselectordialog.cpp" line="114"/>
-        <source>One handed</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="144"/>
+        <location filename="../source/itemselectordialog.cpp" line="176"/>
+        <source>Helm</source>
+        <translation>Sisak</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="103"/>
+        <location filename="../source/itemselectordialog.cpp" line="91"/>
+        <location filename="../source/itemselectordialog.cpp" line="95"/>
+        <location filename="../source/itemselectordialog.cpp" line="119"/>
+        <location filename="../source/itemselectordialog.cpp" line="171"/>
+        <location filename="../source/itemselectordialog.cpp" line="178"/>
+        <source>Ring</source>
+        <translation>Gyűrű</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="99"/>
         <location filename="../source/itemselectordialog.cpp" line="115"/>
-        <source>Two handed</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="147"/>
+        <location filename="../source/itemselectordialog.cpp" line="177"/>
+        <source>Amulet</source>
+        <translation>Amulett</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="107"/>
-        <location filename="../source/itemselectordialog.cpp" line="113"/>
-        <location filename="../source/itemselectordialog.cpp" line="147"/>
-        <source>Armor</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="104"/>
+        <source>Weapon / Shield</source>
+        <translation>Fegyver / Pajzs</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="105"/>
+        <location filename="../source/itemselectordialog.cpp" line="117"/>
+        <source>One handed</source>
+        <translation>Egykezes</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="106"/>
+        <location filename="../source/itemselectordialog.cpp" line="118"/>
+        <source>Two handed</source>
+        <translation>Kétkezes</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="110"/>
-        <location filename="../source/itemselectordialog.cpp" line="434"/>
-        <location filename="../source/itemselectordialog.cpp" line="460"/>
-        <location filename="../source/itemselectordialog.cpp" line="461"/>
-        <location filename="../source/itemselectordialog.cpp" line="501"/>
-        <location filename="../source/itemselectordialog.cpp" line="503"/>
-        <source>Any</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="148"/>
-        <location filename="../source/itemselectordialog.cpp" line="176"/>
-        <source>Light Armor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="149"/>
-        <location filename="../source/itemselectordialog.cpp" line="177"/>
-        <source>Medium Armor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../source/itemselectordialog.cpp" line="116"/>
         <location filename="../source/itemselectordialog.cpp" line="150"/>
-        <location filename="../source/itemselectordialog.cpp" line="178"/>
-        <source>Heavy Armor</source>
-        <translation type="unfinished"></translation>
+        <source>Armor</source>
+        <translation>Páncél</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="113"/>
+        <location filename="../source/itemselectordialog.cpp" line="438"/>
+        <location filename="../source/itemselectordialog.cpp" line="464"/>
+        <location filename="../source/itemselectordialog.cpp" line="465"/>
+        <location filename="../source/itemselectordialog.cpp" line="505"/>
+        <location filename="../source/itemselectordialog.cpp" line="507"/>
+        <source>Any</source>
+        <translation>Bármilyen</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="151"/>
+        <location filename="../source/itemselectordialog.cpp" line="179"/>
+        <source>Light Armor</source>
+        <translation>Könnyű páncél</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="152"/>
+        <location filename="../source/itemselectordialog.cpp" line="180"/>
+        <source>Medium Armor</source>
+        <translation>Közepes páncél</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="153"/>
-        <location filename="../source/itemselectordialog.cpp" line="160"/>
-        <location filename="../source/itemselectordialog.cpp" line="171"/>
-        <source>All</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="154"/>
-        <location filename="../source/itemselectordialog.cpp" line="161"/>
-        <location filename="../source/itemselectordialog.cpp" line="182"/>
-        <source>Sword</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="155"/>
-        <location filename="../source/itemselectordialog.cpp" line="162"/>
-        <location filename="../source/itemselectordialog.cpp" line="183"/>
-        <source>Axe</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="181"/>
+        <source>Heavy Armor</source>
+        <translation>Nehéz páncél</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="156"/>
-        <location filename="../source/itemselectordialog.cpp" line="164"/>
-        <location filename="../source/itemselectordialog.cpp" line="185"/>
-        <source>Mace</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="163"/>
+        <location filename="../source/itemselectordialog.cpp" line="174"/>
+        <source>All</source>
+        <translation>Minden</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="157"/>
-        <location filename="../source/itemselectordialog.cpp" line="187"/>
-        <source>Shield</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="164"/>
+        <location filename="../source/itemselectordialog.cpp" line="185"/>
+        <source>Sword</source>
+        <translation>Kard</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="163"/>
-        <location filename="../source/itemselectordialog.cpp" line="184"/>
-        <source>Bow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
+        <location filename="../source/itemselectordialog.cpp" line="158"/>
         <location filename="../source/itemselectordialog.cpp" line="165"/>
         <location filename="../source/itemselectordialog.cpp" line="186"/>
+        <source>Axe</source>
+        <translation>Balta</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="159"/>
+        <location filename="../source/itemselectordialog.cpp" line="167"/>
+        <location filename="../source/itemselectordialog.cpp" line="188"/>
+        <source>Mace</source>
+        <translation>Buzogány</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="160"/>
+        <location filename="../source/itemselectordialog.cpp" line="190"/>
+        <source>Shield</source>
+        <translation>Pajzs</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="166"/>
+        <location filename="../source/itemselectordialog.cpp" line="187"/>
+        <source>Bow</source>
+        <translation>Íj</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="168"/>
+        <location filename="../source/itemselectordialog.cpp" line="189"/>
         <source>Staff</source>
-        <translation type="unfinished"></translation>
+        <translation>Bot</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="416"/>
-        <location filename="../source/itemselectordialog.cpp" line="521"/>
-        <location filename="../source/itemselectordialog.cpp" line="562"/>
-        <location filename="../source/itemselectordialog.cpp" line="607"/>
+        <location filename="../source/itemselectordialog.cpp" line="420"/>
+        <location filename="../source/itemselectordialog.cpp" line="525"/>
+        <location filename="../source/itemselectordialog.cpp" line="566"/>
+        <location filename="../source/itemselectordialog.cpp" line="611"/>
         <source>unrestricted</source>
-        <translation type="unfinished"></translation>
+        <translation>korlátlan</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="416"/>
-        <location filename="../source/itemselectordialog.cpp" line="521"/>
-        <location filename="../source/itemselectordialog.cpp" line="562"/>
-        <location filename="../source/itemselectordialog.cpp" line="607"/>
+        <location filename="../source/itemselectordialog.cpp" line="420"/>
+        <location filename="../source/itemselectordialog.cpp" line="525"/>
+        <location filename="../source/itemselectordialog.cpp" line="566"/>
+        <location filename="../source/itemselectordialog.cpp" line="611"/>
         <source>lower limited to:</source>
-        <translation type="unfinished"></translation>
+        <translation>alsó korlát:</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="416"/>
-        <location filename="../source/itemselectordialog.cpp" line="521"/>
-        <location filename="../source/itemselectordialog.cpp" line="562"/>
-        <location filename="../source/itemselectordialog.cpp" line="607"/>
+        <location filename="../source/itemselectordialog.cpp" line="420"/>
+        <location filename="../source/itemselectordialog.cpp" line="525"/>
+        <location filename="../source/itemselectordialog.cpp" line="566"/>
+        <location filename="../source/itemselectordialog.cpp" line="611"/>
         <source>upper limited to:</source>
-        <translation type="unfinished"></translation>
+        <translation>felső határ:</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="562"/>
-        <location filename="../source/itemselectordialog.cpp" line="607"/>
+        <location filename="../source/itemselectordialog.cpp" line="566"/>
+        <location filename="../source/itemselectordialog.cpp" line="611"/>
         <source>limited to:</source>
-        <translation type="unfinished"></translation>
+        <translation>korlátozva:</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="944"/>
+        <location filename="../source/itemselectordialog.cpp" line="948"/>
         <source>Failed to create item with the required attributes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült létrehozni a szükséges attribútumokkal rendelkező tárgyat.</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="950"/>
+        <location filename="../source/itemselectordialog.cpp" line="954"/>
         <source>Succeeded after %1 iterations.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 iteráció után sikeresen létrehozva.</translation>
     </message>
 </context>
 <context>
@@ -1124,7 +1057,7 @@
     <message>
         <location filename="../source/mainwindow.ui" line="257"/>
         <source>Load</source>
-        <translation type="unfinished"></translation>
+        <translation>Betöltés</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="113"/>
@@ -1135,12 +1068,12 @@
     <message>
         <location filename="../source/mainwindow.ui" line="140"/>
         <source>Unique Translation</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyedi Átrendelő</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="154"/>
         <source>Colors</source>
-        <translation type="unfinished"></translation>
+        <translation>Színek</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="165"/>
@@ -1162,32 +1095,32 @@
     <message>
         <location filename="../source/mainwindow.ui" line="195"/>
         <source>Warrior</source>
-        <translation type="unfinished">Harcos</translation>
+        <translation>Harcos</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="200"/>
         <source>Rogue</source>
-        <translation type="unfinished">Vadász</translation>
+        <translation>Zsivány</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="205"/>
         <source>Sorcerer</source>
-        <translation type="unfinished"></translation>
+        <translation>Varázsló</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="210"/>
         <source>Monk</source>
-        <translation type="unfinished"></translation>
+        <translation>Szerzetes</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="215"/>
         <source>Bard</source>
-        <translation type="unfinished"></translation>
+        <translation>Dalnok</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="220"/>
         <source>Barbarian</source>
-        <translation type="unfinished"></translation>
+        <translation>Barbár</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="225"/>
@@ -1205,7 +1138,7 @@
     <message>
         <location filename="../source/mainwindow.ui" line="241"/>
         <source>Open</source>
-        <translation type="unfinished">Megnyitás</translation>
+        <translation>Megnyitás</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="249"/>
@@ -1218,7 +1151,7 @@
         <location filename="../source/mainwindow.ui" line="372"/>
         <location filename="../source/mainwindow.ui" line="400"/>
         <source>Save As...</source>
-        <translation type="unfinished"></translation>
+        <translation>Mentés másként...</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="281"/>
@@ -1230,7 +1163,7 @@
     <message>
         <location filename="../source/mainwindow.ui" line="305"/>
         <source>Diff</source>
-        <translation type="unfinished"></translation>
+        <translation>Eltérés</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="265"/>
@@ -1250,33 +1183,28 @@
         <location filename="../source/mainwindow.ui" line="382"/>
         <location filename="../source/mainwindow.ui" line="410"/>
         <source>Patch</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/mainwindow.ui" line="318"/>
-        <source>Patch the current graphics</source>
-        <translation type="unfinished"></translation>
+        <translation>Javítás</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="385"/>
         <location filename="../source/mainwindow.ui" line="413"/>
         <source>Replace translation values of 255 with 0</source>
-        <translation type="unfinished"></translation>
+        <translation>A 255-ös átrendelő értékek 0-ra cserélése</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="106"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>Nézet</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="323"/>
         <source>Show PAL &amp;&amp; TRNs</source>
-        <translation type="unfinished"></translation>
+        <translation>PAL &amp;&amp; és TRN-ek megjelenítése</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.ui" line="331"/>
         <source>Show Bottom Panel</source>
-        <translation type="unfinished"></translation>
+        <translation>Alsó panel megjelenítése</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="673"/>
@@ -1365,7 +1293,7 @@
         <location filename="../source/mainwindow.cpp" line="550"/>
         <location filename="../source/mainwindow.cpp" line="1091"/>
         <source>Select Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasszon Hőst</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="550"/>
@@ -1376,23 +1304,23 @@
     <message>
         <location filename="../source/mainwindow.cpp" line="564"/>
         <source>Load Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>Hős betöltése</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="587"/>
         <location filename="../source/mainwindow.cpp" line="781"/>
         <source>Failed loading HRO file: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült betölteni a HRO fájlt: %1.</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1104"/>
         <source>Comparing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Összehasonlítás...</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1109"/>
         <source>File is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>A fájl üres.</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1141"/>
@@ -1447,270 +1375,282 @@
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="18"/>
         <source>Players</source>
-        <translation type="unfinished"></translation>
+        <translation>Játékosok</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="32"/>
         <source>Any</source>
-        <translation type="unfinished"></translation>
+        <translation>Bármilyen</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="37"/>
         <source>(L1) Cathedral</source>
-        <translation type="unfinished">(L1) Katedrális</translation>
+        <translation>(L1) Katedrális</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="42"/>
         <source>(L2) Catacombs</source>
-        <translation type="unfinished">(L2) Katakombák</translation>
+        <translation>(L2) Katakombák</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="47"/>
         <source>(L3) Caves</source>
-        <translation type="unfinished">(L3) Barlangok</translation>
+        <translation>(L3) Barlangok</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="52"/>
         <source>(L4) Hell</source>
-        <translation type="unfinished">(L4) Pokol</translation>
+        <translation>(L4) Pokol</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="57"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="403"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="462"/>
         <source>(L5) Crypt</source>
-        <translation type="unfinished">(L5) Kripta</translation>
+        <translation>(L5) Kripta</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="62"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="404"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="463"/>
         <source>(L6) Nest</source>
-        <translation type="unfinished">(L6) Fészek</translation>
+        <translation>(L6) Fészek</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="73"/>
         <location filename="../source/monsterdetailswidget.ui" line="83"/>
         <source>Dungeon Level Bonus</source>
-        <translation type="unfinished"></translation>
+        <translation>Kazamata szint bónusz</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="115"/>
         <source>Minion</source>
-        <translation type="unfinished"></translation>
+        <translation>Követő</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="141"/>
         <source>&lt;b&gt;Status:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>>&lt;b&gt;Állapot:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="151"/>
         <source>&lt;b&gt;AI-Int:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;AI-Int:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="162"/>
         <source>&lt;b&gt;Damage:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Sebzés:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="172"/>
         <source>&lt;b&gt;To Hit:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ütés:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="183"/>
         <source>&lt;b&gt;Damage2:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Sebzés2:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="193"/>
         <source>&lt;b&gt;To Hit2:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ütés2:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="204"/>
         <source>&lt;b&gt;Magic Hit:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Varázs ütés:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="216"/>
         <source>&lt;b&gt;Hit Points:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Életpontok:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="226"/>
         <source>&lt;b&gt;Armor:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Páncél:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="236"/>
         <source>&lt;b&gt;Evasion:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Kitérés:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="247"/>
         <source>&lt;b&gt;Resists:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Ellenáll:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="409"/>
         <source>&lt;b&gt;Flags:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Jelzők:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="421"/>
         <source>Can hide</source>
-        <translation type="unfinished"></translation>
+        <translation>El tud bújni</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="431"/>
         <source>Steals life</source>
-        <translation type="unfinished"></translation>
+        <translation>Életet lop</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="441"/>
         <source>Opens doors</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajtót nyit</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="451"/>
         <source>Searches for enemy</source>
-        <translation type="unfinished"></translation>
+        <translation>Ellenséget keres</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="461"/>
         <source>Bleeds</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérzik</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="471"/>
         <source>Knocks back</source>
-        <translation type="unfinished"></translation>
+        <translation>Visszalök</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="481"/>
         <source>Immune to stone curse</source>
-        <translation type="unfinished"></translation>
+        <translation>Immunis a kőátokkal szemben</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="491"/>
         <source>Starts in a special mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Speciális módban indul</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="501"/>
         <source>No loot</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem ad zsákmányt</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="518"/>
         <source>&lt;b&gt;Xp Reward:&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Xp Jutalom:&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="541"/>
         <source>Distance</source>
-        <translation type="unfinished"></translation>
+        <translation>Távolság</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="556"/>
         <source>Chance to hit the monster in h2h combat</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a szörny eltalálására h2h harcban</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="576"/>
         <source>Chance to hit the monster using spell/missile attack</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a szörny eltalálására varázslattal/rakétatámadással</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="585"/>
         <source>Hit chance</source>
-        <translation type="unfinished"></translation>
+        <translation>Találati esély</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="594"/>
         <source>Chance to hit the player in h2h combat</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos eltalálására h2h harcban</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="614"/>
         <source>Chance to hit the player using special/missile attack</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos eltalálására speciális/nyilas támadás segítségével</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="626"/>
         <source>Possible h2h damage to the monster</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges h2h kár a szörnyben</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="646"/>
         <source>Possible spell/missile damage to the monster</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges varázslat/nyíl okozta kár a szörnyben</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="655"/>
         <source>Damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebzés</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="664"/>
         <source>Possible h2h damage to the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges h2h kár a játékosban</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="684"/>
         <source>Possible special/missile damage to the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges varázslat/nyíl okozta kár a játékosban</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="694"/>
         <source>Chance to block the attack of the monster</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a szörny támadásának blokkolására</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="701"/>
         <source>Block chance</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokk esély</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="708"/>
         <source>Chance to block the attack of the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos támadásának blokkolására</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.ui" line="727"/>
         <source>Close</source>
-        <translation type="unfinished">Bezárás</translation>
-    </message>
-    <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="467"/>
-        <source>Dungeon Level %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="474"/>
-        <source>Dungeon Level %1-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="486"/>
-        <source>Level Bonus is relative</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="486"/>
-        <source>Level Bonus is absolute</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezárás</translation>
     </message>
     <message>
         <location filename="../source/monsterdetailswidget.cpp" line="506"/>
-        <source>(Level %1)</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/monsterdetailswidget.cpp" line="522"/>
+        <source>Dungeon Level %1 (%2)</source>
+        <translation>Kazamata szint %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="569"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="510"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="530"/>
+        <source>Set Level %1 (%2)</source>
+        <translation>%1 (%2) szint beállítása</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="524"/>
+        <source>Dungeon Level %1-%2</source>
+        <translation>Kazamata szint %1-%2</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="532"/>
+        <source>Set Level %1-%2</source>
+        <translation>Egyedi szint %1-%2</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="546"/>
+        <source>Level Bonus is relative</source>
+        <translation>A szintbónusz relatív</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="546"/>
+        <source>Level Bonus is absolute</source>
+        <translation>A szint bónusz abszolút</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="566"/>
+        <source>(Level %1)</source>
+        <translation>(Szint %1)</translation>
+    </message>
+    <message>
+        <location filename="../source/monsterdetailswidget.cpp" line="629"/>
         <source>Distance to target in ticks. Charge distance to target: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Célponttól való távolság időpillanatokban. Lerohanási távolság a célpontig: %1</translation>
     </message>
 </context>
 <context>
@@ -1733,17 +1673,17 @@
     <message>
         <location filename="../source/openasdialog.ui" line="50"/>
         <source>Hero Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Hős beállításai</translation>
     </message>
     <message>
         <location filename="../source/openasdialog.ui" line="56"/>
         <source>Hellfire:</source>
-        <translation type="unfinished">Hellfire:</translation>
+        <translation>Hellfire:</translation>
     </message>
     <message>
         <location filename="../source/openasdialog.ui" line="85"/>
         <source>Preserve</source>
-        <translation type="unfinished">Ne változzon</translation>
+        <translation>Megőrzés</translation>
     </message>
     <message>
         <location filename="../source/openasdialog.ui" line="65"/>
@@ -1768,7 +1708,7 @@
     <message>
         <location filename="../source/openasdialog.cpp" line="40"/>
         <source>Select Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasszon Hőst</translation>
     </message>
     <message>
         <location filename="../source/openasdialog.cpp" line="40"/>
@@ -1836,12 +1776,12 @@
     <message>
         <location filename="../source/palettewidget.cpp" line="694"/>
         <source>_default.pal</source>
-        <translation type="unfinished"></translation>
+        <translation>_default.pal</translation>
     </message>
     <message>
         <location filename="../source/palettewidget.cpp" line="694"/>
         <source>_null.trn</source>
-        <translation type="unfinished"></translation>
+        <translation>_null.trn</translation>
     </message>
     <message>
         <location filename="../source/palettewidget.cpp" line="358"/>
@@ -1851,7 +1791,7 @@
     <message>
         <location filename="../source/palettewidget.ui" line="201"/>
         <source>Enter the color index to which the selected color(s) should map to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Adja meg azt a színindexet, amelyhez a kiválasztott szín(ek)nek leképeznie kell.</translation>
     </message>
     <message>
         <location filename="../source/palettewidget.cpp" line="371"/>
@@ -1894,7 +1834,7 @@
     <message>
         <location filename="../source/palettewidget.cpp" line="451"/>
         <source>Copy the selected colors to the clipboard</source>
-        <translation>A kiválasztott szín vágólapra másolása</translation>
+        <translation>A kiválasztott színek vágólapra másolása</translation>
     </message>
     <message>
         <location filename="../source/palettewidget.cpp" line="458"/>
@@ -1949,102 +1889,102 @@
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="14"/>
         <source>Heros:</source>
-        <translation type="unfinished"></translation>
+        <translation>Hősök:</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="35"/>
         <source>Discard Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>A hős elvetése</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="42"/>
         <source>Add New Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>Új hős hozzáadása</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="68"/>
         <source>Distance</source>
-        <translation type="unfinished"></translation>
+        <translation>Távolság</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="90"/>
         <source>Chance to hit the other player in h2h combat</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a másik játékos megütésére h2h harcban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="110"/>
         <source>Chance to hit the other player using spell/missile attack</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a másik játékos eltalálására varázslattal/nyilas támadással</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="119"/>
         <source>Hit chance</source>
-        <translation type="unfinished"></translation>
+        <translation>Találati esély</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="128"/>
         <source>Chance to hit the player in h2h combat</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos eltalálására h2h harcban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="148"/>
         <source>Chance to hit the player using special/missile attack</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos eltalálására speciális/nyilas támadással</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="160"/>
         <source>Possible h2h damage to the other player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges h2h kár a másik játékosban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="180"/>
         <source>Possible spell/missile damage to the other player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges varázslat/nyíl okozta kár a másik játékosban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="189"/>
         <source>Damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebzés</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="198"/>
         <source>Possible h2h damage to the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges h2h kár a játékosban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="218"/>
         <source>Possible special/missile damage to the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Lehetséges varázslat/nyíl okozta kár a játékosban</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="228"/>
         <source>Chance to block the attack of the other player</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a másik játékos támadásának blokkolására</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="235"/>
         <source>Block chance</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokk esély</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="242"/>
         <source>Chance to block the attack of the player</source>
-        <translation type="unfinished"></translation>
+        <translation>Esély a játékos támadásának blokkolására</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.ui" line="261"/>
         <source>Close</source>
-        <translation type="unfinished">Bezárás</translation>
+        <translation>Bezárás</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.cpp" line="126"/>
         <source>Distance to target in ticks. Charge distance to target: %1 / %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Célponttól való távolság időpillanatokban. Lerohanási távolság a célpontig: %1 / %2</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.cpp" line="254"/>
         <source>Select Hero</source>
-        <translation type="unfinished"></translation>
+        <translation>Válasszon Hőst</translation>
     </message>
     <message>
         <location filename="../source/pvpdetailswidget.cpp" line="254"/>
@@ -2054,7 +1994,7 @@
     <message>
         <location filename="../source/pvpdetailswidget.cpp" line="270"/>
         <source>Failed loading HRO file: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült betölteni a HRO fájlt: %1.</translation>
     </message>
 </context>
 <context>
@@ -2068,25 +2008,50 @@
     <message>
         <location filename="../source/d1pal.cpp" line="150"/>
         <source>color %1 is %2 (was %3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 szín jelenlegi állapota %2 (korábban %3)</translation>
     </message>
     <message>
-        <location filename="../source/d1cl2.cpp" line="149"/>
+        <location filename="../source/d1cel.cpp" line="152"/>
+        <location filename="../source/d1cl2.cpp" line="152"/>
+        <source>Could not determine the width of Frame %1.</source>
+        <translation>A(z) %1 képkocka szélessége nem határozható meg.</translation>
+    </message>
+    <message>
+        <location filename="../source/d1cel.cpp" line="154"/>
+        <location filename="../source/d1cl2.cpp" line="154"/>
         <source>Frame %1 is invalid.</source>
         <translation>A(z) %1 képkocka hibás.</translation>
     </message>
     <message>
-        <location filename="../source/d1hro.cpp" line="1545"/>
+        <location filename="../source/d1cel.cpp" line="160"/>
+        <location filename="../source/d1cl2.cpp" line="160"/>
+        <source>Inconsistent clipping (Frame %1 is %2).</source>
+        <translation>Inkonzisztens vágás (A %1. képkocka jelenlegi állapota %2).</translation>
+    </message>
+    <message>
+        <location filename="../source/d1cel.cpp" line="160"/>
+        <location filename="../source/d1cl2.cpp" line="160"/>
+        <source>not clipped</source>
+        <translation>nincs vágva</translation>
+    </message>
+    <message>
+        <location filename="../source/d1cel.cpp" line="160"/>
+        <location filename="../source/d1cl2.cpp" line="160"/>
+        <source>clipped</source>
+        <translation>vágva</translation>
+    </message>
+    <message>
+        <location filename="../source/d1hro.cpp" line="1549"/>
         <source>Confirmation</source>
         <translation>Jóváhagyás</translation>
     </message>
     <message>
-        <location filename="../source/d1hro.cpp" line="1545"/>
+        <location filename="../source/d1hro.cpp" line="1549"/>
         <source>Are you sure you want to overwrite %1?</source>
         <translation>Biztosan felül akarod írni a %1 fájlt?</translation>
     </message>
     <message>
-        <location filename="../source/d1hro.cpp" line="1561"/>
+        <location filename="../source/d1hro.cpp" line="1565"/>
         <location filename="../source/d1pal.cpp" line="115"/>
         <location filename="../source/d1trn.cpp" line="35"/>
         <location filename="../source/dungeon/engine.cpp" line="136"/>
@@ -2097,7 +2062,7 @@
     <message>
         <location filename="../source/mainwindow.cpp" line="1076"/>
         <source>empty</source>
-        <translation type="unfinished"></translation>
+        <translation>üres</translation>
     </message>
     <message>
         <location filename="../source/mainwindow.cpp" line="1447"/>
@@ -2115,91 +2080,91 @@
         <translation>Kép fájlok (%1)</translation>
     </message>
     <message>
-        <location filename="../source/d1cl2frame.cpp" line="30"/>
+        <location filename="../source/d1cl2frame.cpp" line="39"/>
         <source>Invalid CL2 frame data (0x00 found)</source>
         <translation>Hibás CL2 képkocka (0x00-ás érték)</translation>
     </message>
     <message>
-        <location filename="../source/d1celframe.cpp" line="75"/>
+        <location filename="../source/d1celframe.cpp" line="82"/>
         <source>Invalid CEL frame data (0x00 found)</source>
         <translation>Hibás CEL állomány (0x00 érték)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="141"/>
+        <location filename="../source/d1gfx.cpp" line="135"/>
         <source>Mismatching frame-sizes.</source>
         <translation>Eltérő képkocka-méret.</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="226"/>
+        <location filename="../source/d1gfx.cpp" line="220"/>
         <source>regular (v1)</source>
-        <translation type="unfinished"></translation>
+        <translation>normál (v1)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="227"/>
+        <location filename="../source/d1gfx.cpp" line="221"/>
         <source>compilation (v1)</source>
-        <translation type="unfinished"></translation>
+        <translation>összeállítás (v1)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="228"/>
+        <location filename="../source/d1gfx.cpp" line="222"/>
         <source>level (v1)</source>
-        <translation type="unfinished"></translation>
+        <translation>szint (v1)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="229"/>
+        <location filename="../source/d1gfx.cpp" line="223"/>
         <source>mono group (v2)</source>
-        <translation type="unfinished"></translation>
+        <translation>mono csoport (v2)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="230"/>
+        <location filename="../source/d1gfx.cpp" line="224"/>
         <source>multi group (v2)</source>
-        <translation type="unfinished"></translation>
+        <translation>többcsoportos (v2)</translation>
+    </message>
+    <message>
+        <location filename="../source/d1gfx.cpp" line="234"/>
+        <source>type is %1 (was %2)</source>
+        <translation>típus %1 (korábban %2)</translation>
     </message>
     <message>
         <location filename="../source/d1gfx.cpp" line="240"/>
-        <source>type is %1 (was %2)</source>
-        <translation type="unfinished"></translation>
+        <source>group %1 is frames %2..%3 (was %4..%5)</source>
+        <translation>%1 csoport: képkockák %2..%3 (korábban %4..%5)</translation>
     </message>
     <message>
         <location filename="../source/d1gfx.cpp" line="246"/>
-        <source>group %1 is frames %2..%3 (was %4..%5)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/d1gfx.cpp" line="252"/>
         <source>group-count is %1 (was %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>csoportszám %1 (korábban %2)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="267"/>
+        <location filename="../source/d1gfx.cpp" line="261"/>
         <source>Frame %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 képkocka:</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="269"/>
+        <location filename="../source/d1gfx.cpp" line="263"/>
         <source>  pixel %1:%2 is %3 (was %4)</source>
-        <translation type="unfinished"></translation>
+        <translation>  a %1:%2 pixel jelenlegi állapota %3 (korábban %4)</translation>
     </message>
     <message>
-        <location filename="../source/d1gfx.cpp" line="270"/>
-        <location filename="../source/d1gfx.cpp" line="271"/>
+        <location filename="../source/d1gfx.cpp" line="264"/>
+        <location filename="../source/d1gfx.cpp" line="265"/>
         <source>transparent</source>
-        <translation type="unfinished"></translation>
+        <translation>átlátszó</translation>
+    </message>
+    <message>
+        <location filename="../source/d1gfx.cpp" line="264"/>
+        <location filename="../source/d1gfx.cpp" line="265"/>
+        <source>color%1</source>
+        <translation>szín%1</translation>
     </message>
     <message>
         <location filename="../source/d1gfx.cpp" line="270"/>
-        <location filename="../source/d1gfx.cpp" line="271"/>
-        <source>color%1</source>
-        <translation type="unfinished"></translation>
+        <source>frame %1 is %2x%3 pixel (was %4x%5)</source>
+        <translation>a %1 képkocka mérete %2x%3 pixel (korábban %4x%5)</translation>
     </message>
     <message>
         <location filename="../source/d1gfx.cpp" line="276"/>
-        <source>frame %1 is %2x%3 pixel (was %4x%5)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/d1gfx.cpp" line="282"/>
         <source>frame-count is %1 (was %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>képkockaszám %1 (korábban %2)</translation>
     </message>
     <message>
         <location filename="../source/progressdialog.cpp" line="270"/>
@@ -2219,492 +2184,471 @@
     <message>
         <location filename="../source/dungeon/engine.cpp" line="165"/>
         <source>Skipping file: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fájl kihagyása: %1.</translation>
     </message>
     <message>
         <location filename="../source/dungeon/monster.cpp" line="329"/>
         <source>Bad Na-Krul placement. Received-Id:%1 instead of %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hibás Na-Krul elhelyezés. A kapott azonosító: %1 %2 helyett.</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="54"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="56"/>
         <source>Minion</source>
-        <translation type="unfinished"></translation>
+        <translation>Követő</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="57"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="59"/>
         <source>Lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Elveszett</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="61"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="63"/>
         <source>Leader</source>
-        <translation type="unfinished"></translation>
+        <translation>Vezető</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="77"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="79"/>
         <source>Vulnerable to %1 damage</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sebzésre érzékeny</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="81"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="83"/>
         <source>Protected against %1 damage</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sebzés ellen védett</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="85"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="87"/>
         <source>Resists %1 damage</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sérülést hárít el</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="89"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="91"/>
         <source>Immune to %1 damage</source>
-        <translation type="unfinished"></translation>
+        <translation>Immunis %1 sérülésre</translation>
     </message>
     <message>
-        <location filename="../source/monsterdetailswidget.cpp" line="92"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="94"/>
         <source>???</source>
-        <translation type="unfinished"></translation>
+        <translation>???</translation>
     </message>
     <message>
-        <location filename="../source/d1cel.cpp" line="149"/>
-        <source>Frame %1 is invalid (size = %2. from %3 to %4)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/dungeon/missiles.cpp" line="167"/>
+        <location filename="../source/dungeon/missiles.cpp" line="165"/>
         <source>Unhandled missile skill %1 in SkillPlrDamage.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kezeletlen távoli készség %1 a SkillPlrDamage-ben.</translation>
     </message>
     <message>
-        <location filename="../source/dungeon/player.cpp" line="837"/>
+        <location filename="../source/dungeon/player.cpp" line="827"/>
         <source>Unhandled h2h skill %1 in GetMonByPlrDamage.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem kezelt h2h képesség (%1) a GetMonByPlrDamage függvényben.</translation>
     </message>
     <message>
-        <location filename="../source/dungeon/player.cpp" line="913"/>
+        <location filename="../source/dungeon/player.cpp" line="903"/>
         <source>Unhandled h2h skill %1 in GetPlrByPlrDamage.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kezeletlen h2h készség %1 a GetPlrByPlrDamage-ben.</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="86"/>
         <source>Resistance to %1 damage</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sérülésnek való ellenállás</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="90"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="97"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="99"/>
         <source>slash</source>
-        <translation type="unfinished"></translation>
+        <translation>vágás</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="91"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="98"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="100"/>
         <source>blunt</source>
-        <translation type="unfinished"></translation>
+        <translation>tompa</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="92"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="99"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="101"/>
         <source>puncture</source>
-        <translation type="unfinished"></translation>
+        <translation>szúrás</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="93"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="100"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="102"/>
         <source>fire</source>
-        <translation type="unfinished"></translation>
+        <translation>tűz</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="94"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="101"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="103"/>
         <source>lightning</source>
-        <translation type="unfinished"></translation>
+        <translation>villám</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="95"/>
-        <location filename="../source/itemselectordialog.cpp" line="290"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="102"/>
+        <location filename="../source/itemselectordialog.cpp" line="294"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="104"/>
         <source>magic</source>
-        <translation type="unfinished"></translation>
+        <translation>mágikus</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="96"/>
-        <location filename="../source/monsterdetailswidget.cpp" line="103"/>
+        <location filename="../source/monsterdetailswidget.cpp" line="105"/>
         <source>acid</source>
-        <translation type="unfinished"></translation>
+        <translation>sav</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="105"/>
         <source>Walk speed: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyaloglási sebesség: %1 (%2)</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="110"/>
-        <location filename="../source/herodetailswidget.cpp" line="128"/>
-        <location filename="../source/herodetailswidget.cpp" line="147"/>
-        <location filename="../source/herodetailswidget.cpp" line="165"/>
-        <location filename="../source/herodetailswidget.cpp" line="183"/>
+        <location filename="../source/herodetailswidget.cpp" line="138"/>
+        <location filename="../source/herodetailswidget.cpp" line="156"/>
         <source>Normal</source>
-        <translation type="unfinished">Normál</translation>
+        <translation>Normál</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="111"/>
-        <location filename="../source/herodetailswidget.cpp" line="130"/>
-        <location filename="../source/herodetailswidget.cpp" line="148"/>
-        <location filename="../source/herodetailswidget.cpp" line="166"/>
-        <location filename="../source/herodetailswidget.cpp" line="185"/>
+        <location filename="../source/herodetailswidget.cpp" line="139"/>
+        <location filename="../source/herodetailswidget.cpp" line="157"/>
         <source>Fast</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyors</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="112"/>
-        <location filename="../source/herodetailswidget.cpp" line="131"/>
-        <location filename="../source/herodetailswidget.cpp" line="149"/>
-        <location filename="../source/herodetailswidget.cpp" line="167"/>
-        <location filename="../source/herodetailswidget.cpp" line="186"/>
+        <location filename="../source/herodetailswidget.cpp" line="140"/>
+        <location filename="../source/herodetailswidget.cpp" line="158"/>
         <source>Faster</source>
-        <translation type="unfinished"></translation>
+        <translation>Gyorsabb</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="113"/>
-        <location filename="../source/herodetailswidget.cpp" line="132"/>
-        <location filename="../source/herodetailswidget.cpp" line="150"/>
-        <location filename="../source/herodetailswidget.cpp" line="168"/>
-        <location filename="../source/herodetailswidget.cpp" line="187"/>
+        <location filename="../source/herodetailswidget.cpp" line="141"/>
+        <location filename="../source/herodetailswidget.cpp" line="159"/>
         <source>Fastest</source>
-        <translation type="unfinished"></translation>
+        <translation>Leggyorsabb</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="114"/>
-        <location filename="../source/herodetailswidget.cpp" line="133"/>
-        <location filename="../source/herodetailswidget.cpp" line="151"/>
-        <location filename="../source/herodetailswidget.cpp" line="169"/>
-        <location filename="../source/herodetailswidget.cpp" line="188"/>
+        <location filename="../source/herodetailswidget.cpp" line="142"/>
+        <location filename="../source/herodetailswidget.cpp" line="160"/>
         <location filename="../source/skilldetailswidget.cpp" line="131"/>
         <source>N/A</source>
-        <translation type="unfinished">N/A</translation>
+        <translation>N/A</translation>
     </message>
     <message>
         <location filename="../source/herodetailswidget.cpp" line="123"/>
-        <source>Attack speed: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <source>Attack speed: %1</source>
+        <translation>Támadási sebesség: %1</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.cpp" line="129"/>
-        <location filename="../source/herodetailswidget.cpp" line="184"/>
-        <source>Quick</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.cpp" line="142"/>
+        <location filename="../source/herodetailswidget.cpp" line="133"/>
         <source>Cast speed: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Varázslási sebesség: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.cpp" line="160"/>
+        <location filename="../source/herodetailswidget.cpp" line="151"/>
         <source>Recovery speed: %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Helyreállási sebesség: %1 (%2)</translation>
     </message>
     <message>
-        <location filename="../source/herodetailswidget.cpp" line="172"/>
+        <location filename="../source/herodetailswidget.cpp" line="163"/>
         <source>%1ms</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/herodetailswidget.cpp" line="178"/>
-        <source>Arrow velocity: %1 (%2)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="272"/>
-        <source>to hit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="273"/>
-        <source>damage %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="274"/>
-        <source>to hit + damage</source>
-        <translation type="unfinished"></translation>
+        <translation>%1ms</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="275"/>
-        <source>armor %</source>
-        <translation type="unfinished"></translation>
+        <source>to hit</source>
+        <translation>ütni</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="276"/>
-        <source>fire res.</source>
-        <translation type="unfinished"></translation>
+        <source>damage %</source>
+        <translation>sebzés %</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="277"/>
-        <source>light res.</source>
-        <translation type="unfinished"></translation>
+        <source>to hit + damage</source>
+        <translation>ütni + sebezni</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="278"/>
-        <source>magic res.</source>
-        <translation type="unfinished"></translation>
+        <source>armor %</source>
+        <translation>páncél %</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="279"/>
-        <source>acid res.</source>
-        <translation type="unfinished"></translation>
+        <source>block %</source>
+        <translation>blokk %</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="280"/>
-        <source>all res.</source>
-        <translation type="unfinished"></translation>
+        <source>fire res.</source>
+        <translation>tűz ell.</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="281"/>
-        <source>crit. %</source>
-        <translation type="unfinished"></translation>
+        <source>light res.</source>
+        <translation>villám ell.</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="282"/>
-        <source>skill</source>
-        <translation type="unfinished"></translation>
+        <source>magic res.</source>
+        <translation>mágia ell.</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="283"/>
-        <source>skills</source>
-        <translation type="unfinished"></translation>
+        <source>acid res.</source>
+        <translation>sav ell.</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="284"/>
+        <source>all res.</source>
+        <translation>minden res.</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="285"/>
+        <source>crit. %</source>
+        <translation>krit. %</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="286"/>
+        <source>skill</source>
+        <translation>készség</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="287"/>
+        <source>skills</source>
+        <translation>készségek</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="288"/>
         <source>charges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="285"/>
-        <source>fire damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="286"/>
-        <source>lightning  damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="287"/>
-        <source>magic damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="288"/>
-        <source>acid damage</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../source/itemselectordialog.cpp" line="289"/>
-        <source>strength</source>
-        <translation type="unfinished"></translation>
+        <source>fire damage</source>
+        <translation>tűz sebzés</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="290"/>
+        <source>lightning  damage</source>
+        <translation>villám sebzés</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="291"/>
-        <source>dexterity</source>
-        <translation type="unfinished"></translation>
+        <source>magic damage</source>
+        <translation>mágikus sebzés</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="292"/>
-        <source>vitality</source>
-        <translation type="unfinished"></translation>
+        <source>acid damage</source>
+        <translation>savas sebzés</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="293"/>
-        <source>attributes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="294"/>
-        <source>get hit</source>
-        <translation type="unfinished"></translation>
+        <source>strength</source>
+        <translation>erő</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="295"/>
-        <source>life</source>
-        <translation type="unfinished"></translation>
+        <source>dexterity</source>
+        <translation>ügyesség</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="296"/>
-        <source>mana</source>
-        <translation type="unfinished"></translation>
+        <source>vitality</source>
+        <translation>életerő</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="297"/>
-        <source>durability +</source>
-        <translation type="unfinished"></translation>
+        <source>attributes</source>
+        <translation>attribútumok</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="298"/>
-        <source>durability -</source>
-        <translation type="unfinished"></translation>
+        <source>damage taken</source>
+        <translation>sérülés</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="299"/>
-        <source>indestructible</source>
-        <translation type="unfinished"></translation>
+        <source>phy. damage taken</source>
+        <translation>fizikai sérülés</translation>
     </message>
     <message>
-        <location filename="../source/itemselectordialog.cpp" line="300"/>
-        <source>light range</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="303"/>
-        <source>no mana</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="304"/>
-        <source>knockback</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="305"/>
-        <source>stun</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="307"/>
-        <source>no bleed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="308"/>
-        <source>bleed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="309"/>
-        <source>steal mana</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="310"/>
-        <source>steal life</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="311"/>
-        <source>penetrate phy.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="312"/>
-        <source>attack speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="313"/>
-        <source>recovery speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="314"/>
-        <source>block speed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="315"/>
-        <source>damage +</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="316"/>
-        <source>damage *</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="317"/>
-        <source>durability *</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="318"/>
-        <source>no min. strength</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="319"/>
-        <source>spell</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="320"/>
-        <source>one handed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="321"/>
-        <source>all res. zero</source>
-        <translation type="unfinished"></translation>
+        <location filename="../source/itemselectordialog.cpp" line="302"/>
+        <source>durability</source>
+        <translation>tartósság</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="322"/>
-        <source>drain life</source>
-        <translation type="unfinished"></translation>
+        <source>altered requirements</source>
+        <translation>megváltozott követelmények</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="300"/>
+        <source>life</source>
+        <translation>élet</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="301"/>
+        <source>mana</source>
+        <translation>mana</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="303"/>
+        <source>indestructible</source>
+        <translation>elpusztíthatatlan</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="304"/>
+        <source>light range</source>
+        <translation>fénytartomány</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="307"/>
+        <source>no mana</source>
+        <translation>nincs mana</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="308"/>
+        <source>knockback</source>
+        <translation>visszalök</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="309"/>
+        <source>stun</source>
+        <translation>elkábít</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="311"/>
+        <source>no bleed</source>
+        <translation>nincs vérzés</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="312"/>
+        <source>bleed</source>
+        <translation>vérzik</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="313"/>
+        <source>steal mana</source>
+        <translation>manát lop</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="314"/>
+        <source>steal life</source>
+        <translation>életet lop</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="315"/>
+        <source>penetrate phy.</source>
+        <translation>átüt fiz.</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="316"/>
+        <source>attack speed</source>
+        <translation>támadási sebesség</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="317"/>
+        <source>recovery speed</source>
+        <translation>helyreállási sebesség</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="318"/>
+        <source>block speed</source>
+        <translation>blokkolási sebesség</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="319"/>
+        <source>damage +</source>
+        <translation>sebzés +</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="320"/>
+        <source>damage *</source>
+        <translation>sebzés *</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="321"/>
+        <source>durability *</source>
+        <translation>tartósság *</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="323"/>
+        <source>spell</source>
+        <translation>varázslat</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="324"/>
-        <source>armor *</source>
-        <translation type="unfinished"></translation>
+        <source>one handed</source>
+        <translation>egykezes</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="325"/>
-        <source>armor +</source>
-        <translation type="unfinished"></translation>
+        <source>all res. zero</source>
+        <translation>minden rez. nulla</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="326"/>
-        <source>damage % durability -</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../source/itemselectordialog.cpp" line="327"/>
-        <source>mana to life</source>
-        <translation type="unfinished"></translation>
+        <source>drain life</source>
+        <translation>életet facsar</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="328"/>
-        <source>life to mana</source>
-        <translation type="unfinished"></translation>
+        <source>armor *</source>
+        <translation>páncél *</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="329"/>
-        <source>cast speed</source>
-        <translation type="unfinished"></translation>
+        <source>armor +</source>
+        <translation>páncél +</translation>
     </message>
     <message>
         <location filename="../source/itemselectordialog.cpp" line="330"/>
+        <source>damage % durability -</source>
+        <translation>sebzés % tartósság -</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="331"/>
+        <source>mana to life</source>
+        <translation>manát életre</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="332"/>
+        <source>life to mana</source>
+        <translation>életet manára</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="333"/>
+        <source>cast speed</source>
+        <translation>varázslási sebesség</translation>
+    </message>
+    <message>
+        <location filename="../source/itemselectordialog.cpp" line="334"/>
         <source>walk speed</source>
-        <translation type="unfinished"></translation>
+        <translation>séta sebessége</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.cpp" line="133"/>
         <source>Fire</source>
-        <translation type="unfinished"></translation>
+        <translation>Tűz</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.cpp" line="134"/>
         <source>Lightning</source>
-        <translation type="unfinished"></translation>
+        <translation>Villám</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.cpp" line="135"/>
         <source>Magic</source>
-        <translation type="unfinished"></translation>
+        <translation>Mágikus</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.cpp" line="136"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Egyik sem</translation>
     </message>
 </context>
 <context>
@@ -2775,12 +2719,12 @@
     <message>
         <location filename="../source/settingsdialog.ui" line="50"/>
         <source>Assets Folder:</source>
-        <translation type="unfinished">Állományok könyvtára:</translation>
+        <translation>Állományok könyvtára:</translation>
     </message>
     <message>
         <location filename="../source/settingsdialog.ui" line="64"/>
         <source>Browse</source>
-        <translation type="unfinished">Tallózás</translation>
+        <translation>Tallózás</translation>
     </message>
     <message>
         <location filename="../source/settingsdialog.ui" line="71"/>
@@ -2848,7 +2792,7 @@
     <message>
         <location filename="../source/settingsdialog.cpp" line="75"/>
         <source>Select Assets Folder</source>
-        <translation type="unfinished">Állományok könyvtára</translation>
+        <translation>Állományok könyvtára</translation>
     </message>
     <message>
         <location filename="../source/settingsdialog.cpp" line="242"/>
@@ -2866,124 +2810,124 @@
     <message>
         <location filename="../source/skilldetailswidget.ui" line="29"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Név:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="42"/>
         <source>AnimType:</source>
-        <translation type="unfinished"></translation>
+        <translation>AnimTípus:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="55"/>
         <source>Level:</source>
-        <translation type="unfinished">Szint:</translation>
+        <translation>Szint:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="68"/>
         <source>Cost:</source>
-        <translation type="unfinished"></translation>
+        <translation>Költség:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="81"/>
         <location filename="../source/skilldetailswidget.ui" line="148"/>
         <source>Desc.:</source>
-        <translation type="unfinished"></translation>
+        <translation>Leírás:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="94"/>
         <source>Source:</source>
-        <translation type="unfinished"></translation>
+        <translation>Forrás:</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="106"/>
         <source>From ability</source>
-        <translation type="unfinished"></translation>
+        <translation>Képességből</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="116"/>
         <source>From memory</source>
-        <translation type="unfinished"></translation>
+        <translation>Emlékezetből</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="126"/>
         <source>From inventory (scroll / rune)</source>
-        <translation type="unfinished"></translation>
+        <translation>Hátiból (tekercs / rúna)</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="136"/>
         <source>From equipment</source>
-        <translation type="unfinished"></translation>
+        <translation>Felszerelésből</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="160"/>
         <location filename="../source/skilldetailswidget.ui" line="231"/>
         <source>Area damage (alternative hit chance calculation)</source>
-        <translation type="unfinished"></translation>
+        <translation>Területi sebzés (alternatív találati esély számítás)</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="170"/>
         <location filename="../source/skilldetailswidget.ui" line="241"/>
-        <source>can not be blocked</source>
-        <translation type="unfinished"></translation>
+        <source>Damage Over Time (Get-Hit is ineffective)</source>
+        <translation>Folyamatos sebzés (a Get-Hit hatástalan)</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="180"/>
         <location filename="../source/skilldetailswidget.ui" line="251"/>
-        <source>Damage Over Time (Get-Hit is ineffective)</source>
-        <translation type="unfinished"></translation>
+        <source>Leads monsters to the player</source>
+        <translation>Szörnyeket vezet a játékoshoz</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="190"/>
         <location filename="../source/skilldetailswidget.ui" line="261"/>
-        <source>Leads monsters to the player</source>
-        <translation type="unfinished"></translation>
+        <source>Interacts with Shroud</source>
+        <translation>Kölcsönhatásba lép a Shroud varázslattal</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="200"/>
         <location filename="../source/skilldetailswidget.ui" line="271"/>
-        <source>Interacts with Shroud</source>
-        <translation type="unfinished"></translation>
+        <source>guided missile</source>
+        <translation>irányított lövedék</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="210"/>
         <location filename="../source/skilldetailswidget.ui" line="281"/>
         <source>Arrow Missile</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyíl</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="311"/>
         <source>Set skills to zero</source>
-        <translation type="unfinished"></translation>
+        <translation>Állítsa nullára a készségeket</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="314"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Reset</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="321"/>
         <source>Set skills to maximum</source>
-        <translation type="unfinished"></translation>
+        <translation>Állítsa a képességeket a maximumra</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="324"/>
         <source>Max</source>
-        <translation type="unfinished"></translation>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="338"/>
         <source>Submit</source>
-        <translation type="unfinished"></translation>
+        <translation>Mehet</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.ui" line="345"/>
         <source>Cancel</source>
-        <translation type="unfinished">Mégse</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../source/skilldetailswidget.cpp" line="166"/>
         <source>Not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem elérhető</translation>
     </message>
 </context>
 </TS>
