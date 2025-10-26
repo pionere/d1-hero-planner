@@ -10,16 +10,17 @@ DEVILUTION_BEGIN_NAMESPACE
 static void PackEar(PkItemStruct* dest, const ItemStruct* src)
 {
 	dest->wIndx = static_cast<uint16_t>(IDI_EAR);
-	dest->wCI = *(uint16_t*)&src->_iName[7];
-	dest->dwSeed = *(int32_t*)&src->_iName[9];
-	dest->bId = src->_iName[13];
-	dest->bDur = src->_iName[14];
-	dest->bMDur = src->_iName[15];
-	dest->bCh = src->_iName[16];
-	dest->bMCh = src->_iName[17];
+	dest->wCI = *(uint16_t*)&src->_iPlrName[0];
+	dest->dwSeed = *(int32_t*)&src->_iPlrName[2];
+	dest->bId = src->_iPlrName[6];
+	dest->bDur = src->_iPlrName[7];
+	dest->bMDur = src->_iPlrName[8];
+	dest->bCh = src->_iPlrName[9];
+	dest->bMCh = src->_iPlrName[10];
 	static_assert(MAXCHARLEVEL < (1 << 6), "PackPkItem stores the player level of ears in 6 bits.");
-	dest->wValue = static_cast<uint16_t>(src->_ivalue | (src->_iName[18] << 8) | ((src->_iCurs - ICURS_EAR_SORCERER) << 6));
-	dest->dwBuff = *(uint32_t*)&src->_iName[19];
+	dest->wValue = static_cast<uint16_t>(src->_ivalue | (src->_iPlrName[11] << 8) | ((src->_iCurs - ICURS_EAR_SORCERER) << 6));
+	dest->dwBuff = *(uint32_t*)&src->_iPlrName[12];
+	static_assert(sizeof(src->_iPlrName) == 12 + sizeof(dest->dwBuff), "packed ear-item does is not stored correctly");
 }
 
 void PackPkItem(PkItemStruct* dest, const ItemStruct* src)
@@ -43,8 +44,7 @@ void PackPkItem(PkItemStruct* dest, const ItemStruct* src)
 
 static void UnPackEar(const PkItemStruct* src)
 {
-	static_assert(sizeof(items[MAXITEMS]._iName) >= sizeof("Ear of ") + 16, "UnPackEar might write too much data to _iName.");
-	char* cursor = &items[MAXITEMS]._iName[sizeof("Ear of ") - 1];
+	char* cursor = &items[MAXITEMS]._iPlrName[0];
 
 	*(uint16_t*)&cursor[0] = src->wCI;
 	*(int32_t*)&cursor[2] = src->dwSeed;
@@ -55,11 +55,11 @@ static void UnPackEar(const PkItemStruct* src)
 	cursor[10] = src->bMCh;
 	cursor[11] = src->wValue >> 8;
 	*(uint32_t*)&cursor[12] = src->dwBuff;
-	cursor[16] = '\0';
+	// cursor[16] = '\0';
 	items[MAXITEMS]._iCurs = ((src->wValue >> 6) & 3) + ICURS_EAR_SORCERER;
 	items[MAXITEMS]._ivalue = src->wValue & 0x3F;
-	items[MAXITEMS]._iCreateInfo = SwapLE16(*(WORD*)&items[MAXITEMS]._iName[7]);
-	items[MAXITEMS]._iSeed = SwapLE32(*(DWORD*)&items[MAXITEMS]._iName[9]);
+	items[MAXITEMS]._iCreateInfo = SwapLE16(*(WORD*)&items[MAXITEMS]._iPlrName[0]);
+	items[MAXITEMS]._iSeed = SwapLE32(*(DWORD*)&items[MAXITEMS]._iPlrName[2]);
 }
 
 void UnPackPkItem(const PkItemStruct* src)
@@ -144,19 +144,9 @@ void PackPlayer(PkPlayerStruct* pPack, int pnum)
 	pPack->pManaBase = p->_pManaBase;
 	pPack->pMaxManaBase = p->_pMaxManaBase;
 
-	/*memcpy(pPack->pAtkSkillHotKey, p->_pAtkSkillHotKey, sizeof(pPack->pAtkSkillHotKey));
-	memcpy(pPack->pAtkSkillTypeHotKey, p->_pAtkSkillTypeHotKey, sizeof(pPack->pAtkSkillTypeHotKey));
-	memcpy(pPack->pMoveSkillHotKey, p->_pMoveSkillHotKey, sizeof(pPack->pMoveSkillHotKey));
-	memcpy(pPack->pMoveSkillTypeHotKey, p->_pMoveSkillTypeHotKey, sizeof(pPack->pMoveSkillTypeHotKey));
-	memcpy(pPack->pAltAtkSkillHotKey, p->_pAltAtkSkillHotKey, sizeof(pPack->pAltAtkSkillHotKey));
-	memcpy(pPack->pAltAtkSkillTypeHotKey, p->_pAltAtkSkillTypeHotKey, sizeof(pPack->pAltAtkSkillTypeHotKey));
-	memcpy(pPack->pAltMoveSkillHotKey, p->_pAltMoveSkillHotKey, sizeof(pPack->pAltMoveSkillHotKey));
-	memcpy(pPack->pAltMoveSkillTypeHotKey, p->_pAltMoveSkillTypeHotKey, sizeof(pPack->pAltMoveSkillTypeHotKey));
-	memcpy(pPack->pAltAtkSkillSwapKey, p->_pAltAtkSkillSwapKey, sizeof(pPack->pAltAtkSkillSwapKey));
-	memcpy(pPack->pAltAtkSkillTypeSwapKey, p->_pAltAtkSkillTypeSwapKey, sizeof(pPack->pAltAtkSkillTypeSwapKey));
-	memcpy(pPack->pAltMoveSkillSwapKey, p->_pAltMoveSkillSwapKey, sizeof(pPack->pAltMoveSkillSwapKey));
-	memcpy(pPack->pAltMoveSkillTypeSwapKey, p->_pAltMoveSkillTypeSwapKey, sizeof(pPack->pAltMoveSkillTypeSwapKey));*/
-	memcpy(pPack->pAtkSkillHotKey, plr._pAtkSkillHotKey, offsetof(PlayerStruct, _pAltMoveSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) + sizeof(plr._pAltMoveSkillTypeSwapKey));
+	static_assert(offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) + sizeof(plr._pAltSkillSwapKey) ==
+		offsetof(PkPlayerStruct, pAltSkillSwapKey) - offsetof(PkPlayerStruct, pSkillHotKey) + sizeof(pPack->pAltSkillSwapKey), "memcpy failes to pack the hotkeys for skills of the player");
+	memcpy(pPack->pSkillHotKey, plr._pSkillHotKey, offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) + sizeof(plr._pAltSkillSwapKey));
 
 	static_assert(sizeof(p->_pSkillLvlBase[0]) == 1, "Big vs. Little-Endian requires a byte-by-byte copy I.");
 	static_assert(sizeof(pPack->pSkillLvlBase[0]) == 1, "Big vs. Little-Endian requires a byte-by-byte copy II.");
@@ -255,65 +245,9 @@ void UnPackPlayer(const PkPlayerStruct* pPack, int pnum)
 	plr._pMaxManaBase = pPack->pMaxManaBase;
 	plr._pManaBase = pPack->pManaBase;
 
-	/*memcpy(plr._pAtkSkillHotKey, pPack->pAtkSkillHotKey, sizeof(plr._pAtkSkillHotKey));
-	memcpy(plr._pAtkSkillTypeHotKey, pPack->pAtkSkillTypeHotKey, sizeof(plr._pAtkSkillTypeHotKey));
-	memcpy(plr._pMoveSkillHotKey, pPack->pMoveSkillHotKey, sizeof(plr._pMoveSkillHotKey));
-	memcpy(plr._pMoveSkillTypeHotKey, pPack->pMoveSkillTypeHotKey, sizeof(plr._pMoveSkillTypeHotKey));
-	memcpy(plr._pAltAtkSkillHotKey, pPack->pAltAtkSkillHotKey, sizeof(plr._pAltAtkSkillHotKey));
-	memcpy(plr._pAltAtkSkillTypeHotKey, pPack->pAltAtkSkillTypeHotKey, sizeof(plr._pAltAtkSkillTypeHotKey));
-	memcpy(plr._pAltMoveSkillHotKey, pPack->pAltMoveSkillHotKey, sizeof(plr._pAltMoveSkillHotKey));
-	memcpy(plr._pAltMoveSkillTypeHotKey, pPack->pAltMoveSkillTypeHotKey, sizeof(plr._pAltMoveSkillTypeHotKey));
-	memcpy(plr._pAltAtkSkillSwapKey, pPack->pAltAtkSkillSwapKey, sizeof(plr._pAltAtkSkillSwapKey));
-	memcpy(plr._pAltAtkSkillTypeSwapKey, pPack->pAltAtkSkillTypeSwapKey, sizeof(plr._pAltAtkSkillTypeSwapKey));
-	memcpy(plr._pAltMoveSkillSwapKey, pPack->pAltMoveSkillSwapKey, sizeof(plr._pAltMoveSkillSwapKey));
-	memcpy(plr._pAltMoveSkillTypeSwapKey, pPack->pAltMoveSkillTypeSwapKey, sizeof(plr._pAltMoveSkillTypeSwapKey));*/
-	static_assert(offsetof(PlayerStruct, _pAtkSkillTypeHotKey) == offsetof(PlayerStruct, _pAtkSkillHotKey) + sizeof(plr._pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance I.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillHotKey) == offsetof(PlayerStruct, _pAtkSkillTypeHotKey) + sizeof(plr._pAtkSkillTypeHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance II.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillTypeHotKey) == offsetof(PlayerStruct, _pMoveSkillHotKey) + sizeof(plr._pMoveSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance III.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillHotKey) == offsetof(PlayerStruct, _pMoveSkillTypeHotKey) + sizeof(plr._pMoveSkillTypeHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance IV.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillTypeHotKey) == offsetof(PlayerStruct, _pAltAtkSkillHotKey) + sizeof(plr._pAltAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance V.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillHotKey) == offsetof(PlayerStruct, _pAltAtkSkillTypeHotKey) + sizeof(plr._pAltAtkSkillTypeHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance VI.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillTypeHotKey) == offsetof(PlayerStruct, _pAltMoveSkillHotKey) + sizeof(plr._pAltMoveSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance VII.");
-	static_assert(offsetof(PlayerStruct, _pAtkSkillSwapKey) == offsetof(PlayerStruct, _pAltMoveSkillTypeHotKey) + sizeof(plr._pAltMoveSkillTypeHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance VIII.");
-	static_assert(offsetof(PlayerStruct, _pAtkSkillTypeSwapKey) == offsetof(PlayerStruct, _pAtkSkillSwapKey) + sizeof(plr._pAtkSkillSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XI.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillSwapKey) == offsetof(PlayerStruct, _pAtkSkillTypeSwapKey) + sizeof(plr._pAtkSkillTypeSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance X.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillTypeSwapKey) == offsetof(PlayerStruct, _pMoveSkillSwapKey) + sizeof(plr._pMoveSkillSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XI.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillSwapKey) == offsetof(PlayerStruct, _pMoveSkillTypeSwapKey) + sizeof(plr._pMoveSkillTypeSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XII.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillTypeSwapKey) == offsetof(PlayerStruct, _pAltAtkSkillSwapKey) + sizeof(plr._pAltAtkSkillSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XIII.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillSwapKey) == offsetof(PlayerStruct, _pAltAtkSkillTypeSwapKey) + sizeof(plr._pAltAtkSkillTypeSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XIV.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillTypeSwapKey) == offsetof(PlayerStruct, _pAltMoveSkillSwapKey) + sizeof(plr._pAltMoveSkillSwapKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XV.");
-	static_assert(sizeof(plr._pAtkSkillHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XVI.");
-	static_assert(sizeof(plr._pAtkSkillTypeHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XVII.");
-	static_assert(sizeof(plr._pMoveSkillHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XVIII.");
-	static_assert(sizeof(plr._pMoveSkillTypeHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XIX.");
-	static_assert(sizeof(plr._pAltAtkSkillHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XX.");
-	static_assert(sizeof(plr._pAltAtkSkillTypeHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXI.");
-	static_assert(sizeof(plr._pAltMoveSkillHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXII.");
-	static_assert(sizeof(plr._pAltMoveSkillTypeHotKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXIII.");
-	static_assert(sizeof(plr._pAtkSkillSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXIV.");
-	static_assert(sizeof(plr._pAtkSkillTypeSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXV.");
-	static_assert(sizeof(plr._pMoveSkillSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXVI.");
-	static_assert(sizeof(plr._pMoveSkillTypeSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXVII.");
-	static_assert(sizeof(plr._pAltAtkSkillSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXVIII.");
-	static_assert(sizeof(plr._pAltAtkSkillTypeSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXIX.");
-	static_assert(sizeof(plr._pAltMoveSkillSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXX.");
-	static_assert(sizeof(plr._pAltMoveSkillTypeSwapKey[0]) == 1, "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXII.");
-	static_assert(offsetof(PlayerStruct, _pAtkSkillTypeHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAtkSkillTypeHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXIII.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pMoveSkillHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXIV.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillTypeHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pMoveSkillTypeHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXV.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltAtkSkillHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXVI.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillTypeHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltAtkSkillTypeHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXVII.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltMoveSkillHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXVIII.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillTypeHotKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltMoveSkillTypeHotKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXIX.");
-	static_assert(offsetof(PlayerStruct, _pAtkSkillSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAtkSkillSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXX.");
-	static_assert(offsetof(PlayerStruct, _pAtkSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAtkSkillTypeSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXI.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pMoveSkillSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXII.");
-	static_assert(offsetof(PlayerStruct, _pMoveSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pMoveSkillTypeSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXIII.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltAtkSkillSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXIV.");
-	static_assert(offsetof(PlayerStruct, _pAltAtkSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltAtkSkillTypeSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXV.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltMoveSkillSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXVI.");
-	static_assert(offsetof(PlayerStruct, _pAltMoveSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) == offsetof(PkPlayerStruct, pAltMoveSkillTypeSwapKey) - offsetof(PkPlayerStruct, pAtkSkillHotKey), "(Un)PackPlayer uses DWORD-memcpy to optimize performance XXXXVII.");
-	memcpy(plr._pAtkSkillHotKey, pPack->pAtkSkillHotKey, offsetof(PlayerStruct, _pAltMoveSkillTypeSwapKey) - offsetof(PlayerStruct, _pAtkSkillHotKey) + sizeof(plr._pAltMoveSkillTypeSwapKey));
+	static_assert(offsetof(PkPlayerStruct, pAltSkillSwapKey) - offsetof(PkPlayerStruct, pSkillHotKey) + sizeof(pPack->pAltSkillSwapKey) ==
+		offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) + sizeof(plr._pAltSkillSwapKey), "memcpy failes to unpack the hotkeys for skills of the player");
+	memcpy(plr._pSkillHotKey, pPack->pSkillHotKey, offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) + sizeof(plr._pAltSkillSwapKey));
 
 	static_assert(sizeof(plr._pSkillLvlBase[0]) == 1, "Big vs. Little-Endian requires a byte-by-byte copy V.");
 	static_assert(sizeof(pPack->pSkillLvlBase[0]) == 1, "Big vs. Little-Endian requires a byte-by-byte copy VI.");
@@ -361,7 +295,7 @@ void UnPackPlayer(const PkPlayerStruct* pPack, int pnum)
 	plr._pmode = PM_NEWLVL; // used by CalcPlrInv
 	// commented out, because these should not matter
 	//plr._pDestAction = ACTION_NONE;
-	//plr._pInvincible = 0;	
+	//plr._pInvincible = 0;
 	//plr._plid = NO_LIGHT;
 	//plr._pvid = NO_VISION;
 

@@ -517,7 +517,7 @@ void HeroView::ShowContextMenu(const QPoint &pos)
             action->setChecked(true);
             action->setDisabled(true);
         } else {
-            action = new ItemAction(this->hero, ii, ItemName(is), ii);
+            action = new ItemAction(this->hero, ii, is->_iName, ii);
             action->setChecked(true);
             action->setDisabled(true);
             actions.append(action);
@@ -555,7 +555,7 @@ void HeroView::ShowContextMenu(const QPoint &pos)
                     continue;
                 break;
             }
-            action = new ItemAction(this->hero, ii, ItemName(is), i);
+            action = new ItemAction(this->hero, ii, is->_iName, i);
             actions.append(action);
         }
         // if (!actions.isEmpty()) {

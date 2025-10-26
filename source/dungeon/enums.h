@@ -245,7 +245,6 @@ typedef enum item_misc_id {
 	IMISC_FULLREJUV,
 	IMISC_SCROLL,
 	IMISC_BOOK,
-	IMISC_UNIQUE,
 	IMISC_EAR,
 	IMISC_SPECELIX,
 	IMISC_OILQLTY,
@@ -435,6 +434,11 @@ typedef enum item_effect_type {
 	IPL_FASTCAST,
 	IPL_FASTWALK,
 	IPL_INVALID          = 0xFF,
+
+	IMP_LVLMOD  = 0,
+	IMP_LVLGAIN = 1,
+	IMP_SETLVL  = 2,
+	IMP_AREAMOD = 3,
 } item_effect_type;
 
 typedef enum item_affix_range {
@@ -2042,6 +2046,7 @@ typedef enum missile_id {
 	MIS_MANASHIELD,
 	MIS_INFRA,
 	MIS_RAGE,
+	MIS_PULSE,
 #ifdef HELLFIRE
 	//MIS_LIGHTWALLC,
 	//MIS_LIGHTWALL,
@@ -3517,8 +3522,6 @@ typedef enum dungeon_message2 {
 typedef enum diablo_message {
 	EMSG_NONE,
 	EMSG_DESYNC,
-	EMSG_LOADING,
-	EMSG_SAVING,
 	EMSG_SHRINE_HIDDEN,
 	EMSG_SHRINE_GLOOMY,
 	EMSG_SHRINE_WEIRD,
@@ -3772,14 +3775,14 @@ typedef enum direction {
 
 typedef enum _scroll_direction {
 	SDIR_NONE,
-	SDIR_N,
-	SDIR_NE,
-	SDIR_E,
-	SDIR_SE,
 	SDIR_S,
 	SDIR_SW,
 	SDIR_W,
 	SDIR_NW,
+	SDIR_N,
+	SDIR_NE,
+	SDIR_E,
+	SDIR_SE,
 } _scroll_direction;
 
 typedef enum _path_direction {
@@ -3792,6 +3795,13 @@ typedef enum _path_direction {
 	PDIR_SE,
 	PDIR_SW
 } _path_direction;
+
+typedef enum _menu_direction {
+	MDIR_UP,
+	MDIR_DOWN,
+	MDIR_LEFT,
+	MDIR_RIGHT,
+} _menu_direction;
 
 typedef enum lvl_entry {
 	ENTRY_MAIN,
@@ -3849,6 +3859,7 @@ typedef enum spell_id {
 	SPL_WIND,
 	SPL_SHROUD,
 	SPL_SWAMP,
+	SPL_PULSE,
 	SPL_GUARDIAN,
 	SPL_GOLEM,
 	SPL_STONE,
@@ -4123,19 +4134,6 @@ typedef enum server_type {
 	SRV_BASIC,
 	SRV_DIRECT,
 } server_type;
-
-typedef enum panel_button_id {
-	PANBTN_MAINMENU,
-	PANBTN_OPTIONS,
-	PANBTN_CHARINFO,
-	PANBTN_INVENTORY,
-	PANBTN_SPELLBOOK,
-	PANBTN_QLOG,
-	PANBTN_AUTOMAP,
-	PANBTN_SENDMSG,
-	PANBTN_TEAMBOOK,
-	NUM_PANBTNS
-} panel_button_id;
 
 typedef enum attribute_id {
 	ATTRIB_STR,
@@ -4477,6 +4475,13 @@ typedef enum player_skill_flags {
 	SFLAG_RAGE    = 1 << 4,
 } player_skill_flags;
 
+typedef enum skill_details_type {
+	SDT_NONE,
+	SDT_DAMAGE,
+	SDT_DAMAGE_MELEE,
+	SDT_DAMAGE_RANGED,
+} skill_details_type;
+
 typedef enum window_active {
 	WND_INV,
 	WND_CHAR,
@@ -4632,6 +4637,67 @@ typedef enum drlg_flag {
 	DRLG_PROTECTED  = 0x40,
 	DRLG_FROZEN     = 0x80,
 } drlg_flag;
+
+typedef enum movie_flag {
+	MOV_SKIP       = 1 << 0, // Makes the video skippable by mouse-button or keypress (not just ESC).
+	MOV_LOOP       = 1 << 1, // Playback in loop.
+} movie_flag;
+
+typedef enum movie_playback_result {
+	MPR_DONE,   // the movie is finished
+	MPR_CANCEL, // the movie is cancelled
+	MPR_QUIT,   // the user wants to leave the game
+} movie_playback_result;
+
+typedef enum _artfonts {
+	AF_SMALL,
+	AF_SMALLGRAY,
+	AF_MED,
+	AF_MEDGRAY,
+	AF_BIG,
+	AF_BIGGRAY,
+	AF_HUGE,
+	AF_HUGEGRAY,
+} _artfonts;
+
+typedef enum _gmenu_flags {
+	GMF_SLIDER  = 1 << 0,
+	GMF_ENABLED = 1 << 1,
+} _gmenu_flags;
+
+typedef enum gamemenu_id {
+	GMM_EXITGAME,
+	GMM_MAINMENU,
+	GMM_QLOG,
+	GMM_CHARINFO,
+	GMM_INVENTORY,
+	GMM_SKILLLIST,
+	GMM_SPELLBOOK,
+	GMM_AUTOMAP,
+	GMM_SENDMSG,
+	GMM_TEAMBOOK,
+	NUM_GMMS
+} gamemenu_id;
+
+typedef enum mpq_files {
+#if ASSET_MPL != 1
+	MPQ_DEVILHD,
+#endif
+	MPQ_DEVILX,
+#ifdef HELLFIRE
+	//MPQ_HF_OPT2, - does not exist
+	//MPQ_HF_OPT1, - does not exist
+	MPQ_HF_VOICE,
+	MPQ_HF_MUSIC,
+	//MPQ_HF_BARB, - does not exist
+	//MPQ_HF_BARD, - does not exist
+	MPQ_HF_MONK,
+	MPQ_HELLFIRE,
+#endif
+	// MPQ_PATCH_RT, - does not contain relevant files
+	MPQ_DIABDAT,
+	NUM_MPQS
+} mpq_files;
 
 typedef enum game_logic_progress {
 	GLP_NONE,

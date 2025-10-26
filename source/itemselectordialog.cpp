@@ -397,7 +397,7 @@ void ItemSelectorDialog::updateFields()
     this->ui->itemQualityComboBox->setCurrentIndex((ci & CF_DROP_QUALITY) >> 11);
     this->ui->itemQualityComboBox->setEnabled(drop);
 
-    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? ItemName(this->is) : "");
+    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? this->is->_iName : "");
     this->ui->itemName->setStyleSheet(ItemColor(this->is));
     this->itemProps->initialize(this->is);
     this->itemProps->adjustSize();
@@ -879,8 +879,9 @@ start:
         }
         if (prefix.active) {
             if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
-                if (items[MAXITEMS]._iPLSkill != prefix.param1) {
-                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, prefix.param1, preIdx, seed);
+                const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
+                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
             } else if (affix_rnd[preIdx] < prefix.param1 || affix_rnd[preIdx] > prefix.param2) {
@@ -890,8 +891,9 @@ start:
         }
         if (suffix.active) {
             if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
-                if (items[MAXITEMS]._iPLSkill != suffix.param1) {
-                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, suffix.param1, sufIdx, seed);
+                const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
+                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                     goto restart;
                 }
             } else if (affix_rnd[sufIdx] < suffix.param1 || affix_rnd[sufIdx] > suffix.param2) {
@@ -910,8 +912,9 @@ start:
             }
             if (prefix.power != IPL_INVALID) {
                 if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
-                    if (items[MAXITEMS]._iPLSkill != prefix.param1) {
-                        // LogErrorF("missed preval %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, prefix.param1, preIdx, seed);
+                    const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
+                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[0] < prefix.param1 || affix_rnd[0] > prefix.param2) {
@@ -927,8 +930,9 @@ start:
             }
             if (suffix.power != IPL_INVALID) {
                 if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
-                    if (items[MAXITEMS]._iPLSkill != suffix.param1) {
-                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, suffix.param1, sufIdx, seed);
+                    const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
+                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[1] < suffix.param1 || affix_rnd[1] > suffix.param2) {

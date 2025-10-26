@@ -109,8 +109,8 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		sl += myplr._pDexterity >> 3;
 #endif
 	switch (sn) {
-	case SPL_GUARDIAN:
 	case SPL_FIREBOLT:
+	case SPL_GUARDIAN:
 		k = (magic >> 3) + sl;
 		mind = k + 1;
 		maxd = k + 10;
@@ -132,36 +132,42 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind >>= 6;
 		maxd >>= 6;
 		break;
+	case SPL_PULSE:
+		k = (magic >> 2) + (sl << 2);
+		mind = k * 3 / 4u;
+		maxd = k * 5 / 2u;
+		break;
 	case SPL_NULL:
 	case SPL_WALK:
 	case SPL_BLOCK:
-	case SPL_ATTACK:
+	case SPL_RAGE:
+	case SPL_SHROUD:
+	case SPL_SWAMP:
+	case SPL_STONE:
 	case SPL_INFRA:
+	case SPL_MANASHIELD:
+	case SPL_ATTRACT:
 	case SPL_TELEKINESIS:
 	case SPL_TELEPORT:
 	case SPL_RNDTELEPORT:
 	case SPL_TOWN:
+	case SPL_HEAL:
+	case SPL_HEALOTHER:
 	case SPL_RESURRECT:
 	case SPL_IDENTIFY:
+	case SPL_OIL:
 	case SPL_REPAIR:
 	case SPL_RECHARGE:
 	case SPL_DISARM:
-	case SPL_RAGE:
-	case SPL_STONE:
-	case SPL_SWIPE:
-	case SPL_WALLOP:
-	case SPL_WHIPLASH:
 #ifdef HELLFIRE
 	case SPL_BUCKLE:
 	case SPL_WHITTLE:
 	case SPL_RUNESTONE:
 #endif
-	case SPL_HEAL:
-	case SPL_HEALOTHER:
-	case SPL_MANASHIELD:
-	case SPL_ATTRACT:
-	case SPL_SHROUD:
-	case SPL_SWAMP:
+	case SPL_ATTACK:
+	case SPL_WHIPLASH:
+	case SPL_WALLOP:
+	case SPL_SWIPE:
 		QMessageBox::critical(nullptr, "Error", QApplication::tr("Unhandled missile skill %1 in SkillPlrDamage.").arg(sn));
 		break;
 	case SPL_CHARGE:
@@ -340,6 +346,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_BLOODBOIL:
 		mind = (magic >> 2) + (sl << 2) + 10;
 		maxd = (magic >> 2) + (sl << 3) + 10;
+		break;
 	case SPL_CHAIN:
 		mind = 1;
 		maxd = magic;
@@ -363,6 +370,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+		sl = sl * 4 + (magic >> 6);
 		sl = sl > 0 ? sl - 1 : 0;
 		k = monsterdata[MT_GOLEM].mLevel;
 		sl = k + sl;
@@ -485,6 +493,11 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		maxd = mind << 3;
 		mind >>= 6;
 		maxd >>= 6;
+		break;
+	case SPL_PULSE:
+		k = (magic >> 2) + (sl << 2);
+		mind = k * 3 / 4u;
+		maxd = k * 5 / 2u;
 		break;
 	case SPL_NULL:
 	case SPL_WALK:
@@ -621,6 +634,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+		sl = sl * 4 + (magic >> 6);
 		sl = sl > 0 ? sl - 1 : 0;
 		k = monsterdata[MT_GOLEM].mLevel;
 		sl = k + sl;
@@ -939,7 +953,8 @@ int GetBaseMissile(int mtype)
     case MIS_EXAPOCA2:
     case MIS_MANASHIELD:
     case MIS_INFRA:
-    case MIS_RAGE: break;
+    case MIS_RAGE:
+    case MIS_PULSE: break;
 #ifdef HELLFIRE
     //case MIS_LIGHTWALLC:
     //case MIS_LIGHTWALL:
@@ -1058,6 +1073,7 @@ int AddApocaC2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, 
 int AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddRage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
+int AddPulse(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 void MI_Dummy(int mi) { }
 void MI_Arrow(int mi) { }
 void MI_AsArrow(int mi) { }
@@ -1106,5 +1122,6 @@ void MI_InfernoC(int mi) { }
 //void MI_FireTrap(int mi) { }
 void MI_Cbolt(int mi) { }
 void MI_Elemental(int mi) { }
+void MI_Pulse(int mi) { }
 
 DEVILUTION_END_NAMESPACE
