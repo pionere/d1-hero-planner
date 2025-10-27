@@ -374,7 +374,6 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		sl = sl > 0 ? sl - 1 : 0;
 		k = monsterdata[MT_GOLEM].mLevel;
 		sl = k + sl;
-		// mon->_mLevel = sl;
 		mind = sl * monsterdata[MT_GOLEM].mMinDamage / k;
 		maxd = sl * monsterdata[MT_GOLEM].mMaxDamage / k;
 		break;
