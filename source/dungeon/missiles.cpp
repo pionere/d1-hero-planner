@@ -109,8 +109,8 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		sl += myplr._pDexterity >> 3;
 #endif
 	switch (sn) {
-	case SPL_GUARDIAN:
 	case SPL_FIREBOLT:
+	case SPL_GUARDIAN:
 		k = (magic >> 3) + sl;
 		mind = k + 1;
 		maxd = k + 10;
@@ -132,36 +132,42 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind >>= 6;
 		maxd >>= 6;
 		break;
+	case SPL_PULSE:
+		k = (magic >> 2) + (sl << 2);
+		mind = k * 3 / 4u;
+		maxd = k * 5 / 2u;
+		break;
 	case SPL_NULL:
 	case SPL_WALK:
 	case SPL_BLOCK:
-	case SPL_ATTACK:
+	case SPL_RAGE:
+	case SPL_SHROUD:
+	case SPL_SWAMP:
+	case SPL_STONE:
 	case SPL_INFRA:
+	case SPL_MANASHIELD:
+	case SPL_ATTRACT:
 	case SPL_TELEKINESIS:
 	case SPL_TELEPORT:
 	case SPL_RNDTELEPORT:
 	case SPL_TOWN:
+	case SPL_HEAL:
+	case SPL_HEALOTHER:
 	case SPL_RESURRECT:
 	case SPL_IDENTIFY:
+	case SPL_OIL:
 	case SPL_REPAIR:
 	case SPL_RECHARGE:
 	case SPL_DISARM:
-	case SPL_RAGE:
-	case SPL_STONE:
-	case SPL_SWIPE:
-	case SPL_WALLOP:
-	case SPL_WHIPLASH:
 #ifdef HELLFIRE
 	case SPL_BUCKLE:
 	case SPL_WHITTLE:
 	case SPL_RUNESTONE:
 #endif
-	case SPL_HEAL:
-	case SPL_HEALOTHER:
-	case SPL_MANASHIELD:
-	case SPL_ATTRACT:
-	case SPL_SHROUD:
-	case SPL_SWAMP:
+	case SPL_ATTACK:
+	case SPL_WHIPLASH:
+	case SPL_WALLOP:
+	case SPL_SWIPE:
 		QMessageBox::critical(nullptr, "Error", QApplication::tr("Unhandled missile skill %1 in SkillPlrDamage.").arg(sn));
 		break;
 	case SPL_CHARGE:
@@ -340,6 +346,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_BLOODBOIL:
 		mind = (magic >> 2) + (sl << 2) + 10;
 		maxd = (magic >> 2) + (sl << 3) + 10;
+		break;
 	case SPL_CHAIN:
 		mind = 1;
 		maxd = magic;
@@ -363,10 +370,10 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+		sl = sl * 4 + (magic >> 6);
 		sl = sl > 0 ? sl - 1 : 0;
 		k = monsterdata[MT_GOLEM].mLevel;
 		sl = k + sl;
-		// mon->_mLevel = sl;
 		mind = sl * monsterdata[MT_GOLEM].mMinDamage / k;
 		maxd = sl * monsterdata[MT_GOLEM].mMaxDamage / k;
 		break;
@@ -485,6 +492,11 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		maxd = mind << 3;
 		mind >>= 6;
 		maxd >>= 6;
+		break;
+	case SPL_PULSE:
+		k = (magic >> 2) + (sl << 2);
+		mind = k * 3 / 4u;
+		maxd = k * 5 / 2u;
 		break;
 	case SPL_NULL:
 	case SPL_WALK:
@@ -621,6 +633,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+		sl = sl * 4 + (magic >> 6);
 		sl = sl > 0 ? sl - 1 : 0;
 		k = monsterdata[MT_GOLEM].mLevel;
 		sl = k + sl;
@@ -701,7 +714,7 @@ int MissPlrHitByMonChance(int mtype, int dist, const MonsterStruct *mon, const D
 	int hper;
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = 30 + mon->_mHit + (2 * mon->_mLevel) - hero->getAC();
-		hper -= abs(dist - 6) << 1; // MISDIST
+		hper -= dist << 1; // MISDIST
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * mon->_mLevel;
 		hper -= 2 * hero->getLevel();
@@ -717,8 +730,7 @@ int MissMonHitByPlrChance(int mtype, int dist, const D1Hero *hero, const Monster
 	int hper;
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = hero->getHitChance() - mon->_mArmorClass;
-		// hper -= ((dist - 4) * (dist - 4) >> 1); // MISDIST
-		hper -= abs(dist - 6) << 1;
+		hper -= (dist * dist >> 1); // MISDIST
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * hero->getLevel();
 		hper -= 2 * mon->_mLevel;
@@ -736,8 +748,7 @@ int MissPlrHitByPlrChance(int mtype, int dist, const D1Hero *offHero, const D1He
 	if (missiledata[mtype].mdFlags & MIF_ARROW) {
 		hper = offHero->getHitChance();
 		hper -= defHero->getAC();
-		// hper -= (dist * dist >> 1); // MISDIST
-		hper -= abs(dist - 6) << 1;
+		hper -= (dist * dist >> 1); // MISDIST
 	} else if (missiledata[mtype].mdFlags & MIF_AREA) {
 		hper = 40 + 2 * offHero->getLevel();
 		hper -= 2 * defHero->getLevel();
@@ -941,7 +952,8 @@ int GetBaseMissile(int mtype)
     case MIS_EXAPOCA2:
     case MIS_MANASHIELD:
     case MIS_INFRA:
-    case MIS_RAGE: break;
+    case MIS_RAGE:
+    case MIS_PULSE: break;
 #ifdef HELLFIRE
     //case MIS_LIGHTWALLC:
     //case MIS_LIGHTWALL:
@@ -993,26 +1005,18 @@ const char *GetElementColor(BYTE mRes)
 	return color;
 }
 
-int GetArrowVelocity(int misource)
-{
-    int av = MIS_SHIFTEDVEL(32);
-    av += MIS_SHIFTEDVEL((int)plx(misource)._pIArrowVelBonus);
-
-    return av;
-}
-
 #ifdef HELLFIRE
 int AddFireRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddLightRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddNovaRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddWaveRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddStoneRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddHorkSpawn(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddLightwall(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFireexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddRingC(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddFireball2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 #endif
+int AddDone(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
@@ -1034,7 +1038,6 @@ int AddBloodBoil(int mi, int sx, int sy, int dx, int dy, int midir, int micaster
 int AddBleed(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFireWave(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddMeteor(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
@@ -1069,6 +1072,7 @@ int AddApocaC2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, 
 int AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddRage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
+int AddPulse(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 void MI_Dummy(int mi) { }
 void MI_Arrow(int mi) { }
 void MI_AsArrow(int mi) { }
@@ -1103,6 +1107,7 @@ void MI_Chain(int mi) { }
 void MI_Misexp(int mi) { }
 void MI_MiniExp(int mi) { }
 void MI_LongExp(int mi) { }
+void MI_ExtExp(int mi) { }
 void MI_Acidsplat(int mi) { }
 void MI_Stone(int mi) { }
 void MI_Shroud(int mi) { }
@@ -1116,6 +1121,6 @@ void MI_InfernoC(int mi) { }
 //void MI_FireTrap(int mi) { }
 void MI_Cbolt(int mi) { }
 void MI_Elemental(int mi) { }
-void MI_Resurrect(int mi) { }
+void MI_Pulse(int mi) { }
 
 DEVILUTION_END_NAMESPACE

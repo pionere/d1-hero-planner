@@ -244,16 +244,16 @@ static int GetItemBonusFlags(int itype, int misc_id)
         flgs = PLT_SHLD;
         break;
     case ITYPE_LARMOR:
-        flgs = PLT_LARMOR;
+        flgs = PLT_ARMO | PLT_LARMOR;
         break;
     case ITYPE_HELM:
-        flgs = PLT_HELM;
+        flgs = PLT_ARMO;
         break;
     case ITYPE_MARMOR:
-        flgs = PLT_MARMOR;
+        flgs = PLT_ARMO | PLT_MARMOR;
         break;
     case ITYPE_HARMOR:
-        flgs = PLT_HARMOR;
+        flgs = PLT_ARMO | PLT_HARMOR;
         break;
     case ITYPE_STAFF:
         flgs = PLT_STAFF | PLT_CHRG;
@@ -295,12 +295,11 @@ static QString AffixPowerName(int power)
     case IPL_DEX:            result = QApplication::tr("dexterity");             break;
     case IPL_VIT:            result = QApplication::tr("vitality");              break;
     case IPL_ATTRIBS:        result = QApplication::tr("attributes");            break;
-    case IPL_ABS_ANYHIT:     result = QApplication::tr("get hit");               break;
-    case IPL_ABS_PHYHIT:     result = QApplication::tr("get phys. hit");         break;
+    case IPL_ABS_ANYHIT:     result = QApplication::tr("damage taken");          break;
+    case IPL_ABS_PHYHIT:     result = QApplication::tr("phy. damage taken");     break;
     case IPL_LIFE:           result = QApplication::tr("life");                  break;
     case IPL_MANA:           result = QApplication::tr("mana");                  break;
-    case IPL_DUR:            result = QApplication::tr("durability +");          break;
-    case IPL_DUR_CURSE:      result = QApplication::tr("durability -");          break;
+    case IPL_DUR:            result = QApplication::tr("durability");            break;
     case IPL_INDESTRUCTIBLE: result = QApplication::tr("indestructible");        break;
     case IPL_LIGHT:          result = QApplication::tr("light range");           break;
     //case IPL_INVCURS: result = QApplication::tr("xxx"); break;
@@ -398,7 +397,7 @@ void ItemSelectorDialog::updateFields()
     this->ui->itemQualityComboBox->setCurrentIndex((ci & CF_DROP_QUALITY) >> 11);
     this->ui->itemQualityComboBox->setEnabled(drop);
 
-    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? ItemName(this->is) : "");
+    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? this->is->_iName : "");
     this->ui->itemName->setStyleSheet(ItemColor(this->is));
     this->itemProps->initialize(this->is);
     this->itemProps->adjustSize();
@@ -880,8 +879,9 @@ start:
         }
         if (prefix.active) {
             if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
-                if (items[MAXITEMS]._iPLSkill != prefix.param1) {
-                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, prefix.param1, preIdx, seed);
+                const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
+                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
             } else if (affix_rnd[preIdx] < prefix.param1 || affix_rnd[preIdx] > prefix.param2) {
@@ -891,8 +891,9 @@ start:
         }
         if (suffix.active) {
             if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
-                if (items[MAXITEMS]._iPLSkill != suffix.param1) {
-                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, suffix.param1, sufIdx, seed);
+                const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
+                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                     goto restart;
                 }
             } else if (affix_rnd[sufIdx] < suffix.param1 || affix_rnd[sufIdx] > suffix.param2) {
@@ -911,8 +912,9 @@ start:
             }
             if (prefix.power != IPL_INVALID) {
                 if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
-                    if (items[MAXITEMS]._iPLSkill != prefix.param1) {
-                        // LogErrorF("missed preval %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, prefix.param1, preIdx, seed);
+                    const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
+                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[0] < prefix.param1 || affix_rnd[0] > prefix.param2) {
@@ -928,8 +930,9 @@ start:
             }
             if (suffix.power != IPL_INVALID) {
                 if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
-                    if (items[MAXITEMS]._iPLSkill != suffix.param1) {
-                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", items[MAXITEMS]._iPLSkill, suffix.param1, sufIdx, seed);
+                    const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
+                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[1] < suffix.param1 || affix_rnd[1] > suffix.param2) {

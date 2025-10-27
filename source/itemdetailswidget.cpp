@@ -60,8 +60,8 @@ void ItemDetailsWidget::updateFields()
     // LogErrorF("ItemDetailsWidget init 1 %d", ii);
     const ItemStruct* pi = this->hero->item(this->invIdx);
     if (pi->_itype != ITYPE_NONE) {
-        // LogErrorF("ItemDetailsWidget init 2 %s", ItemName(pi));
-        itemsComboBox->addItem(ItemName(pi), QVariant::fromValue((inv_item)this->invIdx));
+        // LogErrorF("ItemDetailsWidget init 2 %s", pi->_iName);
+        itemsComboBox->addItem(pi->_iName, QVariant::fromValue((inv_item)this->invIdx));
     }
     // LogErrorF("ItemDetailsWidget init 3");
     for (int i = INVITEM_INV_FIRST; i < NUM_INVELEM; i++) {
@@ -96,8 +96,8 @@ void ItemDetailsWidget::updateFields()
                 continue;
             break;
         }
-        // LogErrorF("ItemDetailsWidget init 4 %s (%d) %d", ItemName(is), is->_itype, i);
-        itemsComboBox->addItem(ItemName(is), QVariant::fromValue((inv_item)i));
+        // LogErrorF("ItemDetailsWidget init 4 %s (%d) %d", is->_iName, is->_itype, i);
+        itemsComboBox->addItem(is->_iName, QVariant::fromValue((inv_item)i));
     }
     ii = itemsComboBox->findData(QVariant::fromValue((inv_item)ii));
     if (ii < 0) ii = 0;
@@ -215,7 +215,7 @@ void ItemDetailsWidget::on_editNameButton_clicked()
         if (ii != INVITEM_NONE) {
             this->hero->renameItem(ii, text);
             const ItemStruct* is = this->hero->item(ii);
-            itemsComboBox->setItemText(itemsComboBox->currentIndex(), ItemName(is));
+            itemsComboBox->setItemText(itemsComboBox->currentIndex(), is->_iName);
             // itemsComboBox->adjustSize();
             dMainWindow().updateWindow();
         }

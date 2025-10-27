@@ -12,13 +12,13 @@ DEVILUTION_BEGIN_NAMESPACE
 #define plr            players[pnum]
 #define plx(x)         players[x]
 #define PLR_WALK_SHIFT 8
+#define plrAbility     Abilities[plr._pClass]
 
 extern int mypnum;
 extern PlayerStruct players[MAX_PLRS];
 
 void CreatePlayer(int pnum, const _uiheroinfo& heroinfo);
 void InitPlayer(int pnum);
-void ClrPlrPath(int pnum);
 
 int GetWalkSpeedInTicks(int pnum);
 int GetAttackSpeedInTicks(int pnum, int sn);

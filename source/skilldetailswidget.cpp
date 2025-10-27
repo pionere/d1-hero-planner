@@ -185,18 +185,18 @@ void SkillDetailsWidget::updateFields()
         }
         unsigned flags = mn >= 0 ? missiledata[mn].mdFlags : 0;
         this->ui->misAreaCheckBox->setChecked((flags & MIF_AREA) != 0);
-        this->ui->misNoBlockCheckBox->setChecked((flags & MIF_NOBLOCK) != 0);
         this->ui->misDotCheckBox->setChecked((flags & MIF_DOT) != 0);
         this->ui->misLeadCheckBox->setChecked((flags & MIF_LEAD) != 0);
         this->ui->misShroudCheckBox->setChecked((flags & MIF_SHROUD) != 0);
+        this->ui->misGuidedCheckBox->setChecked((flags & MIF_GUIDED) != 0);
         this->ui->misArrowCheckBox->setChecked((flags & MIF_ARROW) != 0);
 
         flags = mn >= 0 ? missiledata[GetBaseMissile(mn)].mdFlags : 0;
         this->ui->misBaseAreaCheckBox->setChecked((flags & MIF_AREA) != 0);
-        this->ui->misBaseNoBlockCheckBox->setChecked((flags & MIF_NOBLOCK) != 0);
         this->ui->misBaseDotCheckBox->setChecked((flags & MIF_DOT) != 0);
         this->ui->misBaseLeadCheckBox->setChecked((flags & MIF_LEAD) != 0);
         this->ui->misBaseShroudCheckBox->setChecked((flags & MIF_SHROUD) != 0);
+        this->ui->misBaseGuidedCheckBox->setChecked((flags & MIF_GUIDED) != 0);
         this->ui->misBaseArrowCheckBox->setChecked((flags & MIF_ARROW) != 0);
     }
 }

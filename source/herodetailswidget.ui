@@ -649,7 +649,7 @@
           <string>Walk</string>
          </property>
          <property name="styleSheet">
-          <string>color:gray;</string>
+          <string notr="true">color:gray;</string>
          </property>
         </widget>
        </item>
@@ -659,7 +659,7 @@
           <string>Attack</string>
          </property>
          <property name="styleSheet">
-          <string>color:red;</string>
+          <string notr="true">color:red;</string>
          </property>
         </widget>
        </item>
@@ -669,7 +669,7 @@
           <string>Cast</string>
          </property>
          <property name="styleSheet">
-          <string>color:#3090C7;</string>
+          <string notr="true">color:#3090C7;</string>
          </property>
         </widget>
        </item>
@@ -679,17 +679,7 @@
           <string>Recovery</string>
          </property>
          <property name="styleSheet">
-          <string>color:brown;</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="heroArrowVelBonusLabel">
-         <property name="toolTip">
-          <string>Arrow</string>
-         </property>
-         <property name="styleSheet">
-          <string>color:purple;</string>
+          <string notr="true">color:brown;</string>
          </property>
         </widget>
        </item>
@@ -723,9 +713,9 @@
       </widget>
      </item>
      <item row="6" column="3">
-      <widget class="QLabel" name="heroGetHitLabel">
+      <widget class="QLabel" name="heroAbsHitLabel">
        <property name="toolTip">
-        <string>Hit damage modifier</string>
+        <string>Hit damage modifier (Any/Physical)</string>
        </property>
       </widget>
      </item>
@@ -773,7 +763,7 @@
           <string>Life</string>
          </property>
          <property name="styleSheet">
-          <string>color:red;</string>
+          <string notr="true">color:red;</string>
          </property>
         </widget>
        </item>
@@ -783,7 +773,7 @@
           <string>Mana</string>
          </property>
          <property name="styleSheet">
-          <string>color:blue;</string>
+          <string notr="true">color:blue;</string>
          </property>
         </widget>
        </item>
@@ -851,7 +841,7 @@
         <string>Slash Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:#B87333;</string>
+        <string notr="true">color:#B87333;</string>
        </property>
       </widget>
      </item>
@@ -861,7 +851,7 @@
         <string>Blunt Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:maroon;</string>
+        <string notr="true">color:maroon;</string>
        </property>
       </widget>
      </item>
@@ -871,7 +861,7 @@
         <string>Pierce Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:olive;</string>
+        <string notr="true">color:olive;</string>
        </property>
       </widget>
      </item>
@@ -881,7 +871,7 @@
         <string>Magic Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:blue;</string>
+        <string notr="true">color:blue;</string>
        </property>
       </widget>
      </item>
@@ -891,7 +881,7 @@
         <string>Fire Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:orange;</string>
+        <string notr="true">color:orange;</string>
        </property>
       </widget>
      </item>
@@ -901,7 +891,7 @@
         <string>Lightning Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:#FBB117;</string>
+        <string notr="true">color:#FBB117;</string>
        </property>
       </widget>
      </item>
@@ -911,7 +901,7 @@
         <string>Acid Damage</string>
        </property>
        <property name="styleSheet">
-        <string>color:green;</string>
+        <string notr="true">color:green;</string>
        </property>
       </widget>
      </item>

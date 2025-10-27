@@ -18,12 +18,12 @@ int AddLightRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster
 int AddNovaRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddWaveRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddStoneRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
-int AddHorkSpawn(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 //int AddLightwall(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddFireexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddRingC(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 //int AddFireball2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 #endif
+int AddDone(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddMage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
@@ -45,7 +45,6 @@ int AddBloodBoil(int mi, int sx, int sy, int dx, int dy, int midir, int micaster
 int AddBleed(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddMisexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddFlash(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
-int AddFlash2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddFireWave(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddMeteor(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddChain(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
@@ -80,6 +79,7 @@ int AddApocaC2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, 
 int AddManashield(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddInfra(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 int AddRage(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
+int AddPulse(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl);
 void MI_Dummy(int mi);
 void MI_Arrow(int mi);
 void MI_AsArrow(int mi);
@@ -114,6 +114,7 @@ void MI_Chain(int mi);
 void MI_Misexp(int mi);
 void MI_MiniExp(int mi);
 void MI_LongExp(int mi);
+void MI_ExtExp(int mi);
 void MI_Acidsplat(int mi);
 void MI_Stone(int mi);
 void MI_Shroud(int mi);
@@ -127,7 +128,7 @@ void MI_InfernoC(int mi);
 //void MI_FireTrap(int mi);
 void MI_Cbolt(int mi);
 void MI_Elemental(int mi);
-void MI_Resurrect(int mi);
+void MI_Pulse(int mi);
 
 #ifdef __cplusplus
 }

@@ -388,50 +388,16 @@ void CreatePlayer(int pnum, const _uiheroinfo& heroinfo)
 	//plr._pNextExper = PlrExpLvlsTbl[1];
 	plr._pLightRad = 10;
 
-	//plr._pAblSkills = SPELL_MASK(Abilities[c]);
-	//plr._pAblSkills |= SPELL_MASK(SPL_WALK) | SPELL_MASK(SPL_ATTACK) | SPELL_MASK(SPL_RATTACK) | SPELL_MASK(SPL_BLOCK);
-
-	//plr._pAtkSkill = SPL_ATTACK;
-	//plr._pAtkSkillType = RSPLTYPE_ABILITY;
-	//plr._pMoveSkill = SPL_WALK;
-	//plr._pMoveSkillType = RSPLTYPE_ABILITY;
-	//plr._pAltAtkSkill = SPL_INVALID;
-	//plr._pAltAtkSkillType = RSPLTYPE_INVALID;
-	//plr._pAltMoveSkill = SPL_INVALID;
-	//plr._pAltMoveSkillType = RSPLTYPE_INVALID;
-
-	for (i = 0; i < lengthof(plr._pAtkSkillHotKey); i++)
-		plr._pAtkSkillHotKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAtkSkillTypeHotKey); i++)
-		plr._pAtkSkillTypeHotKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pMoveSkillHotKey); i++)
-		plr._pMoveSkillHotKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pMoveSkillTypeHotKey); i++)
-		plr._pMoveSkillTypeHotKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pAltAtkSkillHotKey); i++)
-		plr._pAltAtkSkillHotKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAltAtkSkillTypeHotKey); i++)
-		plr._pAltAtkSkillTypeHotKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pAltMoveSkillHotKey); i++)
-		plr._pAltMoveSkillHotKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAltMoveSkillTypeHotKey); i++)
-		plr._pAltMoveSkillTypeHotKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pAtkSkillSwapKey); i++)
-		plr._pAtkSkillSwapKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAtkSkillTypeSwapKey); i++)
-		plr._pAtkSkillTypeSwapKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pMoveSkillSwapKey); i++)
-		plr._pMoveSkillSwapKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pMoveSkillTypeSwapKey); i++)
-		plr._pMoveSkillTypeSwapKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pAltAtkSkillSwapKey); i++)
-		plr._pAltAtkSkillSwapKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAltAtkSkillTypeSwapKey); i++)
-		plr._pAltAtkSkillTypeSwapKey[i] = RSPLTYPE_INVALID;
-	for (i = 0; i < lengthof(plr._pAltMoveSkillSwapKey); i++)
-		plr._pAltMoveSkillSwapKey[i] = SPL_INVALID;
-	for (i = 0; i < lengthof(plr._pAltMoveSkillTypeSwapKey); i++)
-		plr._pAltMoveSkillTypeSwapKey[i] = RSPLTYPE_INVALID;
+	//plr._pMainSkill = { { SPL_ATTACK, RSPLTYPE_ABILITY } , { SPL_WALK, RSPLTYPE_ABILITY } };
+	//plr._pAltSkill = { { SPL_NULL, 0 } , SPL_NULL, 0 } };
+	static_assert((int)SPL_NULL == 0, "CreatePlayer fails to initialize the skillhotkeys I.");
+	static_assert(offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) == sizeof(plr._pSkillHotKey) + sizeof(plr._pAltSkillHotKey) + sizeof(plr._pSkillSwapKey),
+		"CreatePlayer fails to initialize the skillhotkeys II.");
+	static_assert(offsetof(PlayerStruct, _pAltSkillHotKey) > offsetof(PlayerStruct, _pSkillHotKey) && offsetof(PlayerStruct, _pAltSkillHotKey) < offsetof(PlayerStruct, _pAltSkillSwapKey),
+		"CreatePlayer fails to initialize the skillhotkeys III.");
+	static_assert(offsetof(PlayerStruct, _pSkillSwapKey) > offsetof(PlayerStruct, _pSkillHotKey) && offsetof(PlayerStruct, _pSkillSwapKey) < offsetof(PlayerStruct, _pAltSkillSwapKey),
+		"CreatePlayer fails to initialize the skillhotkeys IV.");
+	memset(plr._pSkillHotKey, 0, offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) + sizeof(plr._pAltSkillSwapKey));
 
 	if (plr._pClass == PC_SORCERER) {
 		plr._pSkillLvlBase[SPL_FIREBOLT] = 2;
@@ -462,19 +428,6 @@ void InitPlayer(int pnum)
 	CalculateGold(pnum);
 
 	plr._pNextExper = PlrExpLvlsTbl[plr._pLevel];
-
-	plr._pAblSkills = SPELL_MASK(Abilities[plr._pClass]);
-	plr._pAblSkills |= SPELL_MASK(SPL_WALK) | SPELL_MASK(SPL_BLOCK) | SPELL_MASK(SPL_ATTACK) | SPELL_MASK(SPL_RATTACK);
-
-	plr._pWalkpath[MAX_PATH_LENGTH] = DIR_NONE;
-}
-
-void ClrPlrPath(int pnum)
-{
-	dev_assert((unsigned)pnum < MAX_PLRS, "ClrPlrPath: illegal player %d", pnum);
-
-	plr._pWalkpath[0] = DIR_NONE;
-	//memset(plr._pWalkpath, DIR_NONE, sizeof(plr._pWalkpath));
 }
 
 static void ProcessPlayer(int pnum)

@@ -20,7 +20,7 @@ typedef struct HeroSaveStruct {
     PkPlayerStruct pps;
     quint8 isHellfire;
     quint8 isMulti;
-    char itemNames[NUM_INVELEM][32];
+    char itemNames[NUM_INVELEM][256];
 } HeroSaveStruct;
 
 D1Hero* D1Hero::instance()
@@ -186,8 +186,12 @@ static void RecreateHeroItems(ItemStruct *is, int numItems)
             items[MAXITEMS]._iIdentified = tmpItem._iIdentified;
             if (tmpItem._itype == items[MAXITEMS]._itype && tmpItem._iMiscId == items[MAXITEMS]._iMiscId && tmpItem._iClass == items[MAXITEMS]._iClass) {
                 // preserve the name
-                if (tmpItem._iPrePower == items[MAXITEMS]._iPrePower && tmpItem._iSufPower == items[MAXITEMS]._iSufPower && tmpItem._iUid == items[MAXITEMS]._iUid)
-                    memcpy(items[MAXITEMS]._iName, tmpItem._iName, sizeof(tmpItem._iName));
+                bool match = tmpItem._iUid == items[MAXITEMS]._iUid && tmpItem._iNumAffixes == items[MAXITEMS]._iNumAffixes;
+                for (int n = 0; match && n < tmpItem._iNumAffixes; n++) {
+                    match &= tmpItem._iAffixes[n].asPower == items[MAXITEMS]._iAffixes[n].asPower;
+                }
+                if (match)
+                    copy_cstr(items[MAXITEMS]._iName, tmpItem._iName);
                 // TODO: preserve stats?
                 /*if (tmpItem._iMaxDur < items[MAXITEMS]._iMaxDur)
                     items[MAXITEMS]._iMaxDur = tmpItem._iMaxDur;
@@ -333,7 +337,7 @@ static void scrollrt_draw_item(const ItemStruct* is, bool outline, int sx, int s
         trans = col != ICOL_RED ? 0 : COLOR_TRN_RED;
         CelClippedDrawLightTbl(sx, sy, pCelBuff, nCel, nWidth, trans);
     } else {
-        QString text = ItemName(is);
+        QString text = is->_iName;
         QFontMetrics fm(InvPainter->font());
         int textWidth = fm.horizontalAdvance(text);
         if (outline) {
@@ -1094,18 +1098,18 @@ void D1Hero::setSkillLvlBase(int sn, int level)
 
 uint64_t D1Hero::getFixedSkills() const
 {
-    return plr._pAblSkills | plr._pInvSkills | plr._pISpells;
+    return SPELL_MASK(plrAbility) | plr._pInvSkills | plr._pISpells;
 }
 
 uint64_t D1Hero::getSkills() const
 {
-    return plr._pAblSkills | plr._pMemSkills | plr._pInvSkills | plr._pISpells;
+    return getFixedSkills() | plr._pMemSkills;
 }
 
 int D1Hero::getSkillSources(int sn) const
 {
     int result = 0;
-    if (plr._pAblSkills & SPELL_MASK(sn))
+    if (SPELL_MASK(plrAbility) & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_ABILITY;
     if (plr._pMemSkills & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_SPELL;
@@ -1181,12 +1185,12 @@ int D1Hero::getBlockChance() const
     return players[this->pnum]._pIBlockChance;
 }
 
-int D1Hero::getGetHit() const
+int D1Hero::getAbsAnyHit() const
 {
     return players[this->pnum]._pIAbsAnyHit >> 6;
 }
 
-int D1Hero::getGetPhysHit() const
+int D1Hero::getAbsPhyHit() const
 {
     return players[this->pnum]._pIAbsPhyHit >> 6;
 }
@@ -1199,16 +1203,6 @@ int D1Hero::getLifeSteal() const
 int D1Hero::getManaSteal() const
 {
     return players[this->pnum]._pIManaSteal;
-}
-
-int D1Hero::getArrowVelBonus() const
-{
-    return players[this->pnum]._pIArrowVelBonus;
-}
-
-int D1Hero::getArrowVelocity() const
-{
-    return GetArrowVelocity(this->pnum);
 }
 
 int D1Hero::getHitChance() const

@@ -301,10 +301,9 @@ void HeroView::updateLabel()
     this->ui->heroEvasionLabel->setText(QString::number(this->hero->getEvasion()));
     this->ui->heroACLabel->setText(QString::number(this->hero->getAC()));
     this->ui->heroBlockChanceLabel->setText(QString("%1%").arg(this->hero->getBlockChance()));
-    this->ui->heroGetHitLabel->setText(QString::number(this->hero->getGetHit()));
+    this->ui->heroAbsHitLabel->setText(QString("%1/%2").arg(this->hero->getAbsAnyHit()).arg(this->hero->getAbsPhyHit()));
     this->ui->heroLifeStealLabel->setText(QString("%1%").arg((this->hero->getLifeSteal() * 100 + 64) >> 7));
     this->ui->heroManaStealLabel->setText(QString("%1%").arg((this->hero->getManaSteal() * 100 + 64) >> 7));
-    this->ui->heroArrowVelBonusLabel->setText(QString::number(this->hero->getArrowVelBonus()));
     this->ui->heroHitChanceLabel->setText(QString("%1%").arg(this->hero->getHitChance()));
     this->ui->heroCritChanceLabel->setText(QString("%1%").arg(this->hero->getCritChance() * 100 / 200));
 
@@ -518,7 +517,7 @@ void HeroView::ShowContextMenu(const QPoint &pos)
             action->setChecked(true);
             action->setDisabled(true);
         } else {
-            action = new ItemAction(this->hero, ii, ItemName(is), ii);
+            action = new ItemAction(this->hero, ii, is->_iName, ii);
             action->setChecked(true);
             action->setDisabled(true);
             actions.append(action);
@@ -556,7 +555,7 @@ void HeroView::ShowContextMenu(const QPoint &pos)
                     continue;
                 break;
             }
-            action = new ItemAction(this->hero, ii, ItemName(is), i);
+            action = new ItemAction(this->hero, ii, is->_iName, i);
             actions.append(action);
         }
         // if (!actions.isEmpty()) {

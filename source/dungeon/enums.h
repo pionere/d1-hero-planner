@@ -245,7 +245,6 @@ typedef enum item_misc_id {
 	IMISC_FULLREJUV,
 	IMISC_SCROLL,
 	IMISC_BOOK,
-	IMISC_UNIQUE,
 	IMISC_EAR,
 	IMISC_SPECELIX,
 	IMISC_OILQLTY,
@@ -402,7 +401,6 @@ typedef enum item_effect_type {
 	IPL_LIFE,
 	IPL_MANA,
 	IPL_DUR,
-	IPL_DUR_CURSE,
 	IPL_INDESTRUCTIBLE,
 	IPL_LIGHT,
 	//IPL_INVCURS,
@@ -436,6 +434,11 @@ typedef enum item_effect_type {
 	IPL_FASTCAST,
 	IPL_FASTWALK,
 	IPL_INVALID          = 0xFF,
+
+	IMP_LVLMOD  = 0,
+	IMP_LVLGAIN = 1,
+	IMP_SETLVL  = 2,
+	IMP_AREAMOD = 3,
 } item_effect_type;
 
 typedef enum item_affix_range {
@@ -468,10 +471,10 @@ typedef enum item_base_bonus {
 
 typedef enum item_special_effect {
 	ISPL_NONE           = 0x00000000,
-	// ISPL_QUICKATTACK    = 0x00000001,
-	// ISPL_FASTATTACK     = 0x00000002,
-	// ISPL_FASTERATTACK   = 0x00000004,
-	// ISPL_FASTESTATTACK  = 0x00000008,
+	//ISPL_QUICKATTACK    = 0x00000001,
+	//ISPL_FASTATTACK     = 0x00000002,
+	//ISPL_FASTERATTACK   = 0x00000004,
+	//ISPL_FASTESTATTACK  = 0x00000008,
 	ISPL_FASTRECOVER    = 0x00000010,
 	ISPL_FASTERRECOVER  = 0x00000020,
 	ISPL_FASTESTRECOVER = 0x00000040,
@@ -541,7 +544,10 @@ typedef enum item_cursor_graphic {
 	ICURS_FANG                        = 42,
 	ICURS_OPTIC_AMULET                = 44,
 	ICURS_AMULET                      = 45,
+	//ICURS_ AMULET                   = 46,
+	//ICURS_ AMULET                   = 47,
 	ICURS_AMULET_TYRAEL               = 48,
+	//ICURS_ BAG                      = 49,
 	ICURS_WIZARDSPIKE                 = 50,
 	ICURS_DAGGER                      = 51,
 	ICURS_BLACK_RAZOR                 = 53,
@@ -560,6 +566,7 @@ typedef enum item_cursor_graphic {
 	ICURS_CLUB                        = 66,
 	ICURS_SABRE                       = 67,
 	ICURS_FALCON_GRYPHON              = 68,
+	// ICURS_ CLUB                    = 69,
 	ICURS_GNARLROOT                   = 70,
 	ICURS_SPIKED_CLUB                 = 71,
 	ICURS_SCIMITAR                    = 72,
@@ -584,6 +591,7 @@ typedef enum item_cursor_graphic {
 	ICURS_CAP                         = 91,
 	ICURS_FLESH_OF_SOULS              = 92,
 	ICURS_THINKING_CAP                = 93,
+	// ICURS_ ROBE                    = 94,
 	ICURS_CROWN                       = 95,
 	ICURS_MAP_OF_THE_STARS            = 96,
 	ICURS_FUNGAL_TOME                 = 97,
@@ -609,7 +617,7 @@ typedef enum item_cursor_graphic {
 	ICURS_DRAGON_SHIELD               = 117,
 	ICURS_SHORT_BOW                   = 118,
 	ICURS_LONG_WAR_BOW                = 119,
-	//ICURS_CELESTIAL_BOW               = 120,
+	//ICURS_CELESTIAL_BOW             = 120,
 	ICURS_WAR_HAMMER                  = 121,
 	ICURS_MAUL                        = 122,
 	ICURS_LONG_STAFF                  = 123,
@@ -645,6 +653,7 @@ typedef enum item_cursor_graphic {
 	ICURS_BREAST_PLATE                = 153,
 	ICURS_RING_MAIL                   = 154,
 	ICURS_STAFF_OF_LAZARUS            = 155,
+	//ICURS_ AXE                      = 156,
 	ICURS_ARKAINES_VALOR              = 157,
 	ICURS_THE_NEEDLER                 = 158,
 	ICURS_NAJ_PLATE                   = 159,
@@ -1998,6 +2007,7 @@ typedef enum missile_id {
 	//MIS_FARROW,
 	//MIS_DOOMSERP,
 	MIS_STONE,
+	MIS_EXSTONE,
 	MIS_SHROUD,
 	//MIS_INVISIBL,
 	MIS_GUARDIAN,
@@ -2036,6 +2046,7 @@ typedef enum missile_id {
 	MIS_MANASHIELD,
 	MIS_INFRA,
 	MIS_RAGE,
+	MIS_PULSE,
 #ifdef HELLFIRE
 	//MIS_LIGHTWALLC,
 	//MIS_LIGHTWALL,
@@ -2110,23 +2121,29 @@ typedef enum missile_gfx_id {
 	MFILE_WIND,
 	MFILE_SHROUD,
 	MFILE_INFERNO,
-	MFILE_THINLGHT,
 	MFILE_FLARE,
 	MFILE_FLAREEXP,
-	MFILE_MAGBALL,
-	//MFILE_KRULL,
 	MFILE_MINILTNG,
 	MFILE_HOLY,
 	MFILE_HOLYEXPL,
 	//MFILE_FIRARWEX,
-	MFILE_ACIDBF,
-	MFILE_ACIDSPLA,
-	MFILE_ACIDPUD,
 	//MFILE_ETHRSHLD,
 	MFILE_FIRERUN,
 	MFILE_RESSUR1,
 	//MFILE_SKLBALL,
 	MFILE_RPORTAL,
+#ifdef HELLFIRE
+	MFILE_RGLOWS1,
+	//MFILE_REFLECT,
+#endif
+	MFILE_NONE,
+	MFILE_ACTOR,
+	MFILE_THINLGHT,
+	MFILE_MAGBALL,
+	//MFILE_KRULL,
+	MFILE_ACIDBF,
+	MFILE_ACIDSPLA,
+	MFILE_ACIDPUD,
 	MFILE_FIREPLAR,
 	MFILE_SCUBMISB,
 	MFILE_SCBSEXPB,
@@ -2138,8 +2155,6 @@ typedef enum missile_gfx_id {
 	MFILE_MAGEEXP,
 #ifdef HELLFIRE
 	MFILE_SPAWNS,
-	MFILE_RGLOWS1,
-	//MFILE_REFLECT,
 	//MFILE_MS_BLA,
 	//MFILE_MS_BLB,
 	MFILE_MS_ORA,
@@ -2158,22 +2173,17 @@ typedef enum missile_gfx_id {
 	MFILE_EXORA1_B,
 #endif
 	NUM_MFILE,
-	MFILE_NONE = NUM_MFILE,
+	NUM_FIXMFILE = MFILE_NONE,
 } missile_gfx_id;
 
 typedef enum missile_flags {
-	MIF_AREA    = 1 << 0, // alternative hit chance calculation
-	MIF_NOBLOCK = 1 << 1, // can not be blocked
-	MIF_DOT     = 1 << 2, // IPL_GETHIT modifier is ignored, hit check multiple times
-	MIF_LEAD    = 1 << 3, // leads the monster to the player (on impact)
-	MIF_SHROUD  = 1 << 4, // interacts with MIS_SHROUD
+	MIF_AREA    = 1 << 0, // effect is spread over the area -> can not be blocked, alternative hit chance calculation (can not be evaded), damage is not directional
+	MIF_DOT     = 1 << 1, // IPL_GETHIT modifier is ignored, hit check multiple times
+	MIF_LEAD    = 1 << 2, // leads the monster to the player (on impact)
+	MIF_SHROUD  = 1 << 3, // interacts with MIS_SHROUD
+	MIF_GUIDED  = 1 << 4, // guided missile which is changing its direction
 	MIF_ARROW   = 1 << 7, // alternative hit chance/damage calculation (for physical arrows)
 } missile_flags;
-
-typedef enum missile_anim_flags {
-	MAFLAG_HIDDEN         = 1 << 0,
-	MAFLAG_LOCK_ANIMATION = 1 << 1,
-} missile_anim_flags;
 
 typedef enum missile_add_result {
 	MIRES_DONE,
@@ -2318,6 +2328,7 @@ typedef enum _monster_id {
 	MT_NTHIN,
 	MT_XTHIN,
 	MT_GTHIN,
+	MT_WTHIN,
 	MT_NGARG,
 	MT_XGARG,
 	MT_DGARG,
@@ -2486,12 +2497,10 @@ typedef enum _monster_flag {
 	MFLAG_LIFESTEAL       = 0x0020,
 	MFLAG_CAN_OPEN_DOOR   = 0x0040,
 	MFLAG_SEARCH          = 0x0080,
-	MFLAG_TARGETS_MONSTER = 0x0100,
 	MFLAG_NOSTONE         = 0x0200,
 	MFLAG_NOCORPSE        = 0x0400,
 	MFLAG_CAN_BLEED       = 0x0800,
 	MFLAG_NODROP          = 0x1000,
-	// MFLAG_NO_ENEMY        = 0x0800,
 	// MFLAG_NOHEAL          = 0x1000,
 	MFLAG_KNOCKBACK       = 0x00010000,
 	// TODO: ensure the high word does not conflict and matches with ISPL_HITFLAGS
@@ -3514,8 +3523,6 @@ typedef enum dungeon_message2 {
 typedef enum diablo_message {
 	EMSG_NONE,
 	EMSG_DESYNC,
-	EMSG_LOADING,
-	EMSG_SAVING,
 	EMSG_SHRINE_HIDDEN,
 	EMSG_SHRINE_GLOOMY,
 	EMSG_SHRINE_WEIRD,
@@ -3769,14 +3776,14 @@ typedef enum direction {
 
 typedef enum _scroll_direction {
 	SDIR_NONE,
-	SDIR_N,
-	SDIR_NE,
-	SDIR_E,
-	SDIR_SE,
 	SDIR_S,
 	SDIR_SW,
 	SDIR_W,
 	SDIR_NW,
+	SDIR_N,
+	SDIR_NE,
+	SDIR_E,
+	SDIR_SE,
 } _scroll_direction;
 
 typedef enum _path_direction {
@@ -3789,6 +3796,13 @@ typedef enum _path_direction {
 	PDIR_SE,
 	PDIR_SW
 } _path_direction;
+
+typedef enum _menu_direction {
+	MDIR_UP,
+	MDIR_DOWN,
+	MDIR_LEFT,
+	MDIR_RIGHT,
+} _menu_direction;
 
 typedef enum lvl_entry {
 	ENTRY_MAIN,
@@ -3846,6 +3860,7 @@ typedef enum spell_id {
 	SPL_WIND,
 	SPL_SHROUD,
 	SPL_SWAMP,
+	SPL_PULSE,
 	SPL_GUARDIAN,
 	SPL_GOLEM,
 	SPL_STONE,
@@ -4036,14 +4051,45 @@ typedef enum _music_id {
 
 enum _artFontTables {
 	AFT_SMALL,
-	AFT_MED,
 	AFT_BIG,
 	AFT_HUGE,
 };
 
-enum _artFontColors {
-	AFC_SILVER,
-	AFC_GOLD,
+enum _artFontFlags {
+	AFF_SMALL       = AFT_SMALL << 0,
+	AFF_BIG         = AFT_BIG << 0,
+	AFF_HUGE        = AFT_HUGE << 0,
+	AFF_LEFT        = 0 << 4,
+	AFF_HCENTER     = 1 << 4,
+	AFF_RIGHT       = 2 << 4,
+	AFF_VCENTER     = 1 << 6,
+
+	AFF_SIZE_SHL    = 0, // left shift to create AFF_size
+	AFF_COLOR_SHL   = 8, // left shift to create AFF_color
+
+	AFF_SIZES       = 0x7,
+	AFF_COLORS      = 0xFF,
+};
+
+enum UiFlags {
+	UIS_SMALL       = AFF_SMALL,
+	UIS_MED         = AFF_BIG,
+	UIS_BIG         = AFF_BIG,
+	UIS_HUGE        = AFF_HUGE,
+	UIS_LEFT        = AFF_LEFT,
+	UIS_HCENTER     = AFF_HCENTER,
+	UIS_RIGHT       = AFF_RIGHT,
+	UIS_VCENTER     = AFF_VCENTER,
+	UIS_SILVER      = COL_WHITE << AFF_COLOR_SHL,
+	UIS_GOLD        = COL_GOLD << AFF_COLOR_SHL,
+	UIS_LIGHT       = (COL_GOLD + 2) << AFF_COLOR_SHL,
+	UIS_OPTIONAL    = 1 << 13,
+	UIS_DISABLED    = 1 << 14,
+	UIS_HIDDEN      = 1 << 15,
+
+	UIS_COLOR_SHL   = AFF_COLOR_SHL, // left shift to create UIS_color
+
+	UIS_COLORS  = 0xF,
 };
 
 typedef enum _mainmenu_selections {
@@ -4089,19 +4135,6 @@ typedef enum server_type {
 	SRV_BASIC,
 	SRV_DIRECT,
 } server_type;
-
-typedef enum panel_button_id {
-	PANBTN_MAINMENU,
-	PANBTN_OPTIONS,
-	PANBTN_CHARINFO,
-	PANBTN_INVENTORY,
-	PANBTN_SPELLBOOK,
-	PANBTN_QLOG,
-	PANBTN_AUTOMAP,
-	PANBTN_SENDMSG,
-	PANBTN_TEAMBOOK,
-	NUM_PANBTNS
-} panel_button_id;
 
 typedef enum attribute_id {
 	ATTRIB_STR,
@@ -4443,6 +4476,13 @@ typedef enum player_skill_flags {
 	SFLAG_RAGE    = 1 << 4,
 } player_skill_flags;
 
+typedef enum skill_details_type {
+	SDT_NONE,
+	SDT_DAMAGE,
+	SDT_DAMAGE_MELEE,
+	SDT_DAMAGE_RANGED,
+} skill_details_type;
+
 typedef enum window_active {
 	WND_INV,
 	WND_CHAR,
@@ -4598,6 +4638,67 @@ typedef enum drlg_flag {
 	DRLG_PROTECTED  = 0x40,
 	DRLG_FROZEN     = 0x80,
 } drlg_flag;
+
+typedef enum movie_flag {
+	MOV_SKIP       = 1 << 0, // Makes the video skippable by mouse-button or keypress (not just ESC).
+	MOV_LOOP       = 1 << 1, // Playback in loop.
+} movie_flag;
+
+typedef enum movie_playback_result {
+	MPR_DONE,   // the movie is finished
+	MPR_CANCEL, // the movie is cancelled
+	MPR_QUIT,   // the user wants to leave the game
+} movie_playback_result;
+
+typedef enum _artfonts {
+	AF_SMALL,
+	AF_SMALLGRAY,
+	AF_MED,
+	AF_MEDGRAY,
+	AF_BIG,
+	AF_BIGGRAY,
+	AF_HUGE,
+	AF_HUGEGRAY,
+} _artfonts;
+
+typedef enum _gmenu_flags {
+	GMF_SLIDER  = 1 << 0,
+	GMF_ENABLED = 1 << 1,
+} _gmenu_flags;
+
+typedef enum gamemenu_id {
+	GMM_EXITGAME,
+	GMM_MAINMENU,
+	GMM_QLOG,
+	GMM_CHARINFO,
+	GMM_INVENTORY,
+	GMM_SKILLLIST,
+	GMM_SPELLBOOK,
+	GMM_AUTOMAP,
+	GMM_SENDMSG,
+	GMM_TEAMBOOK,
+	NUM_GMMS
+} gamemenu_id;
+
+typedef enum mpq_files {
+#if ASSET_MPL != 1
+	MPQ_DEVILHD,
+#endif
+	MPQ_DEVILX,
+#ifdef HELLFIRE
+	//MPQ_HF_OPT2, - does not exist
+	//MPQ_HF_OPT1, - does not exist
+	MPQ_HF_VOICE,
+	MPQ_HF_MUSIC,
+	//MPQ_HF_BARB, - does not exist
+	//MPQ_HF_BARD, - does not exist
+	MPQ_HF_MONK,
+	MPQ_HELLFIRE,
+#endif
+	// MPQ_PATCH_RT, - does not contain relevant files
+	MPQ_DIABDAT,
+	NUM_MPQS
+} mpq_files;
 
 typedef enum game_logic_progress {
 	GLP_NONE,

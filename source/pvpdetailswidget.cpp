@@ -84,7 +84,7 @@ static PlayerDamage GetPlayerDamage(const D1Hero *offHero, int sn, int dist, con
         int mtype = spelldata[sn].sMissile;
         mtype = GetBaseMissile(mtype);
         result.resMis = GetMissileElement(mtype);
-        result.blockMis = !(missiledata[mtype].mdFlags & MIF_NOBLOCK);
+        result.blockMis = !(missiledata[mtype].mdFlags & MIF_AREA);
         int mindam, maxdam;
         offHero->getPlrSkillDamage(sn, sl, dist, defHero, &mindam, &maxdam);
         result.minMis = mindam;
@@ -186,7 +186,7 @@ void PvPDetailsWidget::updateFields()
         displayDamage(this->ui->defPlrDamage, mindam, maxdam);
 
         hper = -1;
-        // if (hth || (mtype != -1 && !(missiledata[mtype].mdFlags & MIF_NOBLOCK))) {
+        // if (hth || (mtype != -1 && !(missiledata[mtype].mdFlags & MIF_AREA))) {
         if ((offHero->getSkillFlags() & SFLAG_BLOCK) && (defDmg.hth || (defDmg.mis && defDmg.blockMis))) {
             hper = offHero->getBlockChance();
             if (hper != 0) {
@@ -203,7 +203,7 @@ void PvPDetailsWidget::updateFields()
         }
 
         hper = -1;
-        // if (hth || (mtype != -1 && !(missiledata[mtype].mdFlags & MIF_NOBLOCK))) {
+        // if (hth || (mtype != -1 && !(missiledata[mtype].mdFlags & MIF_AREA))) {
         if ((defHero->getSkillFlags() & SFLAG_BLOCK) && (offDmg.hth || (offDmg.mis && offDmg.blockMis))) {
             hper = defHero->getBlockChance();
             if (hper != 0) {
