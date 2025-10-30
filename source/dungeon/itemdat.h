@@ -9,7 +9,7 @@
 DEVILUTION_BEGIN_NAMESPACE
 
 #define ITEM_RNDDROP_MAX  160
-#define ITEM_RNDAFFIX_MAX 160
+#define ITEM_RNDAFFIX_MAX 128
 #define ILVLMAX 127
 
 #ifdef __cplusplus
