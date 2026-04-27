@@ -68,8 +68,10 @@ void UnPackPkItem(const PkItemStruct* src)
 	uint16_t value;
 
 	net_assert(idx < NUM_IDI);
+LogErrorF("UnPackPkItem 0 %d %d", idx, NUM_IDI);
 	if (idx != IDI_EAR) {
 		net_assert(((src->wCI & CF_TOWN) >> 8) <= CFL_CRAFTED);
+LogErrorF("UnPackPkItem 1 s%d idx:%d ci:%d twn:%d", src->dwSeed, src->wIndx, src->wCI, ((src->wCI & CF_TOWN) >> 8));
 		RecreateItem(
 			src->dwSeed,
 			src->wIndx,
@@ -84,6 +86,7 @@ void UnPackPkItem(const PkItemStruct* src)
 		if (idx == IDI_GOLD) {
 			value = src->wValue;
 			net_assert(value <= GOLD_MAX_LIMIT);
+LogErrorF("UnPackPkItem 2 %d", value);
 			SetGoldItemValue(&items[MAXITEMS], value);
 		} else if (idx == IDI_CAMPAIGNMAP) {
 			items[MAXITEMS]._ivalue = src->wValue;
