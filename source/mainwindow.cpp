@@ -152,12 +152,15 @@ void MainWindow::updateWindow()
     //     this->palWidget->refresh();
     // }
     // update menu options
-
+LogErrorF("updateWindow 0");
     // update the view
     this->sideView->displayFrame();
+LogErrorF("updateWindow 1");
     if (this->heroView != nullptr) {
         // this->heroView->updateFields();
+LogErrorF("updateWindow 2");
         this->heroView->displayFrame();
+LogErrorF("updateWindow 3");
     }
 }
 
@@ -891,6 +894,7 @@ LogErrorF("openFile 6 %d %d", IsHellfireGame, gnDifficulty);
     if (firstPaletteFound.isEmpty()) {
         firstPaletteFound = D1Pal::DEFAULT_PATH;
     }
+LogErrorF("openFile setpal %d %d", IsHellfireGame, gnDifficulty);
     this->setPal(firstPaletteFound); // should trigger view->displayFrame()
 LogErrorF("openFile 7 %d %d", IsHellfireGame, gnDifficulty);
     // update available menu entries
