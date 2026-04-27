@@ -165,7 +165,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
 	BYTE _iMagical;	// item_quality
 	BYTE _iSelFlag;
 	BOOLEAN _iFloorFlag;
-	BOOL _iIdentified;
+	BOOL _iUnidentified;
 	int _ivalue;
 	int _iIvalue;
 	int _iPLFlags; // item_special_effect
