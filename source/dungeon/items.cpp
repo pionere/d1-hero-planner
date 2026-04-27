@@ -2137,8 +2137,7 @@ void RecreateItem(int32_t iseed, uint16_t wIndex, uint16_t wCI)
 	items[MAXITEMS]._iSeed = iseed;
 	items[MAXITEMS]._iCreateInfo = wCI;
 
-    ItemName(&items[MAXITEMS]);
-    copy_cstr(items[MAXITEMS]._iName, tempstr);
+    snprintf(items[MAXITEMS]._iName, sizeof(items[MAXITEMS]._iName), "%s", ItemName(&items[MAXITEMS]));
 }
 
 float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
