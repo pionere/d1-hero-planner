@@ -112,7 +112,6 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     this->ui->itemPrePowerLabel->setVisible(false);
     this->ui->itemPrePowerText->setVisible(false);
 #else
-    QMessageBox::critical(this, "Error", tr("item properties numaffixes:%1 %2,%3").arg(is->_iNumAffixes).arg(is->_iAffixes[0].asPower).arg(is->_iAffixes[1].asPower));
     active = is->_iNumAffixes;
     for (int i = 0; i < active; i++) {
         PrintItemPower(i, is);

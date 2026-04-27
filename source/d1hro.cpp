@@ -73,10 +73,10 @@ bool D1Hero::load(const QString &filePath, const OpenAsParam &params)
     IsHellfireGame = this->hellfire;
     auto gameMulti = IsMultiGame;
     IsMultiGame = this->multi;
-
+LogErrorF("D1Hero::load 0");
     UnPackPlayer(&hss->pps, this->pnum);
     // plr._pDunLevel = DLV_CATHEDRAL1;
-
+LogErrorF("D1Hero::load 1");
     if (fileData.size() == sizeof(HeroSaveStruct)) {
         // static_assert(lengthof(hss->itemNames) >= lengthof(plr._pInvBody) + lengthof(plr._pInvList) + lengthof(plr._pSpdList), "item-name copy in D1Hero::load must be adjusted.");
         static_assert(sizeof(hss->itemNames[0]) == sizeof(plr._pInvBody[0]._iName), "memcopy in D1Hero::load must be adjusted.");
@@ -91,12 +91,12 @@ bool D1Hero::load(const QString &filePath, const OpenAsParam &params)
             memcpy(plr._pSpdList[i]._iName, &hss->itemNames[cursor], sizeof(plr._pSpdList[i]._iName));
         }
     }
-
+LogErrorF("D1Hero::load 2");
     IsHellfireGame = gameHellfire;
     IsMultiGame = gameMulti;
 
     this->calcInv();
-
+LogErrorF("D1Hero::load 3");
     this->filePath = filePath;
     this->modified = false;
 
@@ -113,7 +113,7 @@ bool D1Hero::load(const QString &filePath, const OpenAsParam &params)
     if (hc != plr._pClass) {
         this->setClass(hc);
     }
-
+LogErrorF("D1Hero::load 4");
     if (params.heroType != OPEN_HERO_TYPE::AUTODETECT) {
         this->setHellfire(params.heroType == OPEN_HERO_TYPE::HELLFIRE_HERO);
     }
