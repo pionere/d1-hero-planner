@@ -953,7 +953,7 @@ restart:
 done:
 
     memcpy(this->is, &items[MAXITEMS], sizeof(ItemStruct));
-    this->is->_iIdentified = TRUE;
+    this->is->_iUnidentified = FALSE;
     if (counter != 0) {
         dProgress() << tr("Succeeded after %1 iterations.").arg(counter + 1);
     }

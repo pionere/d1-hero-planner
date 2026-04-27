@@ -2156,7 +2156,7 @@ float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
     bool func(const ItemData& item, void* arg);
     void* arg = NULL;
     if (quality >= CFDQ_GOOD) {
-        func = RndUItemOk;
+        func = &RndUItemOk;
     } else {
         if (wIndex == IDI_GOLD) {
             mpl *= 128 - 33;
@@ -2165,7 +2165,7 @@ float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
         }
         mpl *= 33;
         dvs *= 128;
-        func = RndItemOk;
+        func = &RndItemOk;
     }
 
 	int i, ri;

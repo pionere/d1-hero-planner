@@ -594,7 +594,7 @@ void ItemsDialog::updateFields()
 
 void ItemsDialog::on_playersEdit_returnPressed()
 {
-    this->numPlayers = this->ui->playersEdit->text()->toUShort();
+    this->numPlayers = this->ui->playersEdit->text().toUShort();
 
     this->on_playersEdit_escPressed();
 }
@@ -947,7 +947,7 @@ restart:
 done:
 
     memcpy(this->is, &items[MAXITEMS], sizeof(ItemStruct));
-    this->is->_iIdentified = TRUE;
+    this->is->_iUidentified = FALSE;
     if (counter != 0) {
         dProgress() << tr("Succeeded after %1 iterations.").arg(counter + 1);
     }
@@ -960,7 +960,7 @@ void ItemsDialog::on_calculateButton_clicked()
 {
     bool unique = this->ui->isUniqueCheckBox->isChecked();
     int lvl = this->is->_iCreateInfo & CF_LEVEL;
-    int idx = idxComboBox->currentData().value<int>();
+    int idx = this->ui->itemIdxComboBox->currentData().value<int>();
 
     float dropChance = ItemDropChance(idx, lvl, this->numPlayers, unique);
 
