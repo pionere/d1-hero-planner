@@ -747,7 +747,7 @@ void MainWindow::loadFile(const OpenAsParam &params, MainWindow *instance, LoadF
     // result->trnUnique = nullptr;
     // result->trnBase = nullptr;
     result->hero = nullptr;
-
+LogErrorF("loadFile 0");
     ProgressDialog::start(PROGRESS_DIALOG_STATE::BACKGROUND, tr("Loading..."), 0, PAF_NONE); // PAF_UPDATE_WINDOW
 
     // Loading default.pal
@@ -772,12 +772,15 @@ void MainWindow::loadFile(const OpenAsParam &params, MainWindow *instance, LoadF
     }
 
     result->baseDir = baseDir;
-
+LogErrorF("loadFile 1");
     result->hero = D1Hero::instance();
     // assert(result->hero != nullptr);
     result->hero->setPalette(result->trnBase->getResultingPalette());
+LogErrorF("loadFile 2 %d", fileType);
     if (fileType == FILE_CONTENT::HRO) {
+LogErrorF("loadFile 3");
         if (!result->hero->load(filePath, params)) {
+LogErrorF("loadFile 4");
             MainWindow::failWithError(instance, result, tr("Failed loading HRO file: %1.").arg(QDir::toNativeSeparators(filePath)));
             return;
         }

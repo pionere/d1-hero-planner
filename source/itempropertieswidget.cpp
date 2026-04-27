@@ -115,7 +115,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     QMessageBox::critical(this, "Error", tr("item properties numaffixes:%1 %2,%3").arg(is->_iNumAffixes).arg(is->_iAffixes[0].asPower).arg(is->_iAffixes[1].asPower));
     active = is->_iNumAffixes;
     for (int i = 0; i < active; i++) {
-        PrintItemPower(is->_iAffixes[i].asPower, is);
+        PrintItemPower(i, is);
         switch (i) {
         case 0: this->ui->itemUniquePower1Text->setText(tempstr); break;
         case 1: this->ui->itemUniquePower2Text->setText(tempstr); break;
