@@ -61,47 +61,77 @@ const int offset_y[NUM_DIRS] = { 1, 1, 1, 0, -1, -1, -1, 0 };
 
 static void InitMonsterGFX(int midx)
 {
+#if 0
 	MapMonData* cmon;
 	const MonFileData* mfdata;
-	int mtype, anim; // , i;
-//	char strBuff[DATA_ARCHIVE_MAX_PATH];
-//	BYTE* celBuf;
+	int mtype, anim, i;
+	char strBuff[DATA_ARCHIVE_MAX_PATH];
+	BYTE* celBuf;
 
 	cmon = &mapMonTypes[midx];
 	mfdata = &monfiledata[cmon->cmFileNum];
-//	cmon->cmWidth = mfdata->moWidth * ASSET_MPL;
-//	cmon->cmXOffset = (cmon->cmWidth - TILE_WIDTH) >> 1;
-//	cmon->cmAFNum = mfdata->moAFNum;
-//	cmon->cmAFNum2 = mfdata->moAFNum2;
+	cmon->cmAFNum = mfdata->moAFNum;
+	cmon->cmAFNum2 = mfdata->moAFNum2;
 
 	mtype = cmon->cmType;
 	auto& monAnims = cmon->cmAnims;
 	// static_assert(lengthof(animletter) == lengthof(monsterdata[0].maFrames), "");
 	for (anim = 0; anim < NUM_MON_ANIM; anim++) {
-		monAnims[anim].maFrames = mfdata->moAnimFrames[anim];
-		monAnims[anim].maFrameLen = mfdata->moAnimFrameLen[anim];
-		/*if (mfdata->moAnimFrames[anim] > 0) {
+		monAnims[anim].maFrames = monAnims[anim].maFrameLen = mfdata->moAnimFrameLen[anim];
+		if (mfdata->moAnimFrameLen[anim] > 0) {
 			snprintf(strBuff, sizeof(strBuff), mfdata->moGfxFile, animletter[anim]);
 
 			celBuf = LoadFileInMem(strBuff);
 			assert(cmon->cmAnimData[anim] == NULL);
 			cmon->cmAnimData[anim] = celBuf;
 
-			if (mtype != MT_GOLEM || (anim != MA_SPECIAL && anim != MA_DEATH)) {
-				for (i = 0; i < lengthof(monAnims[anim].maAnimData); i++) {
-					monAnims[anim].maAnimData[i] = const_cast<BYTE*>(CelGetFrameStart(celBuf, i));
-				}
-			} else {
-				for (i = 0; i < lengthof(monAnims[anim].maAnimData); i++) {
-					monAnims[anim].maAnimData[i] = celBuf;
+			LoadFrameGroups(celBuf, const_cast<const BYTE*(&)[8]>(monAnims[anim].maAnimData));
+			auto animLen = LOAD_LE32(monAnims[anim].maAnimData[0]);
+			for (i = 1; i < lengthof(monAnims[anim].maAnimData); i++) {
+				if (LOAD_LE32(monAnims[anim].maAnimData[i]) != animLen) {
+					// overwrite unidirectional/incomplete animations
+					monAnims[anim].maAnimData[i] = monAnims[anim].maAnimData[0];
 				}
 			}
-		}*/
+			monAnims[anim].maFrames = animLen;
+#if !USE_PATCH
+			if (cmon->cmFileNum == MOFILE_ACID && anim == MA_DEATH) {
+				monAnims[anim].maFrames = 24 - 8;
+			}
+			if (cmon->cmFileNum == MOFILE_MAGMA && anim == MA_WALK) {
+				monAnims[anim].maFrames = 14 - 4;
+			}
+			if (cmon->cmFileNum == MOFILE_SCAV && anim == MA_GOTHIT) {
+				monAnims[anim].maFrames =  8 - 2;
+			}
+			if (cmon->cmFileNum == MOFILE_SKING && anim == MA_SPECIAL) {
+				monAnims[anim].maFrames = 12 - 6;
+			}
+			if (cmon->cmFileNum == MOFILE_SKING && anim == MA_WALK) {
+				monAnims[anim].maFrames =  8 - 2;
+			}
+			if (cmon->cmFileNum == MOFILE_SNAKE && anim == MA_GOTHIT) {
+				monAnims[anim].maFrames =  6 - 1;
+			}
+			if (cmon->cmFileNum == MOFILE_SKELBW && anim == MA_DEATH) {
+				monAnims[anim].maFrames = 16 - 3;
+			}
+#ifdef HELLFIRE
+			if (cmon->cmFileNum == MOFILE_UNRAV && anim == MA_ATTACK) {
+				monAnims[anim].maFrames = 18 - 6;
+			}
+#endif
+#endif
+		}
 	}
 
-//	if (monsterdata[mtype].mTransFile != NULL) {
-//		InitMonsterTRN(monAnims, monsterdata[mtype].mTransFile);
-//	}
+	//if (monsterdata[mtype].mTransFile != NULL) {
+		InitMonsterTRN(monAnims, monsterdata[mtype].mTransFile);
+	//}
+
+	cmon->cmWidth = Cl2Width(monAnims[0].maAnimData[0]);
+	cmon->cmXOffset = (cmon->cmWidth - TILE_WIDTH) >> 1;
+#endif
 }
 
 static void InitMonsterStats(int midx)

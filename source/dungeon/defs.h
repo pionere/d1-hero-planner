@@ -12,10 +12,7 @@
 
 #define DEVILUTION_BEGIN_NAMESPACE
 #define DEVILUTION_END_NAMESPACE
-#define ALIGN32
-#define ALIGN64
-#define ALIGNMENT
-#define ALIGN
+
 
 #define INV_SLOT_SIZE_PX 28
 
