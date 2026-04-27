@@ -416,7 +416,6 @@ QImage D1Hero::getEquipmentImage(int pcursinvitem) const
     // draw the inventory
     D1Gfx *iCels = pInvCels;
     if (iCels != nullptr) {
-LogErrorF("getEquipmentImage iCels %d", iCels->getFrameCount());
         // QMessageBox::critical(nullptr, QApplication::tr("Error"), QApplication::tr("File '%1' exists").arg(invFilePath));
             D1GfxFrame *inv = iCels->getFrame(0);
             // QMessageBox::critical(nullptr, QApplication::tr("Error"), QApplication::tr("File '%1' loaded %2x%3").arg(invFilePath).arg(inv->getWidth()).arg(inv->getHeight()));
@@ -470,28 +469,24 @@ LogErrorF("getEquipmentImage iCels %d", iCels->getFrameCount());
 
 	screen_x = 0;
 	screen_y = 0;
-LogErrorF("getEquipmentImage PlrItem 0 %d %d", pcursinvitem, cCels != nullptr);
+
     pi = PlrItem(pnum, pcursinvitem); // FIXME /*pcursinvitem == ITEM_NONE ? NULL :*/ PlrItem(pnum, pcursinvitem);
-LogErrorF("getEquipmentImage PlrItem 1 %d", pi != nullptr);
-    LogErrorF("D1Hero::getEquipmentImage 2 %d", INVLOC_HEAD);
+    // LogErrorF("D1Hero::getEquipmentImage 2 %d", INVLOC_HEAD);
 	is = &plr._pInvBody[INVLOC_HEAD];
 	if (is->_itype != ITYPE_NONE) {
-LogErrorF("getEquipmentImage h type %d", is->_itype);
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_HEAD_FIRST].X, screen_y + InvRect[SLOTXY_HEAD_LAST].Y, 2 * INV_SLOT_SIZE_PX, 2 * INV_SLOT_SIZE_PX);
 
 		frame = is->_iCurs + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
-LogErrorF("getEquipmentImage helm 0");
+
 		scrollrt_draw_item(is, pi == is, screen_x + InvRect[SLOTXY_HEAD_FIRST].X, screen_y + InvRect[SLOTXY_HEAD_LAST].Y, cCels, frame, frame_width);
-LogErrorF("getEquipmentImage helm 1");
 	} else {
 		frame = ICURS_HELM + CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
-LogErrorF("getEquipmentImage ph helm 0");
+
         draw_item_placeholder("helm", pi == is, screen_x + InvRect[SLOTXY_HEAD_FIRST].X, screen_y + InvRect[SLOTXY_HEAD_LAST].Y, cCels, frame, frame_width);
-LogErrorF("getEquipmentImage ph helm 1");
     }
-    LogErrorF("D1Hero::getEquipmentImage 3 %d", INVLOC_RING_LEFT);
+    // LogErrorF("D1Hero::getEquipmentImage 3 %d", INVLOC_RING_LEFT);
 	is = &plr._pInvBody[INVLOC_RING_LEFT];
 	if (is->_itype != ITYPE_NONE) {
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_RING_LEFT].X, screen_y + InvRect[SLOTXY_RING_LEFT].Y, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
@@ -506,7 +501,7 @@ LogErrorF("getEquipmentImage ph helm 1");
 
         draw_item_placeholder("left ring", pi == is, screen_x + InvRect[SLOTXY_RING_LEFT].X, screen_y + InvRect[SLOTXY_RING_LEFT].Y, cCels, frame, frame_width);
 	}
-    LogErrorF("D1Hero::getEquipmentImage 4 %d", INVLOC_RING_RIGHT);
+    // LogErrorF("D1Hero::getEquipmentImage 4 %d", INVLOC_RING_RIGHT);
 	is = &plr._pInvBody[INVLOC_RING_RIGHT];
 	if (is->_itype != ITYPE_NONE) {
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_RING_RIGHT].X, screen_y + InvRect[SLOTXY_RING_RIGHT].Y, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
@@ -521,7 +516,7 @@ LogErrorF("getEquipmentImage ph helm 1");
 
         draw_item_placeholder("right ring", pi == is, screen_x + InvRect[SLOTXY_RING_RIGHT].X, screen_y + InvRect[SLOTXY_RING_RIGHT].Y, cCels, frame, frame_width);
 	}
-    LogErrorF("D1Hero::getEquipmentImage 5 %d", INVLOC_AMULET);
+    // LogErrorF("D1Hero::getEquipmentImage 5 %d", INVLOC_AMULET);
 	is = &plr._pInvBody[INVLOC_AMULET];
 	if (is->_itype != ITYPE_NONE) {
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_AMULET].X, screen_y + InvRect[SLOTXY_AMULET].Y, INV_SLOT_SIZE_PX, INV_SLOT_SIZE_PX);
@@ -536,10 +531,9 @@ LogErrorF("getEquipmentImage ph helm 1");
 
         draw_item_placeholder("amulet", pi == is, screen_x + InvRect[SLOTXY_AMULET].X, screen_y + InvRect[SLOTXY_AMULET].Y, cCels, frame, frame_width);
 	}
-    LogErrorF("D1Hero::getEquipmentImage 6 %d", INVLOC_HAND_LEFT);
+    // LogErrorF("D1Hero::getEquipmentImage 6 %d", INVLOC_HAND_LEFT);
 	is = &plr._pInvBody[INVLOC_HAND_LEFT];
 	if (is->_itype != ITYPE_NONE) {
-    LogErrorF("D1Hero::getEquipmentImage 6 0 %d", is->_itype);
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
 		frame = is->_iCurs + CURSOR_FIRSTITEM;
@@ -552,12 +546,9 @@ LogErrorF("getEquipmentImage ph helm 1");
 		if (InvItemHeight[frame] != (3 * INV_SLOT_SIZE_PX))
 			dy -= INV_SLOT_SIZE_PX / 2;
 
-    LogErrorF("D1Hero::getEquipmentImage 6 1 %d, %d", frame, frame_width);
 		scrollrt_draw_item(is, pi == is, screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y + dy, cCels, frame, frame_width);
-    LogErrorF("D1Hero::getEquipmentImage 6 2 %d, %d", frame, frame_width);
 
 		if (TWOHAND_WIELD(&plr, is)) {
-    LogErrorF("D1Hero::getEquipmentImage 6 3 %d, %d", frame, frame_width);
 				InvDrawSlotBack(screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 				light_trn_index = 0;
 				gbCelTransparencyActive = true;
@@ -568,9 +559,7 @@ LogErrorF("getEquipmentImage ph helm 1");
 					dx += INV_SLOT_SIZE_PX / 2;
 				if (InvItemHeight[frame] != 3 * INV_SLOT_SIZE_PX)
 					dy -= INV_SLOT_SIZE_PX / 2;
-    LogErrorF("D1Hero::getEquipmentImage 6 4 %d, %d", frame, frame_width);
 				CelClippedDrawLightTrans(screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y + dy, cCels, frame, frame_width);
-    LogErrorF("D1Hero::getEquipmentImage 6 5 %d, %d", frame, frame_width);
 		}
 	} else {
         frame = 0;
@@ -591,11 +580,10 @@ LogErrorF("getEquipmentImage ph helm 1");
 			dx += INV_SLOT_SIZE_PX / 2;
 		if (InvItemHeight[frame] != (3 * INV_SLOT_SIZE_PX))
 			dy -= INV_SLOT_SIZE_PX / 2;
-    LogErrorF("D1Hero::getEquipmentImage 6b 0 %d, %d", frame, frame_width);
+
         draw_item_placeholder("weapon", pi == is, screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y + dy, cCels, frame, frame_width);
-    LogErrorF("D1Hero::getEquipmentImage 6b 1 %d, %d", frame, frame_width);
 	}
-    LogErrorF("D1Hero::getEquipmentImage 7 %d", INVLOC_HAND_RIGHT);
+    // LogErrorF("D1Hero::getEquipmentImage 7 %d", INVLOC_HAND_RIGHT);
 	is = &plr._pInvBody[INVLOC_HAND_RIGHT];
 	if (is->_itype != ITYPE_NONE) {
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
@@ -620,7 +608,7 @@ LogErrorF("getEquipmentImage ph helm 1");
             draw_item_placeholder("shield", pi == is, screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y, cCels, frame, frame_width);
         }
 	}
-    LogErrorF("D1Hero::getEquipmentImage 8 %d", INVLOC_CHEST);
+    // LogErrorF("D1Hero::getEquipmentImage 8 %d", INVLOC_CHEST);
 	is = &plr._pInvBody[INVLOC_CHEST];
 	if (is->_itype != ITYPE_NONE) {
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_CHEST_FIRST].X, screen_y + InvRect[SLOTXY_CHEST_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
@@ -635,7 +623,7 @@ LogErrorF("getEquipmentImage ph helm 1");
 
         draw_item_placeholder("armor", pi == is, screen_x + InvRect[SLOTXY_CHEST_FIRST].X, screen_y + InvRect[SLOTXY_CHEST_LAST].Y, cCels, frame, frame_width);
 	}
-    LogErrorF("D1Hero::getEquipmentImage end");
+
     invPainter.end();
 
     return result;
