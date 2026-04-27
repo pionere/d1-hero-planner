@@ -180,12 +180,4 @@ void LoadFileWithMem(const char* pszName, BYTE* p)
 	}
 }
 
-void SStrCopy(char* dest, const char* src, int max_length)
-{
-	int result = snprintf(dest, max_length, "%s", src);
-	if (result >= max_length)
-		result = max_length - 1;
-	// return result;
-}
-
 DEVILUTION_END_NAMESPACE

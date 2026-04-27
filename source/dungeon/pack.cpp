@@ -29,7 +29,7 @@ void PackPkItem(PkItemStruct* dest, const ItemStruct* src)
 		dest->dwSeed = src->_iSeed;
 		dest->wIndx = src->_iIdx;
 		dest->wCI = src->_iCreateInfo;
-		dest->bId = src->_iIdentified;
+		dest->bId = src->_iUnidentified;
 		dest->bDur = src->_iDurability;
 		dest->bMDur = src->_iMaxDur;
 		dest->bCh = src->_iCharges;
@@ -88,7 +88,7 @@ void UnPackPkItem(const PkItemStruct* src)
 		} else if (idx == IDI_CAMPAIGNMAP) {
 			items[MAXITEMS]._ivalue = src->wValue;
 		}
-		items[MAXITEMS]._iIdentified = src->bId;
+		items[MAXITEMS]._iUnidentified = src->bId;
 		items[MAXITEMS]._iDurability = src->bDur;
 		items[MAXITEMS]._iMaxDur = src->bMDur;
 		items[MAXITEMS]._iCharges = src->bCh;

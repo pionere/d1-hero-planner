@@ -370,13 +370,23 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+	case SPL_BLDGOLEM:
+	case SPL_SKELAX:
+	case SPL_SKELBW: {
 		sl = sl * 4 + (magic >> 6);
-		sl = sl > 0 ? sl - 1 : 0;
-		k = monsterdata[MT_GOLEM].mLevel;
-		sl = k + sl;
-		mind = sl * monsterdata[MT_GOLEM].mMinDamage / k;
-		maxd = sl * monsterdata[MT_GOLEM].mMaxDamage / k;
-		break;
+		// sl++;
+		// sl--; -- lvlBonus (PreSpawnGolem)
+		static_assert((int)MMT_GOLEM == 0, "GetSkillDetails expects ordered SPL/MMT enums I.");
+		static_assert((int)MMT_BLDGOLEM == (int)SPL_BLDGOLEM - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums II.");
+		static_assert((int)MMT_SKELAX == (int)SPL_SKELAX - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums III.");
+		static_assert((int)MMT_SKELBW == (int)SPL_SKELBW - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums IV.");
+		const MonsterData &monData = monsterdata[minionMonData[sn - SPL_GOLEM].mtype];
+		k = monData.mLevel; // baseLvl
+		sl = k + sl;        // monLvl
+		// calculate damage
+		mind = sl * monData.mMinDamage / k;
+		maxd = sl * monData.mMaxDamage / k;
+	} break;
 	case SPL_ELEMENTAL:
 		mind = (magic >> 3) + 2 * sl + 4;
 		maxd = (magic >> 3) + 4 * sl + 20;
@@ -608,7 +618,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		mind = (magic >> 2) + (sl << 2) + 10;
 		maxd = (magic >> 2) + (sl << 3) + 10;
 	case SPL_SWAMP:
-		dur = (lengthof(BloodBoilLocs) + sl * 2) * misfiledata[MFILE_BLODBURS].mfAnimFrameLen[0] * misfiledata[MFILE_BLODBURS].mfAnimLen[0] / 2;
+		dur = (lengthof(BloodBoilLocs) + sl * 2) * misfiledata[MFILE_BLODBURS].mfAnimFrameLen * misfiledata[MFILE_BLODBURS].mfAnimLen[0] / 2;
 		break;
 	case SPL_CHAIN:
 		mind = 1;
@@ -633,16 +643,24 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		maxd = ((magic + (sl << 4)) * 30) >> 6;
 		break;
 	case SPL_GOLEM:
+	case SPL_BLDGOLEM:
+	case SPL_SKELAX:
+	case SPL_SKELBW: {
 		sl = sl * 4 + (magic >> 6);
-		sl = sl > 0 ? sl - 1 : 0;
-		k = monsterdata[MT_GOLEM].mLevel;
-		sl = k + sl;
-		// mon->_mLevel = sl;
-		dur = sl * monsterdata[MT_GOLEM].mMinHP / k;
-		mind = sl * monsterdata[MT_GOLEM].mMinDamage / k;
-		maxd = sl * monsterdata[MT_GOLEM].mMaxDamage / k;
+		static_assert((int)MMT_GOLEM == 0, "GetSkillDetails expects ordered SPL/MMT enums I.");
+		static_assert((int)MMT_BLDGOLEM == (int)SPL_BLDGOLEM - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums II.");
+		static_assert((int)MMT_SKELAX == (int)SPL_SKELAX - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums III.");
+		static_assert((int)MMT_SKELBW == (int)SPL_SKELBW - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums IV.");
+		const MonsterData &monData = monsterdata[minionMonData[sn - SPL_GOLEM].mtype];
+		k = monData.mLevel; // baseLvl
+		sl = k + sl;        // monLvl
+		// calculate damage
+		mind = sl * monData.mMinDamage / k;
+		maxd = sl * monData.mMaxDamage / k;
+		dur = sl * monData.mMaxHP / k;
+		// calculate hp
 		snprintf(infostr, sizeof(infostr), "Lvl: %d Hp: %d Dam: %d-%d", sl, dur, mind, maxd);
-		return;
+	} return;
 	case SPL_ELEMENTAL:
 		mind = (magic >> 3) + 2 * sl + 4;
 		maxd = (magic >> 3) + 4 * sl + 20;
@@ -922,6 +940,7 @@ int GetBaseMissile(int mtype)
     //case MIS_ETHEREALIZE:
     case MIS_BLEED: break;
     //case MIS_EXAPOCA:
+    case MIS_FIRERINGC: mtype = MIS_FIREWALL; break;
     case MIS_FIREWALLC: mtype = MIS_FIREWALL; break;
     case MIS_FIREWALL: break;
     case MIS_FIREWAVEC: mtype = MIS_FIREWAVE; break;
@@ -960,7 +979,6 @@ int GetBaseMissile(int mtype)
     //case MIS_FIRENOVAC:
     //case MIS_FIREBALL2:
     //case MIS_REFLECT:
-    case MIS_FIRERING:  mtype = MIS_FIREWALL;  break;
     //case MIS_MANATRAP:
     //case MIS_LIGHTRING:
     case MIS_RUNEFIRE:  mtype = MIS_FIREEXP;   break;

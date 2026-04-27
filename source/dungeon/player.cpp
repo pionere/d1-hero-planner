@@ -353,7 +353,7 @@ static void SetPlrAnims(int pnum)
 void CreatePlayer(int pnum, const _uiheroinfo& heroinfo)
 {
 	int val, hp, mana;
-	int i; // , pnum = 0;
+	// int pnum = 0;
 
 	memset(&plr, 0, sizeof(PlayerStruct));
 	SetRndSeed(time(NULL));

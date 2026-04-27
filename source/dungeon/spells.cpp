@@ -68,7 +68,6 @@ bool HasSkillDamage(int sn)
     case SPL_SHROUD:
     case SPL_SWAMP:
     case SPL_STONE:
-    case SPL_INFRA:
     case SPL_MANASHIELD:
     case SPL_ATTRACT:
     case SPL_TELEKINESIS:
@@ -78,6 +77,7 @@ bool HasSkillDamage(int sn)
     case SPL_HEAL:
     case SPL_HEALOTHER:
     case SPL_RESURRECT:
+    case SPL_INFRA:
     case SPL_IDENTIFY:
     case SPL_OIL:
     case SPL_REPAIR:
@@ -104,6 +104,7 @@ bool HasSkillDamage(int sn)
     case SPL_HBOLT:
     case SPL_LIGHTNING:
     case SPL_FLASH:
+    case SPL_FIRERING:
     case SPL_FIREWALL:
     case SPL_FIREBALL:
     case SPL_METEOR:
@@ -116,12 +117,15 @@ bool HasSkillDamage(int sn)
     case SPL_FLARE:
     case SPL_POISON:
     case SPL_WIND:
+    case SPL_PULSE:
     case SPL_GUARDIAN:
     case SPL_GOLEM:
+    case SPL_BLDGOLEM:
+    case SPL_SKELAX:
+    case SPL_SKELBW:
 #ifdef HELLFIRE
 	//case SPL_LIGHTWALL:
 	//case SPL_IMMOLAT:
-    case SPL_FIRERING:
     case SPL_RUNEFIRE:
     case SPL_RUNELIGHT:
     case SPL_RUNENOVA:

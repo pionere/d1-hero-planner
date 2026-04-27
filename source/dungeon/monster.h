@@ -9,7 +9,7 @@
 #define OPPOSITE(x) (((x) + 4) & 7)
 
 extern MonsterStruct monsters[MAXMONSTERS];
-// extern MapMonData mapMonTypes[MAX_LVLMTYPES];
+extern MapMonData mapMonTypes[MAX_LVLMTYPES];
 // extern int nummtypes;
 
 void InitUniqMonster(int type, int numplrs, int lvlbonus, bool minion);

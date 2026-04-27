@@ -28,11 +28,11 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     int active;
 
     active = 0;
-	if (is->_iClass == ICLASS_WEAPON) {
+    if (is->_iClass == ICLASS_WEAPON) {
         label = tr("Damage:");
-		if (is->_iMinDam == is->_iMaxDam)
-			text = QString::number(is->_iMinDam);
-		else
+        if (is->_iMinDam == is->_iMaxDam)
+            text = QString::number(is->_iMinDam);
+        else
             text = QString("%1-%2").arg(is->_iMinDam).arg(is->_iMaxDam);
         switch (is->_iDamType) {
         case IDAM_NONE:     tooltip = tr("-");           break;
@@ -43,7 +43,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
         }
         tooltip = tr("Type: %1. Base crit. chance: %2").arg(tooltip).arg(is->_iBaseCrit);
         active = 1;
-	} else if (is->_iClass == ICLASS_ARMOR) {
+    } else if (is->_iClass == ICLASS_ARMOR) {
         label = tr("Armor:");
         text = QString::number(is->_iAC);
         tooltip = "";
@@ -54,7 +54,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     this->ui->itemDAMText->setVisible(active != 0);
     this->ui->itemDAMText->setText(text);
     this->ui->itemDAMText->setToolTip(tooltip);
-
+#if 0
     active = 0;
     if (is->_iPrePower != IPL_INVALID) {
         PrintItemPower(is->_iPrePower, is);
@@ -107,6 +107,24 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
             }
         }
     }
+#else
+    this->ui->itemSufPowerLabel->setVisible(false);
+    this->ui->itemSufPowerText->setVisible(false);
+    this->ui->itemPrePowerLabel->setVisible(false);
+    this->ui->itemPrePowerText->setVisible(false);
+    active = is->_iNumAffixes;
+    for (int i = 0; i < active; i++) {
+        PrintItemPower(i, is);
+        switch (i) {
+        case 0: this->ui->itemUniquePower1Text->setText(tempstr); break;
+        case 1: this->ui->itemUniquePower2Text->setText(tempstr); break;
+        case 2: this->ui->itemUniquePower3Text->setText(tempstr); break;
+        case 3: this->ui->itemUniquePower4Text->setText(tempstr); break;
+        case 4: this->ui->itemUniquePower5Text->setText(tempstr); break;
+        case 5: this->ui->itemUniquePower6Text->setText(tempstr); break;
+        }
+    }
+#endif
     this->ui->itemUniquePower1Label->setVisible(active > 0);
     this->ui->itemUniquePower1Text->setVisible(active > 0);
     this->ui->itemUniquePower2Label->setVisible(active > 1);
@@ -146,49 +164,22 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
 	int _iSpell;  // spell_id
 	BYTE _iMagical;	// item_quality
 	BYTE _iSelFlag;
-	BOOLEAN _iFloorFlag;
-	BOOL _iIdentified;
+	BOOLEAN _iStatFlag;
+	BOOLEAN _iUnidentified;
 	int _ivalue;
 	int _iIvalue;
-	int _iFlags;	// item_special_effect
 	int _iCharges;
 	int _iMaxCharges;
 	int _iDurability;
 	int _iMaxDur;
 	int _iPLDam;
 	int _iPLToHit;
-	int _iPLAC;
 	int _iPLStr;
 	int _iPLMag;
 	int _iPLDex;
 	int _iPLVit;
-	int _iPLFR;
-	int _iPLLR;
-	int _iPLMR;
-	int _iPLAR;
-	int _iPLMana;
-	int _iPLHP;
-	int _iPLDamMod;
-	int _iPLGetHit;
-	int8_t _iPLLight;
-	int8_t _iPLSkillLevels;
-	BYTE _iPLSkill;
-	int8_t _iPLSkillLvl;
-	BYTE _iPLManaSteal;
-	BYTE _iPLLifeSteal;
-	BYTE _iPLCrit;
-	BOOLEAN _iStatFlag;
+
 	int _iUid; // unique_item_indexes
-	BYTE _iPLFMinDam;
-	BYTE _iPLFMaxDam;
-	BYTE _iPLLMinDam;
-	BYTE _iPLLMaxDam;
-	BYTE _iPLMMinDam;
-	BYTE _iPLMMaxDam;
-	BYTE _iPLAMinDam;
-	BYTE _iPLAMaxDam;
-	int _iVAdd;
-	int _iVMult;
 
 */
 

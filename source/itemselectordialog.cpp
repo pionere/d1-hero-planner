@@ -320,7 +320,7 @@ static QString AffixPowerName(int power)
     case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
     case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
     case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SPELL:          result = QApplication::tr("spell");                 break;
+    case IPL_SETSKILL:       result = QApplication::tr("spell");                 break;
     case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
     case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
     case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
@@ -906,7 +906,7 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (items[MAXITEMS]._iPrePower != prefix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
                 goto restart;
             }
@@ -924,7 +924,7 @@ start:
             }
         }
         if (suffix.active) {
-            if (items[MAXITEMS]._iSufPower != suffix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
                 goto restart;
             }
@@ -953,7 +953,7 @@ restart:
 done:
 
     memcpy(this->is, &items[MAXITEMS], sizeof(ItemStruct));
-    this->is->_iIdentified = TRUE;
+    this->is->_iUnidentified = FALSE;
     if (counter != 0) {
         dProgress() << tr("Succeeded after %1 iterations.").arg(counter + 1);
     }

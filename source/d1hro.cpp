@@ -183,7 +183,7 @@ static void RecreateHeroItems(ItemStruct *is, int numItems)
 
             RecreateItem(is->_iSeed, is->_iIdx, is->_iCreateInfo);
 
-            items[MAXITEMS]._iIdentified = tmpItem._iIdentified;
+            items[MAXITEMS]._iUnidentified = tmpItem._iUnidentified;
             if (tmpItem._itype == items[MAXITEMS]._itype && tmpItem._iMiscId == items[MAXITEMS]._iMiscId && tmpItem._iClass == items[MAXITEMS]._iClass) {
                 // preserve the name
                 bool match = tmpItem._iUid == items[MAXITEMS]._iUid && tmpItem._iNumAffixes == items[MAXITEMS]._iNumAffixes;

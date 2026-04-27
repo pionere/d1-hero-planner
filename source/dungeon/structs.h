@@ -4,6 +4,13 @@
  * Various global structures.
  */
 
+#define ALIGNMENT(x86, x64)
+#define ALIGNMENT32(num)
+#define ALIGNMENT64(num)
+#define ALIGN
+#define ALIGN32
+#define ALIGN64
+
 //////////////////////////////////////////////////
 // miniwin
 //////////////////////////////////////////////////
@@ -46,6 +53,10 @@ typedef struct RECT_AREA32 {
 	int x2;
 	int y2;
 } RECT_AREA32;
+
+typedef struct TRNFileData {
+	const char* trnName;
+} TRNFileData;
 
 //////////////////////////////////////////////////
 // items
@@ -99,7 +110,7 @@ typedef struct ItemFileData {
 	const char* ifName; // Map of item type .cel file names.
 	int idSFX;          // sounds effect of dropping the item on ground (_sfx_id).
 	int iiSFX;          // sounds effect of placing the item in the inventory (_sfx_id).
-	int iAnimLen;       // item drop animation length
+	ALIGNMENT32(1)
 } ItemFileData;
 
 typedef struct ItemData {
@@ -125,6 +136,7 @@ typedef struct ItemData {
 	BYTE iMaxAC;
 	BYTE iDurability;
 	int iValue;
+	ALIGNMENT(5, 4)
 } ItemData;
 
 typedef struct ItemAffixStruct {
@@ -171,7 +183,7 @@ typedef struct ItemStruct {
 	BOOLEAN _iFloorFlag;
 	BOOLEAN _iAnimFlag;
 	BYTE* _iAnimData;        // PSX name -> ItemFrame
-	unsigned _iAnimFrameLen; // Tick length of each frame in the current animation
+	//unsigned _iAnimFrameLen; // Tick length of each frame in the current animation
 	unsigned _iAnimCnt;      // Increases by one each game tick, counting how close we are to _iAnimFrameLen
 	unsigned _iAnimLen;      // Number of frames in current animation
 	unsigned _iAnimFrame;    // Current frame of animation.
@@ -179,7 +191,7 @@ typedef struct ItemStruct {
 	//int _iAnimXOffset;
 	//BOOL _iPostDraw; // should be drawn during the post-phase (magic rock on the stand) -- unused
 	BOOLEAN _iStatFlag;
-	BOOLEAN _iIdentified;
+	BOOLEAN _iUnidentified;
 	BYTE _iNumAffixes;
 	BYTE _iUid; // unique_item_indexes
 	int _ivalue;
@@ -392,11 +404,57 @@ typedef struct MisFileData {
 	BOOLEAN mfAnimFlag;
 	BOOLEAN mfLightFlag;
 	BOOLEAN mfPreFlag;
-	BYTE mfAnimFrameLen[16];
+	BYTE mfAnimFrameLen;
 	BYTE mfAnimLen[16];
-	int mfAnimWidth;
-	int mfAnimXOffset; // could be calculated
 } MisFileData;
+
+typedef struct MissileStruct {
+	int _miType;   // missile_id
+	BYTE _miFlags; // missile_flags
+	BYTE _miResist; // missile_resistance
+	BYTE _miFileNum; // missile_gfx_id
+	BOOLEAN _miDelFlag; // should be deleted
+	int _miUniqTrans; // use unique color-transformation when drawing
+	BOOLEAN _miDrawFlag; // should be drawn
+	BOOLEAN _miAnimFlag;
+	BOOLEAN _miLightFlag; // use light-transformation when drawing
+	BOOLEAN _miPreFlag; // should be drawn in the pre-phase
+	BYTE* _miAnimData;
+	int _miAnimFrameLen; // Tick length of each frame in the current animation
+	int _miAnimLen;   // Number of frames in current animation
+	int _miAnimWidth;
+	int _miAnimXOffset;
+	int _miAnimCnt; // Increases by one each game tick, counting how close we are to _miAnimFrameLen
+	int _miAnimAdd;
+	int _miAnimFrame; // Current frame of animation.
+	int _misx;    // Initial tile X-position
+	int _misy;    // Initial tile Y-position
+	int _mix;     // Tile X-position where the missile should be drawn
+	int _miy;     // Tile Y-position where the missile should be drawn
+	int _mixoff;  // Pixel X-offset from tile position where the missile should be drawn
+	int _miyoff;  // Pixel Y-offset from tile position where the missile should be drawn
+	int _mixvel;  // Missile tile (X - Y)-velocity while moving. This gets added onto _mitxoff each game tick
+	int _miyvel;  // Missile tile (X + Y)-velocity while moving. This gets added onto _mityoff each game tick
+	int _mitxoff; // How far the missile has travelled in its lifespan along the (X - Y)-axis. mix/miy/mxoff/myoff get updated every game tick based on this
+	int _mityoff; // How far the missile has travelled in its lifespan along the (X + Y)-axis. mix/miy/mxoff/myoff get updated every game tick based on this
+	int _miDir;   // The direction of the missile
+	int _miSpllvl;
+	int _miSource; // missile_source_type
+	int _miCaster;
+	int _miMinDam;
+	int _miMaxDam;
+	// int _miRndSeed;
+	int _miRange;    // Time to live for the missile in game ticks, when negative the missile will be deleted
+	unsigned _miLid; // light id of the missile
+	int _miVar1;
+	int _miVar2;
+	int _miVar3;
+	int _miVar4;
+	int _miVar5;
+	int _miVar6;
+	int _miVar7; // distance travelled in case of ARROW missiles
+	int _miVar8; // last target in case of non-DOT missiles
+} MissileStruct;
 
 //////////////////////////////////////////////////
 // monster
@@ -419,7 +477,7 @@ typedef struct MonsterData {
 	uint16_t moFileNum; // _monster_gfx_id
 	BYTE mLevel;
 	BYTE mSelFlag;
-	const char* mTransFile;
+	BYTE mTransFile;
 	const char* mName;
 	MonsterAI mAI;
 	uint16_t mMinHP;
@@ -446,7 +504,6 @@ typedef struct MonFileData {
 	const char* moSndFile;
 	int moAnimFrames[NUM_MON_ANIM];
 	int moAnimFrameLen[NUM_MON_ANIM];
-	BYTE moWidth;
 	BOOLEAN moSndSpecial;
 	BYTE moAFNum;
 	BYTE moAFNum2;
@@ -488,19 +545,49 @@ typedef struct MapMonData {
 #pragma pack(pop)
 typedef struct MonsterStruct {
 	int _mmode; // MON_MODE
+	unsigned _msquelch;
 	BYTE _mMTidx;
+	BYTE _mpathcount; // unused
+	BYTE _mAlign_1;   // unused
+	BYTE _mgoal;
+	int _mgoalvar1;
+	int _mgoalvar2;
+	int _mgoalvar3;
 	int _mx;           // Tile X-position where the monster should be drawn
 	int _my;           // Tile Y-position where the monster should be drawn
+	int _mfutx;        // Future tile X-position where the monster will be at the end of its action
+	int _mfuty;        // Future tile Y-position where the monster will be at the end of its action
+	int _moldx;        // Most recent tile X-position where the monster was at the start of its action
+	int _moldy;        // Most recent tile Y-position where the monster was at the start of its action
+	int _mxoff;        // Pixel X-offset from tile position where the monster should be drawn
+	int _myoff;        // Pixel Y-offset from tile position where the monster should be drawn
 	int _mdir;         // Direction faced by monster (direction enum)
+	int _menemy;       // The current target of the monster. An index in to either a player(zero or positive) or a monster (negative)
+	BYTE _menemyx;     // Future (except for teleporting) tile X-coordinate of the enemy
+	BYTE _menemyy;     // Future (except for teleporting) tile Y-coordinate of the enemy
+	BYTE _mListener;   // the player to whom the monster is talking to (unused)
+	BOOLEAN _mDelFlag; // unused
+	BYTE* _mAnimData;
 	int _mAnimFrameLen; // Tick length of each frame in the current animation
 	int _mAnimCnt;   // Increases by one each game tick, counting how close we are to _mAnimFrameLen
 	int _mAnimLen;   // Number of frames in current animation
 	int _mAnimFrame; // Current frame of animation.
+	int _mVar1;
+	int _mVar2;
+	int _mVar3; // Used to store the original mode of a stoned monster. Not 'thread' safe -> do not use for anything else! 
+	int _mVar4;
+	int _mVar5;
+	int _mVar6;
+	int _mVar7;
+	int _mVar8;
 	int _mmaxhp;
 	int _mhitpoints;
+	int _mlastx; // the last known (future) tile X-coordinate of the enemy
+	int _mlasty; // the last known (future) tile Y-coordinate of the enemy
 	int32_t _mRndSeed;
+	int32_t _mAISeed;
 	BYTE _muniqtype;
-	BYTE _muniqtrans;
+	BYTE _muniqanim;
 	BYTE _mNameColor;  // color of the tooltip. white: normal, blue: pack; gold: unique. (text_color)
 	BYTE _mlid;        // light id of the monster
 	BYTE _mleader;     // the leader of the monster
@@ -508,6 +595,7 @@ typedef struct MonsterStruct {
 	BYTE _mpacksize;   // the number of 'pack'-monsters close to their leader
 	BYTE _mvid;        // vision id of the monster (for minions only)
 	const char* _mName;
+	uint16_t _mFileNum; // _monster_gfx_id
 	BYTE _mLevel;
 	BYTE _mSelFlag;
 	MonsterAI _mAI;
@@ -523,12 +611,20 @@ typedef struct MonsterStruct {
 	int _mEvasion;       // evasion: used against magic-projectile
 	unsigned _mMagicRes; // resistances of the monster (_monster_resistance)
 	unsigned _mExp;
+	int _mAnimWidth;
+	int _mAnimXOffset;
+	BYTE _mAFNum;  // action frame number of the attack animation
+	BYTE _mAFNum2; // action frame number of the special animation
+	uint16_t _mAlign_0; // unused
+	int _mType; // _monster_id
+	MonAnimStruct* _mAnims;
+	ALIGNMENT(6, 2)
 } MonsterStruct;
 
 typedef struct UniqMonData {
 	int mtype; // _monster_id
 	const char* mName;
-	const char* mTrnName;
+	BYTE muTrans;
 	BYTE muLevelIdx; // level-index to place the monster (dungeon_level)
 	BYTE muLevel;    // difficulty level of the monster
 	uint16_t mmaxhp;
@@ -549,34 +645,44 @@ typedef struct UniqMonData {
 	int mtalkmsg;  // _speech_id
 } UniqMonData;
 
+typedef struct MinionMonData {
+	int mtype; // _monster_id
+	MonsterAI mAI;
+} MinionMonData;
+
 //////////////////////////////////////////////////
 // objects
 //////////////////////////////////////////////////
 
+typedef struct {
+	BYTE oBaseType;     // _object_id
+	int8_t oTypeParam1; // direction (left: 0, right:1, random: -1)
+	int8_t oTypeParam2; // trapped (no: 0, yes: 1, random: -1) for chests or inactive (no: 0, yes: 1) for armorstands and weaponracks
+	int8_t oTypeParam3;
+} ObjTypeConv;
+
 typedef struct ObjectData {
-	BYTE ofindex;     // object_graphic_id
-	BYTE oLvlTypes;   // dungeon_type_mask
-	BYTE otheme;      // theme_id
-	BYTE oquest;      // quest_id
+	BYTE ofindex;        // object_graphic_id
+	BYTE oLvlTypes;      // dungeon_type_mask
+	BYTE otheme;         // theme_id
+	BYTE oquest;         // quest_id
 	//BYTE oAnimFlag;
-	BYTE oAnimBaseFrame; // The starting/base frame of (initially) non-animated objects
+	BYTE oBaseFrame;     // The base frame of the objects
 	//int oAnimFrameLen; // Tick length of each frame in the current animation
-	//int oAnimLen;   // Number of frames in current animation
+	//int oAnimLen;      // Number of frames in current animation
 	//int oAnimWidth;
 	//int oSFX;
 	//BYTE oSFXCnt;
-	BYTE oLightRadius;
-	int8_t oLightOffX;
-	int8_t oLightOffY;
-	BYTE oProc;       // object_proc_func
-	BYTE oModeFlags;  // object_mode_flags
+	BYTE oLightRadius;   // light radius with optional x/y offset
+	BYTE oProc;          // object_proc_func
+	BYTE oModeFlags;     // object_mode_flags
 	//BOOL oSolidFlag;
 	//BYTE oBreak;
 	BOOLEAN oMissFlag;
-	BYTE oDoorFlag;   // object_door_type
+	BYTE oDoorFlag;      // object_door_type
 	BYTE oSelFlag;
 	BYTE oPreFlag;
-	BOOLEAN oTrapFlag;
+	BYTE oTrapFlag;      // object_trap_mode
 } ObjectData;
 
 typedef struct ObjFileData {
@@ -585,9 +691,7 @@ typedef struct ObjFileData {
 	BYTE oSFXCnt;
 	BYTE oAnimFlag; // object_anim_mode
 	int oAnimFrameLen; // Tick length of each frame in the current animation
-	int oAnimLen;   // Number of frames in current animation
-	int oAnimWidth;
-	BOOLEAN oSolidFlag;
+	BYTE oSolidFlags;
 	BYTE oBreak; // object_break_mode
 } ObjFileData;
 
@@ -599,6 +703,7 @@ typedef struct ObjectStruct {
 	BYTE _oAnimFlag;  // object_anim_mode
 	BYTE _oProc;      // object_proc_func
 	BYTE _oModeFlags; // object_mode_flags
+	int _oGfxFrame;   // the base frame of graphics
 	int _oAnimFrameLen; // Tick length of each frame in the current animation
 	int _oAnimCnt;   // Increases by one each game tick, counting how close we are to _oAnimFrameLen
 	int _oAnimLen;   // Number of frames in current animation
@@ -606,7 +711,7 @@ typedef struct ObjectStruct {
 	BOOLEAN _oSolidFlag;
 	BYTE _oBreak; // object_break_mode
 	BYTE _oTrapChance;
-	BYTE _oAlign;
+	BYTE _oUniqAnim;
 	BOOLEAN _oMissFlag;
 	BYTE _oDoorFlag; // object_door_type
 	BYTE _oSelFlag;
@@ -916,7 +1021,7 @@ typedef struct SpellData {
 	BYTE scCurs; // cursor for scrolls/runes
 	BYTE spCurs; // cursor for spells
 	BYTE sUseFlags; // the required flags(SFLAG*) to use the skill
-	BYTE sMinInt;
+	BYTE sMinMag;
 	BYTE sSFX;     // _sfx_id
 	BYTE sMissile; // missile_id
 	BYTE sManaAdj;
@@ -986,6 +1091,7 @@ typedef struct ThemePosDir {
 #define L1_MAXROOMS ((DSIZEX * DSIZEY) / sizeof(L1ROOM))
 /** The number of generated rooms in catacombs. */
 #define L2_MAXROOMS 32
+static_assert(L2_MAXROOMS * sizeof(ROOMHALLNODE) <= (DSIZEX * DSIZEY), "RoomList is too large for DrlgMem.");
 /** Possible matching locations in a theme room. */
 #define THEME_LOCS ((DSIZEX * DSIZEY) / sizeof(ThemePosDir))
 
