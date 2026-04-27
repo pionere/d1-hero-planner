@@ -68,10 +68,14 @@ void UnPackPkItem(const PkItemStruct* src)
 	uint16_t value;
 
 	net_assert(idx < NUM_IDI);
-LogErrorF("UnPackPkItem 0 %d %d", idx, NUM_IDI);
+    if (idx >= NUM_IDI) {
+        items[MAXITEMS]._iType = ITYPE_NONE;
+        return;
+    }
+// LogErrorF("UnPackPkItem 0 %d %d", idx, NUM_IDI);
 	if (idx != IDI_EAR) {
 		net_assert(((src->wCI & CF_TOWN) >> 8) <= CFL_CRAFTED);
-LogErrorF("UnPackPkItem 1 s%d idx:%d ci:%d twn:%d", src->dwSeed, src->wIndx, src->wCI, ((src->wCI & CF_TOWN) >> 8));
+// LogErrorF("UnPackPkItem 1 s%d idx:%d ci:%d twn:%d", src->dwSeed, src->wIndx, src->wCI, ((src->wCI & CF_TOWN) >> 8));
 		RecreateItem(
 			src->dwSeed,
 			src->wIndx,
@@ -86,7 +90,7 @@ LogErrorF("UnPackPkItem 1 s%d idx:%d ci:%d twn:%d", src->dwSeed, src->wIndx, src
 		if (idx == IDI_GOLD) {
 			value = src->wValue;
 			net_assert(value <= GOLD_MAX_LIMIT);
-LogErrorF("UnPackPkItem 2 %d", value);
+// LogErrorF("UnPackPkItem 2 %d", value);
 			SetGoldItemValue(&items[MAXITEMS], value);
 		} else if (idx == IDI_CAMPAIGNMAP) {
 			items[MAXITEMS]._ivalue = src->wValue;
@@ -263,16 +267,16 @@ void UnPackPlayer(const PkPlayerStruct* pPack, int pnum)
 		plr._pSkillExp[i] = pPack->pSkillExp[i];
 	}
 	plr._pMemSkills = pPack->pMemSkills;
-LogErrorF("UnPackPlayer 0");
+// LogErrorF("UnPackPlayer 0");
 	UnPackItem(&pPack->pHoldItem, &plr._pHoldItem);
-LogErrorF("UnPackPlayer 1");
+// LogErrorF("UnPackPlayer 1");
 	pki = &pPack->pInvBody[0];
 	pi = &plr._pInvBody[0];
 
 	for (i = 0; i < NUM_INVLOC; i++) {
-LogErrorF("UnPackPlayer 2 0 %d", i);
+// LogErrorF("UnPackPlayer 2 0 %d", i);
 		UnPackItem(pki, pi);
-LogErrorF("UnPackPlayer 2 1 %d", i);
+// LogErrorF("UnPackPlayer 2 1 %d", i);
 		pki++;
 		pi++;
 	}
@@ -281,9 +285,9 @@ LogErrorF("UnPackPlayer 2 1 %d", i);
 	pi = &plr._pSpdList[0];
 
 	for (i = 0; i < MAXBELTITEMS; i++) {
-LogErrorF("UnPackPlayer 3 %d", i);
+// LogErrorF("UnPackPlayer 3 %d", i);
 		UnPackItem(pki, pi);
-LogErrorF("UnPackPlayer 3 %d", i);
+// LogErrorF("UnPackPlayer 3 %d", i);
 		pki++;
 		pi++;
 	}
