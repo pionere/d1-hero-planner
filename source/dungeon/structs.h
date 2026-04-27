@@ -4,10 +4,12 @@
  * Various global structures.
  */
 
+#define ALIGNMENT(x86, x64)
+#define ALIGNMENT32(num)
+#define ALIGNMENT64(num)
+#define ALIGN
 #define ALIGN32
 #define ALIGN64
-#define ALIGNMENT
-#define ALIGN
 
 //////////////////////////////////////////////////
 // miniwin
