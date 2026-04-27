@@ -1837,6 +1837,8 @@ static void PrintEquipmentPower(BYTE idx, const ItemStruct* is)
 		break;
 	default:
 		ASSUME_UNREACHABLE
+        snprintf(tempstr, sizeof(tempstr), "unhandled affix %d", plidx);
+		break;
 	}
 }
 

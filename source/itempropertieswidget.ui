@@ -26,7 +26,7 @@
      <item row="1" column="1">
       <widget class="QLabel" name="itemDAMText"/>
      </item>
-     <item row="2" column="0">
+     <!--item row="2" column="0">
       <widget class="QLabel" name="itemPrePowerLabel">
        <property name="text">
         <string>Prefix:</string>
@@ -45,42 +45,66 @@
      </item>
      <item row="3" column="1">
       <widget class="QLabel" name="itemSufPowerText"/>
-     </item>
+     </item-->
      <item row="4" column="0">
       <widget class="QLabel" name="itemUniquePower1Label"/>
      </item>
      <item row="4" column="1">
-      <widget class="QLabel" name="itemUniquePower1Text"/>
+      <widget class="QLabel" name="itemUniquePower1Text">
+       <property name="toolTip">
+        <string>Power 1</string>
+       </property>
+      </widget>
      </item>
      <item row="5" column="0">
       <widget class="QLabel" name="itemUniquePower2Label"/>
      </item>
      <item row="5" column="1">
-      <widget class="QLabel" name="itemUniquePower2Text"/>
+      <widget class="QLabel" name="itemUniquePower2Text">
+       <property name="toolTip">
+        <string>Power 2</string>
+       </property>
+      </widget>
      </item>
      <item row="6" column="0">
       <widget class="QLabel" name="itemUniquePower3Label"/>
      </item>
      <item row="6" column="1">
-      <widget class="QLabel" name="itemUniquePower3Text"/>
+      <widget class="QLabel" name="itemUniquePower3Text">
+       <property name="toolTip">
+        <string>Power 3</string>
+       </property>
+      </widget>
      </item>
      <item row="7" column="0">
       <widget class="QLabel" name="itemUniquePower4Label"/>
      </item>
      <item row="7" column="1">
-      <widget class="QLabel" name="itemUniquePower4Text"/>
+      <widget class="QLabel" name="itemUniquePower4Text">
+       <property name="toolTip">
+        <string>Power 4</string>
+       </property>
+      </widget>
      </item>
      <item row="8" column="0">
       <widget class="QLabel" name="itemUniquePower5Label"/>
      </item>
      <item row="8" column="1">
-      <widget class="QLabel" name="itemUniquePower5Text"/>
+      <widget class="QLabel" name="itemUniquePower5Text">
+       <property name="toolTip">
+        <string>Power 5</string>
+       </property>
+      </widget>
      </item>
      <item row="9" column="0">
       <widget class="QLabel" name="itemUniquePower6Label"/>
      </item>
      <item row="9" column="1">
-      <widget class="QLabel" name="itemUniquePower6Text"/>
+      <widget class="QLabel" name="itemUniquePower6Text">
+       <property name="toolTip">
+        <string>Power 6</string>
+       </property>
+      </widget>
      </item>
      <item row="10" column="0">
       <widget class="QLabel" name="itemRequirementsLabel">
