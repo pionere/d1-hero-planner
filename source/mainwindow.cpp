@@ -1423,6 +1423,15 @@ void MainWindow::updateTrns(const std::vector<D1Trn *> &newTrns)
     this->setUniqueTrn(newTrns[0]->getFilePath());
 }
 
+void MainWindow::on_actionItems_triggered()
+{
+    if (this->itemsDialog == nullptr) {
+        this->itemsDialog = new ItemsDialog(this);
+    }
+    this->itemsDialog->initialize();
+    this->itemsDialog->show();
+}
+
 #if defined(Q_OS_WIN)
 #define OS_TYPE "Windows"
 #elif defined(Q_OS_QNX)

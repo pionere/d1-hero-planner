@@ -145,16 +145,17 @@ void D1Hero::create(unsigned index)
     IsHellfireGame = this->hellfire;
     auto gameMulti = IsMultiGame;
     IsMultiGame = this->multi;
-
+LogErrorF("CreatePlayer %d (%d)", this->pnum, index);
     CreatePlayer(this->pnum, selhero_heroInfo);
+LogErrorF("InitPlayer %d", this->pnum);
     InitPlayer(this->pnum);
     // plr._pDunLevel = DLV_CATHEDRAL1;
 
     IsMultiGame = gameMulti;
     IsHellfireGame = gameHellfire;
-
+LogErrorF("calcInv %d", this->pnum);
     this->calcInv();
-
+LogErrorF("create done");
     this->filePath.clear();
     this->modified = true;
 }

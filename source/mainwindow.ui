@@ -160,6 +160,15 @@
     <addaction name="menuTrnBase"/>
     <addaction name="menuTrnUnique"/>
    </widget>
+   <widget class="QMenu" name="menuData">
+    <property name="title">
+     <string>Data</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+    <addaction name="actionItems"/>
+   </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
      <string>Edit</string>
@@ -167,12 +176,16 @@
     <property name="toolTipsVisible">
      <bool>true</bool>
     </property>
+    <property name="visible">
+     <bool>false</bool>
+    </property>
     <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuView"/>
    <addaction name="menuColors"/>
+   <addaction name="menuData"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
@@ -411,6 +424,14 @@
    </property>
    <property name="toolTip">
     <string>Replace translation values of 255 with 0</string>
+   </property>
+  </action>
+  <action name="actionItems">
+   <property name="text">
+    <string>Items</string>
+   </property>
+   <property name="toolTip">
+    <string>Check item drop chances</string>
    </property>
   </action>
  </widget>
