@@ -296,6 +296,7 @@ static void CelClippedDrawLightTbl(int sx, int sy, const D1Gfx *pCelBuff, int nC
 
 static void CelClippedDrawLightTrans(int sx, int sy, const D1Gfx *pCelBuff, int nCel, int nWidth)
 {
+    if (pCelBuff == nullptr || pCelBuff->getFrameCount() <= nCel) return;
     BYTE trans = light_trn_index;
     // LogErrorF("CelClippedDrawLightTrans %d:%d idx:%d w:%d trn%d", sx, sy, nCel, nWidth, trans);
     QImage *destImage = (QImage *)InvPainter->device();
