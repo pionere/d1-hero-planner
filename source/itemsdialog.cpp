@@ -56,7 +56,7 @@ ItemsDialog::~ItemsDialog()
     delete this->is;
 }
 
-void ItemsDialog::initialize(int ii)
+void ItemsDialog::initialize()
 {
     this->invIdx = INVITEM_NONE;
 
