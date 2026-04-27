@@ -964,7 +964,7 @@ void ItemsDialog::on_calculateButton_clicked()
 
     float dropChance = ItemDropChance(idx, lvl, this->numPlayers, unique);
 
-    this->ui->itemChance->setText(tr("Chance: %1")).arg(dropChance); // QString::number(dropChance, 'f'));
+    this->ui->itemChance->setText(tr("Chance: %1").arg(dropChance)); // QString::number(dropChance, 'f'));
 }
 
 void ItemsDialog::on_generateButton_clicked()
