@@ -388,25 +388,21 @@ void HeroView::framePixelHovered(const QPoint &pos)
 
 void HeroView::displayFrame()
 {
-LogErrorF("displayFrame 0");
     // set context-fields
     this->ui->gameHellfireCheckBox->setChecked(this->hero->isHellfire());
     this->ui->gameHellfireCheckBox->setEnabled(D1Hero::isStandardClass(this->hero->getClass()));
     this->ui->gameMultiCheckBox->setChecked(this->hero->isMulti());
     this->ui->gameDifficultyComboBox->setCurrentIndex(gnDifficulty);
-LogErrorF("displayFrame 1");
+
     // LogErrorF("HeroView::displayFrame 0");
     // this->updateFields();
     this->updateLabel();
-LogErrorF("displayFrame 2");
     this->ui->mainHeroDetails->displayFrame();
-LogErrorF("displayFrame 3");
     // LogErrorF("HeroView::displayFrame 1");
     this->heroScene.clear();
     // LogErrorF("HeroView::displayFrame 2");
     // Getting the current frame to display
     QImage invFrame = this->hero->getEquipmentImage(this->hoverItem);
-LogErrorF("displayFrame 4");
     // LogErrorF("HeroView::displayFrame 3 %dx%d", invFrame.width(), invFrame.height());
     this->heroScene.setBackgroundBrush(QColor(Config::getGraphicsBackgroundColor()));
 

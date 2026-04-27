@@ -110,7 +110,7 @@ typedef struct ItemFileData {
 	const char* ifName; // Map of item type .cel file names.
 	int idSFX;          // sounds effect of dropping the item on ground (_sfx_id).
 	int iiSFX;          // sounds effect of placing the item in the inventory (_sfx_id).
-	int iAnimLen;       // item drop animation length
+	ALIGNMENT32(1)
 } ItemFileData;
 
 typedef struct ItemData {
@@ -136,6 +136,7 @@ typedef struct ItemData {
 	BYTE iMaxAC;
 	BYTE iDurability;
 	int iValue;
+	ALIGNMENT(5, 4)
 } ItemData;
 
 typedef struct ItemAffixStruct {

@@ -906,7 +906,7 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (items[MAXITEMS]._iPrePower != prefix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
                 goto restart;
             }
@@ -924,7 +924,7 @@ start:
             }
         }
         if (suffix.active) {
-            if (items[MAXITEMS]._iSufPower != suffix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
                 goto restart;
             }

@@ -99,18 +99,6 @@ inline void copy_pod(T& dest, const T& src)
 	memcpy(&dest, &src, sizeof(T));
 }
 
-/*  SStrCopy @ 501
- *
- *  Copies a string from src to dest (including NULL terminator)
- *  until the max_length is reached.
- *
- *  dest:         The destination array.
- *  src:          The source array.
- *  max_length:   The maximum length of dest.
- *
- */
-void SStrCopy(char* dest, const char* src, int max_length);
-
 DEVILUTION_END_NAMESPACE
 
 #endif /* __ENGINE_H__ */
