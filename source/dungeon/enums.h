@@ -183,6 +183,10 @@ typedef enum item_indexes {
 #ifdef HELLFIRE
 	NUM_IDI        = 0x9B,
 	NUM_IDI_DIABLO = 0x94,
+    IDI_SCROLL1    = 0x56,
+    IDI_RUNE1      = 0x94,
+    IDI_RING1      = 0x8B,
+    IDI_AMULET1    = 0x90,
 #else
 	NUM_IDI        = 0x94,
 #endif

@@ -54,7 +54,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     this->ui->itemDAMText->setVisible(active != 0);
     this->ui->itemDAMText->setText(text);
     this->ui->itemDAMText->setToolTip(tooltip);
-
+#if 0
     active = 0;
     if (is->_iPrePower != IPL_INVALID) {
         PrintItemPower(is->_iPrePower, is);
@@ -107,6 +107,24 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
             }
         }
     }
+#else
+    this->ui->itemSufPowerLabel->setVisible(false);
+    this->ui->itemSufPowerText->setVisible(false);
+    this->ui->itemPrePowerLabel->setVisible(false);
+    this->ui->itemPrePowerText->setVisible(false);
+    active = is->_iNumAffixes;
+    for (int i = 0; i < active; i++) {
+        PrintItemPower(is->_iAffixes[i].asPower, is);
+        switch (i) {
+        case 0: this->ui->itemUniquePower1Text->setText(tempstr); break;
+        case 1: this->ui->itemUniquePower2Text->setText(tempstr); break;
+        case 2: this->ui->itemUniquePower3Text->setText(tempstr); break;
+        case 3: this->ui->itemUniquePower4Text->setText(tempstr); break;
+        case 4: this->ui->itemUniquePower5Text->setText(tempstr); break;
+        case 5: this->ui->itemUniquePower6Text->setText(tempstr); break;
+        }
+    }
+#endif
     this->ui->itemUniquePower1Label->setVisible(active > 0);
     this->ui->itemUniquePower1Text->setVisible(active > 0);
     this->ui->itemUniquePower2Label->setVisible(active > 1);

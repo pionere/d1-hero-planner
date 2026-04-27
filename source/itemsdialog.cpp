@@ -35,6 +35,7 @@ ItemsDialog::ItemsDialog(QWidget *parent)
     this->itemProps = new ItemPropertiesWidget(this);
     this->ui->itemProperties->addWidget(this->itemProps);
 
+    QObject::connect(this->ui->playersEdit, SIGNAL(cancel_signal()), this, SLOT(on_playersEdit_escPressed()));
     QObject::connect(this->ui->itemSeedEdit, SIGNAL(cancel_signal()), this, SLOT(on_itemSeedEdit_escPressed()));
     QObject::connect(this->ui->itemLevelEdit, SIGNAL(cancel_signal()), this, SLOT(on_itemLevelEdit_escPressed()));
 
@@ -176,6 +177,17 @@ void ItemsDialog::updateFilters()
             continue;
         }
         idxComboBox->addItem(QString("%1 (%2)").arg(id.iName).arg(i), QVariant::fromValue(i));
+    }
+    if (iloc == ILOC_UNEQUIPABLE) {
+        idxComboBox->addItem(QString("%1 (%2)").arg(tr("Book")).arg(tr("Any")), QVariant::fromValue(NUM_IDI + 0));
+        idxComboBox->addItem(QString("%1 (%2)").arg(tr("Scroll")).arg(tr("Any")), QVariant::fromValue(NUM_IDI + 1));
+        idxComboBox->addItem(QString("%1 (%2)").arg(tr("Rune")).arg(tr("Any")), QVariant::fromValue(NUM_IDI + 2));
+    }
+    if (iloc == ILOC_UNEQUIPABLE || iloc == ILOC_RING) {
+        idxComboBox->addItem(QString("%1 (%2)").arg(tr("Ring")).arg(tr("Any")), QVariant::fromValue(NUM_IDI + 3));
+    }
+    if (iloc == ILOC_UNEQUIPABLE || itype == ILOC_AMULET) {
+        idxComboBox->addItem(QString("%1 (%2)").arg(tr("Amulet")).arg(tr("Any")), QVariant::fromValue(NUM_IDI + 4));
     }
 
     idx = idxComboBox->findData(QVariant::fromValue(this->is->_iIdx));
@@ -337,6 +349,14 @@ void ItemsDialog::updateFields()
     // idxComboBox->setCurrentIndex(idxComboBox->findData(this->is->_iIdx));
 
     int idx = idxComboBox->currentData().value<int>();
+    if (idx >= NUM_IDI) {
+        switch (idx) {
+        case NUM_IDI + 0: idx = IDI_BOOK1;   break;
+        case NUM_IDI + 1: idx = IDI_SCROLL1; break;
+        case NUM_IDI + 2: idx = IDI_RUNE1;   break;
+        case NUM_IDI + 3: idx = IDI_RING1;   break;
+        case NUM_IDI + 4: idx = IDI_AMULET1; break;
+    }
     bool drop = AllItemList[idx].iRnd != 0;
     if (idx != this->is->_iIdx) {
         this->is->_iIdx = idx;
@@ -569,6 +589,19 @@ void ItemsDialog::updateFields()
     }
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
+}
+
+void ItemsDialog::on_playersEdit_returnPressed()
+{
+    this->numPlayers = this->ui->playersEdit->text()->toUShort();
+
+    this->on_playersEdit_escPressed();
+}
+
+void ItemsDialog::on_playersEdit_escPressed()
+{
+    this->updateFields();
+    this->ui->playersEdit->clearFocus();
 }
 
 void ItemsDialog::on_itemTypeComboBox_activated(int index)
@@ -866,7 +899,7 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (items[MAXITEMS]._iPrePower != prefix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
                 goto restart;
             }
@@ -884,7 +917,7 @@ start:
             }
         }
         if (suffix.active) {
-            if (items[MAXITEMS]._iSufPower != suffix.power) {
+            if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
                 goto restart;
             }
@@ -922,6 +955,16 @@ done:
     return true;
 }
 
+void ItemsDialog::on_calculateButton_clicked()
+{
+    bool unique = this->ui->isUniqueCheckBox->isChecked();
+    int lvl = this->is->_iCreateInfo & CF_LEVEL;
+    int idx = idxComboBox->currentData().value<int>();
+
+    float dropChance = ItemDropChance(idx, lvl, this->numPlayers, unique);
+
+    this->ui->itemChance->setText(tr("Chance: %1")).arg(dropChance); // QString::number(dropChance, 'f'));
+}
 
 void ItemsDialog::on_generateButton_clicked()
 {

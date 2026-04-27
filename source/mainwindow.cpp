@@ -791,9 +791,10 @@ void MainWindow::openFile(const OpenAsParam &params)
 {
     LoadFileContent fileContent;
     MainWindow::loadFile(params, this, &fileContent);
+LogErrorF("openFile 0 %d", fileContent.fileType);
     if (fileContent.fileType == FILE_CONTENT::UNKNOWN)
         return;
-
+LogErrorF("openFile 1 %d", fileContent.fileType);
 #if (defined (_WIN32) || defined (_WIN64))
     // SHAddToRecentDocs(SHARD_PATHA, params.filePath.toLatin1().constData());
     SHAddToRecentDocs(SHARD_PATHA, params.filePath.toStdWString().data());
@@ -822,10 +823,11 @@ void MainWindow::openFile(const OpenAsParam &params)
     // initialize context
     IsHellfireGame = this->hero->isHellfire();
     gnDifficulty = this->hero->getRank();
-
+LogErrorF("openFile 2 %d %d", IsHellfireGame, gnDifficulty);
     QWidget *view;
         // build a HeroView
         this->heroView = new HeroView(this);
+LogErrorF("openFile 3 %d %d", IsHellfireGame, gnDifficulty);
         this->heroView->initialize(this->pal, this->hero, this->bottomPanelHidden);
 
         // Refresh palette widgets when frame is changed
@@ -833,12 +835,12 @@ void MainWindow::openFile(const OpenAsParam &params)
 
         // Refresh palette widgets when the palette is changed (loading a PCX file)
         // QObject::connect(this->heroView, &HeroView::palModified, this->palWidget, &PaletteWidget::refresh);
-
+LogErrorF("openFile 4 %d %d", IsHellfireGame, gnDifficulty);
         view = this->heroView;
 
     // Add the view to the main frame
     this->ui->mainFrameLayout->addWidget(view);
-
+LogErrorF("openFile 5 %d %d", IsHellfireGame, gnDifficulty);
     // Initialize the side panel
     this->sideView = new SidePanelWidget(this);
     this->ui->sideFrameLayout->addWidget(this->sideView);
@@ -873,7 +875,7 @@ void MainWindow::openFile(const OpenAsParam &params)
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnUniqueWidget, &PaletteWidget::stopTrnColorPicking);      // cancel color picking
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);        // cancel color picking
     QObject::connect(this->trnUniqueWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);  // cancel color picking
-
+LogErrorF("openFile 6 %d %d", IsHellfireGame, gnDifficulty);
     // Look for all palettes in the same folder as the CEL/CL2 file
     QString firstPaletteFound;
     if (!baseDir.isEmpty()) {
@@ -890,7 +892,7 @@ void MainWindow::openFile(const OpenAsParam &params)
         firstPaletteFound = D1Pal::DEFAULT_PATH;
     }
     this->setPal(firstPaletteFound); // should trigger view->displayFrame()
-
+LogErrorF("openFile 7 %d %d", IsHellfireGame, gnDifficulty);
     // update available menu entries
     this->ui->menuEdit->setEnabled(true);
     this->ui->menuView->setEnabled(true);
@@ -900,9 +902,10 @@ void MainWindow::openFile(const OpenAsParam &params)
     this->ui->actionSave->setEnabled(true);
     this->ui->actionSaveAs->setEnabled(true);
     this->ui->actionClose->setEnabled(true);
-
+LogErrorF("openFile 8 %d %d", IsHellfireGame, gnDifficulty);
     // Clear loading message from status bar
     ProgressDialog::done();
+LogErrorF("openFile done");
 }
 
 void MainWindow::openPalFiles(const QStringList &filePaths, PaletteWidget *widget)

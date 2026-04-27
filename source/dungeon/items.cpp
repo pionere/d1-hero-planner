@@ -4,14 +4,19 @@
  * Implementation of item functionality.
  */
 #include "all.h"
+//#include "engine/render/text_render.h"
 
 #include <QApplication>
 #include <QMessageBox>
 
+DEVILUTION_BEGIN_NAMESPACE
+
+#define ITEM_ANIM_DELAY 1
+
 int itemactive[MAXITEMS];
 /** Contains the items on ground in the current game. */
 ItemStruct items[MAXITEMS + 1];
-//BYTE* itemanims[NUM_IFILE];
+//static CelAnimBuf* itemanims[NUM_IFILE];
 int numitems;
 
 int ac_rnd;
@@ -85,28 +90,6 @@ inline static BYTE BaseCastSpeed(unsigned flags)
 	return res;
 }
 
-static void ValidateActionSkill(PlrSkillStruct &skill, BYTE type, uint64_t mask)
-{
-	if (skill._psAttack._suType == type && !(mask & SPELL_MASK(skill._psAttack._suSkill))) {
-		skill._psAttack = { SPL_NULL, 0 };
-		//gbRedrawFlags |= REDRAW_SPELL_ICON;
-	}
-	if (skill._psMove._suType == type && !(mask & SPELL_MASK(skill._psMove._suSkill))) {
-		skill._psMove = { SPL_NULL, 0 };
-		//gbRedrawFlags |= REDRAW_SPELL_ICON;
-	}
-}
-
-static void ValidateActionSkills(int pnum, BYTE type, uint64_t mask)
-{
-	PlayerStruct* p;
-
-	p = &plr;
-	// check if the current RSplType is a valid/allowed spell
-	ValidateActionSkill(p->_pMainSkill, type, mask);
-	ValidateActionSkill(p->_pAltSkill, type, mask);
-}
-
 void CalcPlrItemVals(int pnum, bool Loadgfx)
 {
 	ItemStruct* pi;
@@ -119,7 +102,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	int i;
 
-	BOOL idi = TRUE; // items are identified
+	BOOLEAN idi = FALSE; // there is an unidentfied item
 
 	int asb = 0;    // bonus to attack speed
 	int tac = 0;    // armor class
@@ -181,7 +164,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			cdmodp = 0;
 
 			if (pi->_iMagical != ITEM_QUALITY_NORMAL) {
-				idi &= pi->_iIdentified;
+				idi |= pi->_iUnidentified;
 				btohit += pi->_iPLToHit;
 
 				madd += pi->_iPLMag;
@@ -291,9 +274,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 						asb += ias->asValue0;
 						break;
 					case IPL_FASTRECOVER:
-						static_assert((ISPL_FASTRECOVER & (ISPL_FASTRECOVER - 1)) == 0, "Optimized SaveItemPower depends simple flag-like hit-recovery modifiers.");
-						static_assert(ISPL_FASTRECOVER == ISPL_FASTERRECOVER / 2, "SaveItemPower depends on ordered hit-recovery modifiers I.");
-						static_assert(ISPL_FASTERRECOVER == ISPL_FASTESTRECOVER / 2, "SaveItemPower depends on ordered hit-recovery modifiers II.");
+						static_assert((ISPL_FASTRECOVER & (ISPL_FASTRECOVER - 1)) == 0, "Optimized CalcPlrItemVals depends simple flag-like hit-recovery modifiers.");
+						static_assert(ISPL_FASTRECOVER == ISPL_FASTERRECOVER / 2, "CalcPlrItemVals depends on ordered hit-recovery modifiers I.");
+						static_assert(ISPL_FASTERRECOVER == ISPL_FASTESTRECOVER / 2, "CalcPlrItemVals depends on ordered hit-recovery modifiers II.");
 						// assert((unsigned)(ias->asValue0 - 1) < 3);
 						iflgs |= ISPL_FASTRECOVER << (ias->asValue0 - 1);
 						break;
@@ -319,16 +302,16 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 						iflgs |= ISPL_LIFETOMANA;
 						break;
 					case IPL_FASTCAST:
-						static_assert((ISPL_FASTCAST & (ISPL_FASTCAST - 1)) == 0, "Optimized SaveItemPower depends simple flag-like cast-speed modifiers.");
-						static_assert(ISPL_FASTCAST == ISPL_FASTERCAST / 2, "SaveItemPower depends on ordered cast-speed modifiers I.");
-						static_assert(ISPL_FASTERCAST == ISPL_FASTESTCAST / 2, "SaveItemPower depends on ordered cast-speed modifiers II.");
+						static_assert((ISPL_FASTCAST & (ISPL_FASTCAST - 1)) == 0, "Optimized CalcPlrItemVals depends simple flag-like cast-speed modifiers.");
+						static_assert(ISPL_FASTCAST == ISPL_FASTERCAST / 2, "CalcPlrItemVals depends on ordered cast-speed modifiers I.");
+						static_assert(ISPL_FASTERCAST == ISPL_FASTESTCAST / 2, "CalcPlrItemVals depends on ordered cast-speed modifiers II.");
 						// assert((unsigned)(ias->asValue0 - 1) < 3);
 						iflgs |= ISPL_FASTCAST << (ias->asValue0 - 1);
 						break;
 					case IPL_FASTWALK:
-						static_assert((ISPL_FASTWALK & (ISPL_FASTWALK - 1)) == 0, "Optimized SaveItemPower depends simple flag-like walk-speed modifiers.");
-						static_assert(ISPL_FASTWALK == ISPL_FASTERWALK / 2, "SaveItemPower depends on ordered walk-speed modifiers I.");
-						static_assert(ISPL_FASTERWALK == ISPL_FASTESTWALK / 2, "SaveItemPower depends on ordered walk-speed modifiers II.");
+						static_assert((ISPL_FASTWALK & (ISPL_FASTWALK - 1)) == 0, "Optimized CalcPlrItemVals depends simple flag-like walk-speed modifiers.");
+						static_assert(ISPL_FASTWALK == ISPL_FASTERWALK / 2, "CalcPlrItemVals depends on ordered walk-speed modifiers I.");
+						static_assert(ISPL_FASTERWALK == ISPL_FASTESTWALK / 2, "CalcPlrItemVals depends on ordered walk-speed modifiers II.");
 						// assert((unsigned)(ias->asValue0 - 1) < 3);
 						iflgs |= ISPL_FASTWALK << (ias->asValue0 - 1);
 						break;
@@ -372,7 +355,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		}
 	}
 
-	plr._pHasUnidItem = !idi;
+	plr._pHasUnidItem = idi;
 	plr._pIAbsAnyHit = absAnyHit << 6;
 	plr._pIAbsPhyHit = absPhyHit << 6;
 	plr._pILifeSteal = lifesteal;
@@ -613,6 +596,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pIBlockChance = (plr._pSkillFlags & SFLAG_BLOCK) ? btoblk + std::min(sadd, dadd) : 0;
 
 	static_assert(SPL_NULL == 0, "CalcPlrItemVals expects SPL_NULL == 0.");
+	static_assert(lengthof(plx(0)._pSkillLvlBase) >= NUM_SPELLS, "Base skill-level can not be read from PlayerStruct._pSkillLvlBase");
+	static_assert(lengthof(plx(0)._pSkillLvl) >= NUM_SPELLS, "Calculated skill-level can not be stored in PlayerStruct._pSkillLvl");
 	for (i = 1; i < NUM_SPELLS; i++) {
 		skillLvl = 0;
 		//if (plr._pMemSkills & SPELL_MASK(i)) {
@@ -632,7 +617,6 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		}*/
 	}
 
-	CalcPlrCharges(pnum);
 #if 0
 	if (plr._pmode == PM_DEATH || plr._pmode == PM_DYING) {
 		PlrSetHp(pnum, 0);
@@ -656,7 +640,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 #endif
 }
 
-void CalcPlrSpells(int pnum)
+static void CalcPlrSpells(int pnum)
 {
 	PlayerStruct* p;
 
@@ -673,43 +657,6 @@ void CalcPlrSpells(int pnum)
 		if (p->_pAltSkill._psAttack._suSkill == SPL_ATTACK)
 			p->_pAltSkill._psAttack._suSkill = SPL_RATTACK;
 	}
-}
-
-void CalcPlrScrolls(int pnum)
-{
-	ItemStruct* pi;
-	int i;
-	uint64_t mask = 0;
-
-	pi = plr._pInvList;
-	for (i = NUM_INV_GRID_ELEM; i > 0; i--, pi++) {
-		if (pi->_itype == ITYPE_MISC && (pi->_iMiscId == IMISC_SCROLL || pi->_iMiscId == IMISC_RUNE) && pi->_iStatFlag)
-			mask |= SPELL_MASK(pi->_iSpell);
-	}
-	pi = plr._pSpdList;
-	for (i = MAXBELTITEMS; i != 0; i--, pi++) {
-		if (pi->_itype == ITYPE_MISC && (pi->_iMiscId == IMISC_SCROLL || pi->_iMiscId == IMISC_RUNE) && pi->_iStatFlag)
-			mask |= SPELL_MASK(pi->_iSpell);
-	}
-	plr._pInvSkills = mask;
-
-	ValidateActionSkills(pnum, RSPLTYPE_INV, mask);
-}
-
-void CalcPlrCharges(int pnum)
-{
-	ItemStruct* pi;
-	int i;
-	uint64_t mask = 0;
-
-	pi = plr._pInvBody;
-	for (i = NUM_INVLOC; i > 0; i--, pi++) {
-		if (pi->_itype != ITYPE_NONE/* && pi->_iCharges > 0 && pi->_iSpell != NULL*/ && pi->_iStatFlag)
-			mask |= SPELL_MASK(pi->_iSpell);
-	}
-	plr._pISpells = mask;
-
-	ValidateActionSkills(pnum, RSPLTYPE_CHARGES, mask);
 }
 
 static void CalcItemReqs(int pnum)
@@ -729,7 +676,7 @@ static void CalcItemReqs(int pnum)
 	for (i = 0; i < NUM_INVLOC; i++, pi++) {
 		if (pi->_itype != ITYPE_NONE) {
 			pi->_iStatFlag = TRUE;
-			//if (pi->_iIdentified) {
+			//if (!pi->_iUnidentified) {
 				sa += pi->_iPLStr;
 				ma += pi->_iPLMag;
 				da += pi->_iPLDex;
@@ -748,7 +695,7 @@ recheck:
 			continue;
 		if (pi->_iStatFlag) {
 			pi->_iStatFlag = FALSE;
-			//if (pi->_iIdentified) {
+			//if (!pi->_iUnidentified) {
 				sa -= pi->_iPLStr;
 				ma -= pi->_iPLMag;
 				da -= pi->_iPLDex;
@@ -787,7 +734,6 @@ void CalcPlrInv(int pnum, bool Loadgfx)
 	//if (pnum == mypnum) {
 		CalcPlrSpells(pnum);
 		//CalcPlrBookVals(pnum);
-		CalcPlrScrolls(pnum);
 		//CalcPlrCharges(pnum);
 	//}
     plr._pDunLevel = dunLevel;
@@ -830,6 +776,11 @@ void SetItemSData(ItemStruct* is, int idata)
 	if (is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL) {
 		is->_iCharges = BASESTAFFCHARGES;
 		is->_iMaxCharges = is->_iCharges;
+
+		// assert(is->_iNumAffixes == 0);
+		is->_iAffixes[0].asPower = IPL_SETSKILL;
+		is->_iAffixes[0].asValue0 = is->_iSpell;
+		is->_iNumAffixes = 1;
 	}
 
 	static_assert(ITEM_QUALITY_NORMAL == 0, "Zero-fill expects ITEM_QUALITY_NORMAL == 0.");
@@ -943,14 +894,12 @@ void CreatePlrItems(int pnum)
 	CreateBaseItem(pi, IDI_GOLD);
 	SetGoldItemValue(pi, 100);
 	plr._pGold = 100;
-
-	CalcPlrItemVals(pnum, false);
+	// commented out, because it is not necessary (see CreatePlayer)
+	// CalcPlrInv(pnum, false);
 }
 
-static void GetBookSpell(int ii, unsigned lvl)
+BYTE GetBookSpell(unsigned lvl)
 {
-	const SpellData* sd;
-	ItemStruct* is;
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetBookSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
 	int bs, ns;
@@ -960,16 +909,23 @@ static void GetBookSpell(int ii, unsigned lvl)
 
 	ns = 0;
 	for (bs = 0; bs < (IsHellfireGame ? NUM_SPELLS : NUM_SPELLS_DIABLO); bs++) {
-		if (spelldata[bs].sBookLvl != SPELL_NA && lvl >= spelldata[bs].sBookLvl
-		 && (IsMultiGame || bs != SPL_RESURRECT)) {
+		if (spelldata[bs].sBookLvl != SPELL_NA && lvl >= spelldata[bs].sBookLvl) {
+			// assert(IsMultiGame || bs != SPL_RESURRECT);
 			ss[ns] = bs;
 			ns++;
 		}
 	}
 	// assert(ns > 0);
-	bs = ss[random_low(14, ns)];
+	return ss[random_low(14, ns)];
+}
 
-	is = &items[ii];
+static void SetBookSpell(ItemStruct* is, unsigned lvl)
+{
+	const SpellData* sd;
+	int bs;
+
+	bs = GetBookSpell(lvl);
+
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
 	is->_iMinMag = sd->sMinMag;
@@ -994,10 +950,8 @@ static void GetBookSpell(int ii, unsigned lvl)
 	is->_iCurs = bs;
 }
 
-static void GetScrollSpell(int ii, unsigned lvl)
+static BYTE GetScrollSpell(unsigned lvl)
 {
-	const SpellData* sd;
-	ItemStruct* is;
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetScrollSpell stores spell-ids in BYTEs.");
 #ifdef HELLFIRE
 	static_assert((int)SPL_RUNE_LAST + 1 == (int)NUM_SPELLS, "GetScrollSpell skips spells at the end of the enum.");
@@ -1019,22 +973,27 @@ static void GetScrollSpell(int ii, unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
-	bs = ss[random_low(14, ns)];
+	return ss[random_low(14, ns)];
+}
 
-	is = &items[ii];
+static void SetScrollSpell(ItemStruct* is, unsigned lvl)
+{
+	const SpellData* sd;
+	int bs;
+
+	bs = GetScrollSpell(lvl);
+
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
-	is->_iMinMag = sd->sMinMag > 20 ? sd->sMinMag - 20 : 0;
+	is->_iMinMag = sd->sMinMag > SCRL_MAG ? sd->sMinMag - SCRL_MAG : 0;
 	// assert(is->_ivalue == 0 && is->_iIvalue == 0);
 	is->_ivalue = sd->sStaffCost;
 	is->_iIvalue = sd->sStaffCost;
 }
 
 #ifdef HELLFIRE
-static void GetRuneSpell(int ii, unsigned lvl)
+static BYTE GetRuneSpell(unsigned lvl)
 {
-	const SpellData* sd;
-	ItemStruct* is;
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetRuneSpell stores spell-ids in BYTEs.");
 	BYTE ss[SPL_RUNE_LAST - SPL_RUNE_FIRST + 1];
 	int bs, ns;
@@ -1051,9 +1010,16 @@ static void GetRuneSpell(int ii, unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
-	bs = ss[random_low(14, ns)];
+	return ss[random_low(14, ns)];
+}
 
-	is = &items[ii];
+static void SetRuneSpell(ItemStruct* is, unsigned lvl)
+{
+	const SpellData* sd;
+	int bs;
+
+	bs = GetRuneSpell(lvl);
+
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
 	is->_iMinMag = sd->sMinMag;
@@ -1079,13 +1045,11 @@ static void GetRuneSpell(int ii, unsigned lvl)
 }
 #endif
 
-static void GetStaffSpell(int ii, unsigned lvl)
+static BYTE GetStaffSpell(unsigned lvl)
 {
-	const SpellData* sd;
-	ItemStruct* is;
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetStaffSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
-	int bs, ns, v;
+	int bs, ns;
 
 	if (lvl < STAFF_MIN)
 		lvl = STAFF_MIN;
@@ -1099,36 +1063,31 @@ static void GetStaffSpell(int ii, unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
-	bs = ss[random_low(18, ns)];
+	return ss[random_low(18, ns)];
+}
 
-	is = &items[ii];
+static void SetStaffSpell(ItemStruct* is, unsigned lvl)
+{
+	const SpellData* sd;
+	int bs, v;
+
+	bs = GetStaffSpell(lvl);
+
 	sd = &spelldata[bs];
 
 	is->_iSpell = bs;
 	is->_iCharges = RandRangeLow(sd->sStaffMin, sd->sStaffMax);
 	is->_iMaxCharges = is->_iCharges;
 
+	// assert(is->_iNumAffixes == 0);
+	is->_iAffixes[0].asPower = IPL_SETSKILL;
+	is->_iAffixes[0].asValue0 = bs;
+	is->_iNumAffixes = 1;
+
 	is->_iMinMag = sd->sMinMag;
 	v = is->_iCharges * sd->sStaffCost;
 	is->_ivalue += v;
 	is->_iIvalue += v;
-}
-
-static int GetItemSpell()
-{
-	int ns, bs;
-	BYTE ss[NUM_SPELLS];
-
-	ns = 0;
-	for (bs = 0; bs < (IsHellfireGame ? NUM_SPELLS : NUM_SPELLS_DIABLO); bs++) {
-		if (spelldata[bs].sManaCost != 0) { // TODO: use sSkillFlags ?
-			// assert(!IsMultiGame || bs != SPL_RESURRECT);
-			ss[ns] = bs;
-			ns++;
-		}
-	}
-	// assert(ns > 0);
-	return ss[random_low(19, ns)];
 }
 
 int GetItemSpell(int idx)
@@ -1159,12 +1118,12 @@ static void GetItemAttrs(int ii, int idata, unsigned lvl)
 
 	is = &items[ii];
 	if (is->_iMiscId == IMISC_BOOK)
-		GetBookSpell(ii, lvl);
+		SetBookSpell(is, lvl);
 	else if (is->_iMiscId == IMISC_SCROLL)
-		GetScrollSpell(ii, lvl);
+		SetScrollSpell(is, lvl);
 #ifdef HELLFIRE
 	else if (is->_iMiscId == IMISC_RUNE)
-		GetRuneSpell(ii, lvl);
+		SetRuneSpell(is, lvl);
 #endif
 	else if (is->_itype == ITYPE_GOLD) {
 		lvl = items_get_currlevel();
@@ -1194,13 +1153,11 @@ static int PLVal(const AffixData* affix, int pv)
 	return rv;
 }
 
-static int SaveItemPower(int ii, int power, int param1, int param2)
+static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 {
-	ItemStruct* is;
 	ItemAffixStruct* ias;
 	int r2;
 
-	is = &items[ii];
 	ias = &is->_iAffixes[is->_iNumAffixes];
 	is->_iNumAffixes++;
 	ias->asPower = power;
@@ -1230,7 +1187,7 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 	case IPL_CRITP:
 		break;
 	case IPL_SKILLLVL:
-		ias->asValue1 = GetItemSpell();
+		ias->asValue1 = GetBookSpell(is->_iCreateInfo & CF_LEVEL);
 		break;
 	case IPL_SKILLLEVELS:
 		break;
@@ -1306,7 +1263,9 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 	case IPL_REQSTR:
 		is->_iMinStr += r;
 		break;
-	case IPL_SPELL:
+	case IPL_SETSKILL:
+		ias->asValue0 = param1;
+
 		is->_iSpell = param1;
 		is->_iCharges = param2;
 		is->_iMaxCharges = param2;
@@ -1340,7 +1299,7 @@ static int SaveItemPower(int ii, int power, int param1, int param2)
 	return r;
 }
 
-static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygood)
+static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, bool onlygood)
 {
 	int nl, v;
 	int va = 0, vm = 0;
@@ -1349,9 +1308,9 @@ static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygo
 	BYTE affix;
 	BOOLEAN good;
 
-	// assert(items[ii]._iMagical == ITEM_QUALITY_NORMAL);
-	if (flgs != PLT_MISC) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
-		lvl = lvl > AllItemList[items[ii]._iIdx].iMinMLvl ? lvl - AllItemList[items[ii]._iIdx].iMinMLvl : 0;
+	// assert(is->_iMagical == ITEM_QUALITY_NORMAL);
+	if (flgs != PLT_MISC) // is->_itype != ITYPE_RING && is->_itype != ITYPE_AMULET)
+		lvl = lvl > AllItemList[is->_iIdx].iMinMLvl ? lvl - AllItemList[is->_iIdx].iMinMLvl : 0;
 
 	// select affixes (3: both, 2: prefix, 1: suffix)
 	v = random_(23, 128);
@@ -1376,9 +1335,10 @@ static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygo
 		if (nl != 0) {
 			// assert(nl <= 0x7FFF);
 			pres = l[random_low(23, nl)];
-			items[ii]._iMagical = ITEM_QUALITY_MAGIC;
+			is->_iMagical = ITEM_QUALITY_MAGIC;
+			is->_iUnidentified = TRUE;
 			affix_rnd[0] = v = SaveItemPower(
-			    ii,
+			    is,
 			    pres->PLPower,
 			    pres->PLParam1,
 			    pres->PLParam2);
@@ -1400,9 +1360,10 @@ static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygo
 		if (nl != 0) {
 			// assert(nl <= 0x7FFF);
 			sufs = l[random_low(23, nl)];
-			items[ii]._iMagical = ITEM_QUALITY_MAGIC;
+			is->_iMagical = ITEM_QUALITY_MAGIC;
+			is->_iUnidentified = TRUE;
 			affix_rnd[1] = v = SaveItemPower(
-			    ii,
+			    is,
 			    sufs->PLPower,
 			    sufs->PLParam1,
 			    sufs->PLParam2);
@@ -1411,13 +1372,13 @@ static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygo
 		}
 	}
 	// prefix or suffix added -> recalculate the value of the item
-	if (items[ii]._iMagical == ITEM_QUALITY_MAGIC) {
-		if (items[ii]._iMiscId != IMISC_MAP) {
+	if (is->_iMagical == ITEM_QUALITY_MAGIC) {
+		if (is->_iMiscId != IMISC_MAP) {
 			v = vm;
 			if (v >= 0) {
-				v *= items[ii]._ivalue;
+				v *= is->_ivalue;
 			} else {
-				v = items[ii]._ivalue / -v;
+				v = is->_ivalue / -v;
 			}
 			v += va;
 			if (v <= 0) {
@@ -1425,24 +1386,25 @@ static void GetItemPower(int ii, unsigned lvl, BYTE range, int flgs, bool onlygo
 			}
 		} else {
 			v = 6;
-			for (unsigned i = 0; i < items[ii]._iNumAffixes; i++) {
-				const ItemAffixStruct* ias = &items[ii]._iAffixes[i];
+			for (unsigned i = 0; i < is->_iNumAffixes; i++) {
+				const ItemAffixStruct* ias = &is->_iAffixes[i];
 				if (ias->asPower == IMP_AREAMOD) {
 					v -= ias->asValue0;
 				}
 			}
 			v = ((1 << MAXCAMPAIGNSIZE) - 1) >> v;
-			items[ii]._ivalue = v;
+			is->_ivalue = v;
 		}
-		items[ii]._iIvalue = v;
+		is->_iIvalue = v;
 	}
 }
 
 static void GetItemBonus(int ii, unsigned lvl, BYTE range, bool onlygood, bool allowspells)
 {
 	int flgs;
+	ItemStruct* is = &items[ii];
 
-	switch (items[ii]._itype) {
+	switch (is->_itype) {
 	case ITYPE_MISC:
 		if (items[ii]._iMiscId != IMISC_MAP)
 			return;
@@ -1474,7 +1436,7 @@ static void GetItemBonus(int ii, unsigned lvl, BYTE range, bool onlygood, bool a
 	case ITYPE_STAFF:
 		flgs = PLT_STAFF;
 		if (allowspells && random_(17, 4) != 0) {
-			GetStaffSpell(ii, lvl);
+			SetStaffSpell(is, lvl);
 			if (random_(51, 2) != 0)
 				return;
 			flgs |= PLT_CHRG;
@@ -1491,7 +1453,7 @@ static void GetItemBonus(int ii, unsigned lvl, BYTE range, bool onlygood, bool a
 		return;
 	}
 
-	GetItemPower(ii, lvl, range, flgs, onlygood);
+	GetItemPower(is, lvl, range, flgs, onlygood);
 }
 
 static int RndDropItem(bool func(const ItemData& item, void* arg), void* arg, unsigned lvl)
@@ -1603,28 +1565,30 @@ static int CheckUnique(int ii, unsigned lvl, unsigned quality)
 static void GetUniqueItem(int ii, int uid)
 {
 	const UniqItemData* ui;
+	ItemStruct* is = &items[ii];
 
 	ui = &UniqueItemList[uid];
-	affix_rnd[0] = SaveItemPower(ii, ui->UIPower1, ui->UIParam1a, ui->UIParam1b);
+	affix_rnd[0] = SaveItemPower(is, ui->UIPower1, ui->UIParam1a, ui->UIParam1b);
 
 	if (ui->UIPower2 != IPL_INVALID) {
-		affix_rnd[1] = SaveItemPower(ii, ui->UIPower2, ui->UIParam2a, ui->UIParam2b);
+		affix_rnd[1] = SaveItemPower(is, ui->UIPower2, ui->UIParam2a, ui->UIParam2b);
 	if (ui->UIPower3 != IPL_INVALID) {
-		affix_rnd[2] = SaveItemPower(ii, ui->UIPower3, ui->UIParam3a, ui->UIParam3b);
+		affix_rnd[2] = SaveItemPower(is, ui->UIPower3, ui->UIParam3a, ui->UIParam3b);
 	if (ui->UIPower4 != IPL_INVALID) {
-		affix_rnd[3] = SaveItemPower(ii, ui->UIPower4, ui->UIParam4a, ui->UIParam4b);
+		affix_rnd[3] = SaveItemPower(is, ui->UIPower4, ui->UIParam4a, ui->UIParam4b);
 	if (ui->UIPower5 != IPL_INVALID) {
-		affix_rnd[4] = SaveItemPower(ii, ui->UIPower5, ui->UIParam5a, ui->UIParam5b);
+		affix_rnd[4] = SaveItemPower(is, ui->UIPower5, ui->UIParam5a, ui->UIParam5b);
 	if (ui->UIPower6 != IPL_INVALID) {
-		affix_rnd[5] = SaveItemPower(ii, ui->UIPower6, ui->UIParam6a, ui->UIParam6b);
+		affix_rnd[5] = SaveItemPower(is, ui->UIPower6, ui->UIParam6a, ui->UIParam6b);
 	}}}}}
 
-	items[ii]._iCurs = ui->UICurs;
-	items[ii]._iIvalue = ui->UIValue;
+	is->_iCurs = ui->UICurs;
+	is->_iIvalue = ui->UIValue;
 
-	items[ii]._iUid = uid;
-	items[ii]._iMagical = ITEM_QUALITY_UNIQUE;
-	// items[ii]._iCreateInfo |= CF_UNIQUE;
+	is->_iUid = uid;
+	is->_iMagical = ITEM_QUALITY_UNIQUE;
+	is->_iUnidentified = TRUE;
+	// is->_iCreateInfo |= CF_UNIQUE;
 }
 
 static void ItemRndDur(int ii)
@@ -1827,8 +1791,8 @@ static void PrintEquipmentPower(BYTE idx, const ItemStruct* is)
 	case IPL_REQSTR:
 		copy_cstr(tempstr, "altered requirements");
 		break;
-	case IPL_SPELL:
-		snprintf(tempstr, sizeof(tempstr), "%d %s charges", is->_iMaxCharges, spelldata[is->_iSpell].sNameText);
+	case IPL_SETSKILL:
+		snprintf(tempstr, sizeof(tempstr), "%s (%d/%d)", spelldata[ias->asValue0].sNameText, is->_iCharges, is->_iMaxCharges);
 		break;
 	case IPL_ONEHAND:
 		copy_cstr(tempstr, "one handed sword");
@@ -1905,6 +1869,28 @@ void PrintItemPower(BYTE plidx, const ItemStruct* is)
 		PrintEquipmentPower(plidx, is);
 	else
 		PrintMapPower(plidx, is);
+}
+
+const char* ItemName(const ItemStruct* is)
+{
+	const char* name = AllItemList[is->_iIdx].iName;
+	if (is->_iIdx == IDI_EAR) {
+		snprintf(tempstr, sizeof(tempstr), "%s%s", name, is->_iPlrName);
+		name = tempstr;
+	} else if (is->_iMagical == ITEM_QUALITY_UNIQUE && !is->_iUnidentified)
+		name = UniqueItemList[is->_iUid].UIName;
+	else if (is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL) {
+		snprintf(tempstr, sizeof(tempstr), "%s of %s", name, spelldata[is->_iSpell].sNameText);
+		name = tempstr;
+	} else if (is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
+#ifdef HELLFIRE
+		|| is->_iMiscId == IMISC_RUNE
+#endif
+		) {
+		snprintf(tempstr, sizeof(tempstr), "%s%s", name, spelldata[is->_iSpell].sNameText);
+		name = tempstr;
+	}
+	return name;
 }
 
 void ItemStatOk(int pnum, ItemStruct* is)
@@ -2024,29 +2010,6 @@ bool SwapPlrItem(int pnum, int dst_ii, int src_ii)
     // LogErrorF("SwapPlrItem swap done");
     return true;
 }
-
-const char* ItemName(const ItemStruct* is)
-{
-	const char* name = AllItemList[is->_iIdx].iName;
-	if (is->_iIdx == IDI_EAR) {
-		snprintf(tempstr, sizeof(tempstr), "%s%s", name, is->_iPlrName);
-		name = tempstr;
-	} else if (is->_iMagical == ITEM_QUALITY_UNIQUE/* && is->_iIdentified*/)
-		name = UniqueItemList[is->_iUid].UIName;
-	else if (is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL) {
-		snprintf(tempstr, sizeof(tempstr), "%s of %s", name, spelldata[is->_iSpell].sNameText);
-		name = tempstr;
-	} else if (is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
-#ifdef HELLFIRE
-		|| is->_iMiscId == IMISC_RUNE
-#endif
-		) {
-		snprintf(tempstr, sizeof(tempstr), "%s%s", name, spelldata[is->_iSpell].sNameText);
-		name = tempstr;
-	}
-	return name;
-}
-
 static void RecreateSmithItem(int ii/*, int iseed*/, int idx, unsigned lvl)
 {
 	// SetRndSeed(iseed);
@@ -2177,3 +2140,69 @@ void RecreateItem(int32_t iseed, uint16_t wIndex, uint16_t wCI)
     ItemName(&items[MAXITEMS]);
     copy_cstr(items[MAXITEMS]._iName, tempstr);
 }
+
+float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
+{
+    int quality = CFDQ_UNIQUE;
+    int mpl = 1;
+    int dvs = 1;
+    if (!uniqueMonster) {
+        dvs *= 128;
+        mpl *= 47 + numPlayers * 4;
+
+        quality = CFDQ_NORMAL;
+    }
+
+    bool func(const ItemData& item, void* arg); 
+    if (quality >= CFDQ_GOOD) {
+        func = RndUItemOk;
+    } else {
+        if (wIndex == IDI_GOLD) {
+            mpl *= 128 - 33;
+            dvs *= 128;
+            return (float)mpl / (float)dvs;
+        }
+        mpl *= 33;
+        dvs *= 128;
+        func = RndItemOk;
+    }
+
+	int i, ri;
+	int ril[NUM_IDI - IDI_RNDDROP_FIRST];
+
+	for (i = IDI_RNDDROP_FIRST; i < NUM_IDI; i++) {
+		ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
+	}
+	ri = 0;
+	for (i = 0; i < (NUM_IDI - IDI_RNDDROP_FIRST); i++)
+		ri += ril[i];
+
+    if (ri == 0) {
+        return 0;
+    }
+    dvs *= ri;
+    if (wIndex < NUM_IDI) {
+        if (wIndex < IDI_RNDDROP_FIRST) {
+            return 0;
+        }
+        mpl *= ril[wIndex - IDI_RNDDROP_FIRST];
+    } else {
+        int first, n;
+        switch (wIndex) {
+        case NUM_IDI + 0: first = IDI_BOOK1;   n = 4; break;
+        case NUM_IDI + 1: first = IDI_SCROLL1; n = 7; break;
+        case NUM_IDI + 2: first = IDI_RUNE1;   n = 7; break;
+        case NUM_IDI + 3: first = IDI_RING1;   n = 5; break;
+        case NUM_IDI + 4: first = IDI_AMULET1; n = 3; break;
+        }
+        ri = 0;
+        for (i = first; i < first + n; i++) {
+            ri += ril[i - IDI_RNDDROP_FIRST];
+        }
+        mpl *= ri;
+    }
+
+    return (float)mpl / (float)dvs;
+}
+
+DEVILUTION_END_NAMESPACE

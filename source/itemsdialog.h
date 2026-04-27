@@ -26,6 +26,9 @@ private:
     bool recreateItem();
 
 private slots:
+    void on_playersEdit_returnPressed();
+    void on_playersEdit_escPressed();
+
     void on_itemTypeComboBox_activated(int index);
     void on_itemLocComboBox_activated(int index);
     void on_itemIdxComboBox_activated(int index);
@@ -49,6 +52,7 @@ private slots:
     void on_itemACLimitedCheckBox_clicked();
     void on_itemACLimitSlider_valueChanged(int value);
 
+    void on_calculateButton_clicked();
     void on_generateButton_clicked();
 
     void on_closeButton_clicked();
@@ -56,6 +60,8 @@ private slots:
 private:
     Ui::ItemsDialog *ui;
     ItemPropertiesWidget *itemProps;
+
+    int numPlayers = 1;
 
     int invIdx;
     int itemType;

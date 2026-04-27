@@ -29,9 +29,6 @@ extern int affix_rnd[6];
 int GetItemSpell(int idx);
 
 void CalcPlrItemVals(int pnum, bool Loadgfx);
-void CalcPlrSpells(int pnum);
-void CalcPlrScrolls(int pnum);
-void CalcPlrCharges(int pnum);
 void ItemStatOk(int pnum, ItemStruct* is);
 void CalcPlrInv(int pnum, bool Loadgfx);
 void CreateBaseItem(ItemStruct* is, int idata);
@@ -45,5 +42,7 @@ ItemStruct* PlrItem(int pnum, int cii);
 bool SwapPlrItem(int pnum, int dst_ii, int src_ii);
 const char* ItemName(const ItemStruct* is);
 void PrintItemPower(BYTE plidx, const ItemStruct* is);
+
+float ItemDropChance(int wIndex, int level, int numPlayers, bool uniqueMonster);
 
 #endif /* __ITEMS_H__ */
