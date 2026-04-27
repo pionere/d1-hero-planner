@@ -2153,7 +2153,8 @@ float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
         quality = CFDQ_NORMAL;
     }
 
-    bool func(const ItemData& item, void* arg); 
+    bool func(const ItemData& item, void* arg);
+    void* arg = NULL;
     if (quality >= CFDQ_GOOD) {
         func = RndUItemOk;
     } else {

@@ -292,7 +292,7 @@ static QString AffixPowerName(int power)
     case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
     case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
     case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SPELL:          result = QApplication::tr("spell");                 break;
+    case IPL_SETSKILL:       result = QApplication::tr("spell");                 break;
     case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
     case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
     case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
@@ -356,6 +356,7 @@ void ItemsDialog::updateFields()
         case NUM_IDI + 2: idx = IDI_RUNE1;   break;
         case NUM_IDI + 3: idx = IDI_RING1;   break;
         case NUM_IDI + 4: idx = IDI_AMULET1; break;
+        }
     }
     bool drop = AllItemList[idx].iRnd != 0;
     if (idx != this->is->_iIdx) {
