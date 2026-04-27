@@ -1862,15 +1862,19 @@ static void PrintMapPower(BYTE idx, const ItemStruct* is)
 	} break;
 	default:
 		ASSUME_UNREACHABLE
+        snprintf(tempstr, sizeof(tempstr), "unhandled map affix %d", plidx);
+		break;
 	}
 }
 
 void PrintItemPower(BYTE plidx, const ItemStruct* is)
 {
+QMessageBox::critical(this, "Error", tr("print item property %1: %2").arg(is->_itype).arg(is->_iAffixes[plidx].asPower));
 	if (is->_itype != ITYPE_MISC || is->_iMiscId != IMISC_MAP)
 		PrintEquipmentPower(plidx, is);
 	else
 		PrintMapPower(plidx, is);
+QMessageBox::critical(this, "Error", tr("print item property %1").arg(tempstr));
 }
 
 const char* ItemName(const ItemStruct* is)

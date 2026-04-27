@@ -789,11 +789,12 @@ void MainWindow::loadFile(const OpenAsParam &params, MainWindow *instance, LoadF
 
 void MainWindow::openFile(const OpenAsParam &params)
 {
+LogErrorF("openFile 0");
     LoadFileContent fileContent;
     MainWindow::loadFile(params, this, &fileContent);
     if (fileContent.fileType == FILE_CONTENT::UNKNOWN)
         return;
-
+LogErrorF("openFile 1");
 #if (defined (_WIN32) || defined (_WIN64))
     // SHAddToRecentDocs(SHARD_PATHA, params.filePath.toLatin1().constData());
     SHAddToRecentDocs(SHARD_PATHA, params.filePath.toStdWString().data());
@@ -822,12 +823,12 @@ void MainWindow::openFile(const OpenAsParam &params)
     // initialize context
     IsHellfireGame = this->hero->isHellfire();
     gnDifficulty = this->hero->getRank();
-
+LogErrorF("openFile 2");
     QWidget *view;
         // build a HeroView
         this->heroView = new HeroView(this);
         this->heroView->initialize(this->pal, this->hero, this->bottomPanelHidden);
-
+LogErrorF("openFile 3");
         // Refresh palette widgets when frame is changed
         // QObject::connect(this->heroView, &HeroView::frameRefreshed, this->palWidget, &PaletteWidget::refresh);
 
@@ -873,7 +874,7 @@ void MainWindow::openFile(const OpenAsParam &params)
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnUniqueWidget, &PaletteWidget::stopTrnColorPicking);      // cancel color picking
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);        // cancel color picking
     QObject::connect(this->trnUniqueWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);  // cancel color picking
-
+LogErrorF("openFile 4");
     // Look for all palettes in the same folder as the CEL/CL2 file
     QString firstPaletteFound;
     if (!baseDir.isEmpty()) {
@@ -889,8 +890,9 @@ void MainWindow::openFile(const OpenAsParam &params)
     if (firstPaletteFound.isEmpty()) {
         firstPaletteFound = D1Pal::DEFAULT_PATH;
     }
+LogErrorF("openFile 5");
     this->setPal(firstPaletteFound); // should trigger view->displayFrame()
-
+LogErrorF("openFile 6");
     // update available menu entries
     this->ui->menuEdit->setEnabled(true);
     this->ui->menuView->setEnabled(true);
@@ -900,7 +902,7 @@ void MainWindow::openFile(const OpenAsParam &params)
     this->ui->actionSave->setEnabled(true);
     this->ui->actionSaveAs->setEnabled(true);
     this->ui->actionClose->setEnabled(true);
-
+LogErrorF("openFile 7");
     // Clear loading message from status bar
     ProgressDialog::done();
 }
