@@ -1869,12 +1869,12 @@ static void PrintMapPower(BYTE idx, const ItemStruct* is)
 
 void PrintItemPower(BYTE plidx, const ItemStruct* is)
 {
-QMessageBox::critical(this, "Error", tr("print item property %1: %2").arg(is->_itype).arg(is->_iAffixes[plidx].asPower));
+QMessageBox::critical(nullptr, "Error", QApplication::tr("print item property %1: %2").arg(is->_itype).arg(is->_iAffixes[plidx].asPower));
 	if (is->_itype != ITYPE_MISC || is->_iMiscId != IMISC_MAP)
 		PrintEquipmentPower(plidx, is);
 	else
 		PrintMapPower(plidx, is);
-QMessageBox::critical(this, "Error", tr("print item property %1").arg(tempstr));
+QMessageBox::critical(nullptr, "Error", QApplication::tr("print item property %1").arg(tempstr));
 }
 
 const char* ItemName(const ItemStruct* is)
