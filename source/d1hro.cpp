@@ -538,6 +538,7 @@ LogErrorF("getEquipmentImage ph helm 1");
     LogErrorF("D1Hero::getEquipmentImage 6 %d", INVLOC_HAND_LEFT);
 	is = &plr._pInvBody[INVLOC_HAND_LEFT];
 	if (is->_itype != ITYPE_NONE) {
+    LogErrorF("D1Hero::getEquipmentImage 6 0 %d", is->_itype);
 		InvDrawSlotBack(screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 
 		frame = is->_iCurs + CURSOR_FIRSTITEM;
@@ -550,9 +551,12 @@ LogErrorF("getEquipmentImage ph helm 1");
 		if (InvItemHeight[frame] != (3 * INV_SLOT_SIZE_PX))
 			dy -= INV_SLOT_SIZE_PX / 2;
 
+    LogErrorF("D1Hero::getEquipmentImage 6 1 %d, %d", frame, frame_width);
 		scrollrt_draw_item(is, pi == is, screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y + dy, cCels, frame, frame_width);
+    LogErrorF("D1Hero::getEquipmentImage 6 2 %d, %d", frame, frame_width);
 
 		if (TWOHAND_WIELD(&plr, is)) {
+    LogErrorF("D1Hero::getEquipmentImage 6 3 %d, %d", frame, frame_width);
 				InvDrawSlotBack(screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y, 2 * INV_SLOT_SIZE_PX, 3 * INV_SLOT_SIZE_PX);
 				light_trn_index = 0;
 				gbCelTransparencyActive = true;
@@ -563,7 +567,9 @@ LogErrorF("getEquipmentImage ph helm 1");
 					dx += INV_SLOT_SIZE_PX / 2;
 				if (InvItemHeight[frame] != 3 * INV_SLOT_SIZE_PX)
 					dy -= INV_SLOT_SIZE_PX / 2;
+    LogErrorF("D1Hero::getEquipmentImage 6 4 %d, %d", frame, frame_width);
 				CelClippedDrawLightTrans(screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y + dy, cCels, frame, frame_width);
+    LogErrorF("D1Hero::getEquipmentImage 6 5 %d, %d", frame, frame_width);
 		}
 	} else {
         frame = 0;
@@ -584,8 +590,9 @@ LogErrorF("getEquipmentImage ph helm 1");
 			dx += INV_SLOT_SIZE_PX / 2;
 		if (InvItemHeight[frame] != (3 * INV_SLOT_SIZE_PX))
 			dy -= INV_SLOT_SIZE_PX / 2;
-
+    LogErrorF("D1Hero::getEquipmentImage 6b 0 %d, %d", frame, frame_width);
         draw_item_placeholder("weapon", pi == is, screen_x + InvRect[SLOTXY_HAND_LEFT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_LEFT_LAST].Y + dy, cCels, frame, frame_width);
+    LogErrorF("D1Hero::getEquipmentImage 6b 1 %d, %d", frame, frame_width);
 	}
     LogErrorF("D1Hero::getEquipmentImage 7 %d", INVLOC_HAND_RIGHT);
 	is = &plr._pInvBody[INVLOC_HAND_RIGHT];
