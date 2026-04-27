@@ -256,7 +256,7 @@ void InitLvlMonsters()
 		// reset _muniqtype value to simplify SyncMonsterAnim (loadsave.cpp)
 		// reset _mlid value to simplify SyncMonstersLight, DeltaLoadLevel, SummonMonster and InitTownerInfo
 		monsters[i]._muniqtype = 0;
-		monsters[i]._muniqtrans = 0;
+		monsters[i]._muniqanim = 0;
 		monsters[i]._mNameColor = COL_WHITE;
 		monsters[i]._mlid = NO_LIGHT;
 		// reset _mleaderflag value to simplify GroupUnity
@@ -310,7 +310,7 @@ void InitMonster(int mnum, int dir, int mtidx, int x, int y)
 	// mon->_mRndSeed = NextRndSeed();
 
 	mon->_muniqtype = 0;
-	mon->_muniqtrans = 0;
+	mon->_muniqanim = 0;
 	mon->_mNameColor = COL_WHITE;
 	mon->_mlid = NO_LIGHT;
 
