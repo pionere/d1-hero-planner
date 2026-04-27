@@ -69,12 +69,16 @@ void UnPackPkItem(const PkItemStruct* src)
 
 	net_assert(idx < NUM_IDI);
     if (idx >= NUM_IDI) {
-        items[MAXITEMS]._iType = ITYPE_NONE;
+        items[MAXITEMS]._itype = ITYPE_NONE;
         return;
     }
 // LogErrorF("UnPackPkItem 0 %d %d", idx, NUM_IDI);
 	if (idx != IDI_EAR) {
 		net_assert(((src->wCI & CF_TOWN) >> 8) <= CFL_CRAFTED);
+        if (((src->wCI & CF_TOWN) >> 8) > CFL_CRAFTED) {
+            items[MAXITEMS]._itype = ITYPE_NONE;
+            return;
+        }
 // LogErrorF("UnPackPkItem 1 s%d idx:%d ci:%d twn:%d", src->dwSeed, src->wIndx, src->wCI, ((src->wCI & CF_TOWN) >> 8));
 		RecreateItem(
 			src->dwSeed,
