@@ -296,6 +296,7 @@ static void CelClippedDrawLightTbl(int sx, int sy, const D1Gfx *pCelBuff, int nC
 
 static void CelClippedDrawLightTrans(int sx, int sy, const D1Gfx *pCelBuff, int nCel, int nWidth)
 {
+    if (pCelBuff == nullptr || pCelBuff->getFrameCount() <= nCel) return;
     BYTE trans = light_trn_index;
     // LogErrorF("CelClippedDrawLightTrans %d:%d idx:%d w:%d trn%d", sx, sy, nCel, nWidth, trans);
     QImage *destImage = (QImage *)InvPainter->device();
@@ -469,7 +470,7 @@ LogErrorF("getEquipmentImage iCels %d", iCels->getFrameCount());
 
 	screen_x = 0;
 	screen_y = 0;
-LogErrorF("getEquipmentImage PlrItem 0 %d", pcursinvitem);
+LogErrorF("getEquipmentImage PlrItem 0 %d %d", pcursinvitem, cCels != nullptr);
     pi = PlrItem(pnum, pcursinvitem); // FIXME /*pcursinvitem == ITEM_NONE ? NULL :*/ PlrItem(pnum, pcursinvitem);
 LogErrorF("getEquipmentImage PlrItem 1 %d", pi != nullptr);
     LogErrorF("D1Hero::getEquipmentImage 2 %d", INVLOC_HEAD);
