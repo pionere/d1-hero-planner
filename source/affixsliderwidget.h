@@ -11,6 +11,7 @@ public:
 
     void changeValue(int value);
     void setItemLevel(int level);
+    void setItemMiscId(int miscId);
     void setLimitMode(int mode);
 
 private slots:
@@ -20,5 +21,6 @@ private:
     void updateToolTip();
 
     int itemLevel = 0;
+    int miscId = IMISC_NONE;
     int limitMode = 0;
 };

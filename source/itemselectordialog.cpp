@@ -523,6 +523,7 @@ void ItemSelectorDialog::updateFields()
         }
     }
     this->ui->itemPrefixLimitSlider->setItemLevel(lvl);
+    this->ui->itemPrefixLimitSlider->setItemMiscId(AllItemList[idx].iMiscId);
     this->ui->itemPrefixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
@@ -569,6 +570,7 @@ void ItemSelectorDialog::updateFields()
         }
     }
     this->ui->itemSuffixLimitSlider->setItemLevel(lvl);
+    this->ui->itemSuffixLimitSlider->setItemMiscId(AllItemList[idx].iMiscId);
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
