@@ -2,6 +2,8 @@
 
 #include "sliderwidget.h"
 
+#include "dungeon/enums.h"
+
 class AffixSliderWidget : public SliderWidget {
     Q_OBJECT
 
