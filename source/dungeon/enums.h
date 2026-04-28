@@ -533,6 +533,7 @@ typedef enum item_effect_type {
 	IPL_SETDAM,
 	IPL_SETDUR,
 	IPL_REQSTR,
+    IPL_SKILL,
 	IPL_SETSKILL,
 	IPL_ONEHAND,
 	IPL_ALLRESZERO,
@@ -561,7 +562,7 @@ typedef enum item_affix_range {
 } item_affix_range;
 
 typedef enum affix_item_type {
-	PLT_MISC   = 1 << 0,
+	PLT_JEWEL  = 1 << 0,
 	PLT_BOW    = 1 << 1,
 	PLT_STAFF  = 1 << 2,
 	PLT_CHRG   = 1 << 3,
@@ -572,6 +573,7 @@ typedef enum affix_item_type {
 	PLT_MARMOR = 1 << 8,
 	PLT_HARMOR = 1 << 9,
 	PLT_MAP    = 1 << 10,
+	PLT_MISC   = 1 << 11,
 	PLT_ARMO   = (PLT_HELM | PLT_LARMOR | PLT_MARMOR | PLT_HARMOR),
 } affix_item_type;
 

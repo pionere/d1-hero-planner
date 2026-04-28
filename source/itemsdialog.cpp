@@ -18,6 +18,7 @@
 
 #define AFFIX_ANY   -1
 #define AFFIX_NONE  -2
+#define AFFIX_SKILL  -3
 
 Q_DECLARE_METATYPE(item_equip_type)
 Q_DECLARE_METATYPE(item_type)
@@ -195,51 +196,6 @@ void ItemsDialog::updateFilters()
     idxComboBox->setCurrentIndex(idx);
 }
 
-static int GetItemBonusFlags(int itype, int misc_id)
-{
-    int flgs = 0;
-    switch (itype) {
-    case ITYPE_MISC:
-        if (misc_id != IMISC_MAP)
-            break;
-        flgs = PLT_MAP;
-        break;
-    case ITYPE_SWORD:
-    case ITYPE_AXE:
-    case ITYPE_MACE:
-        flgs = PLT_MELEE;
-        break;
-    case ITYPE_BOW:
-        flgs = PLT_BOW;
-        break;
-    case ITYPE_SHIELD:
-        flgs = PLT_SHLD;
-        break;
-    case ITYPE_LARMOR:
-        flgs = PLT_ARMO | PLT_LARMOR;
-        break;
-    case ITYPE_HELM:
-        flgs = PLT_ARMO;
-        break;
-    case ITYPE_MARMOR:
-        flgs = PLT_ARMO | PLT_MARMOR;
-        break;
-    case ITYPE_HARMOR:
-        flgs = PLT_ARMO | PLT_HARMOR;
-        break;
-    case ITYPE_STAFF:
-        flgs = PLT_STAFF | PLT_CHRG;
-        break;
-    case ITYPE_GOLD:
-        break;
-    case ITYPE_RING:
-    case ITYPE_AMULET:
-        flgs = PLT_MISC;
-        break;
-    }
-    return flgs;
-}
-
 static QString AffixPowerName(int power)
 {
     QString result = "";
@@ -318,7 +274,7 @@ static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBo
     QComboBox *comboBox = preComboBox->count() == 0 ? preComboBox : sufComboBox;
     if (power == IPL_SKILLLVL && paramA == paramB) {
         paramA = 0;
-        paramB = GetItemSpell(-1) - 1;
+        paramB = GetBookSpell(INT_MAX, -2) - 1;
     }
     if (paramA == paramB) {
         return;
@@ -340,6 +296,11 @@ static QString ItemColor(const ItemStruct* is)
 
 void ItemsDialog::updateFields()
 {
+    auto gameHellfire = IsHellfireGame;
+    IsHellfireGame = this->ui->isHellfireCheckBox->isChecked();
+    auto gameMulti = IsMultiGame;
+    IsMultiGame = this->ui->isMultiCheckBox->isChecked();
+
     // QComboBox *typeComboBox = this->ui->itemTypeComboBox;
     // QComboBox *locComboBox = this->ui->itemLocComboBox;
     QComboBox *idxComboBox = this->ui->itemIdxComboBox;
@@ -378,7 +339,7 @@ void ItemsDialog::updateFields()
     this->ui->itemQualityComboBox->setCurrentIndex((ci & CF_DROP_QUALITY) >> 11);
     this->ui->itemQualityComboBox->setEnabled(drop);
 
-    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? this->is->_iName : "");
+    this->ui->itemName->setText(this->is->_itype != ITYPE_NONE ? ItemName(this->is) : "");
     this->ui->itemName->setStyleSheet(ItemColor(this->is));
     this->itemProps->initialize(this->is);
     this->itemProps->adjustSize();
@@ -386,7 +347,7 @@ void ItemsDialog::updateFields()
     this->itemProps->setVisible(this->is->_itype != ITYPE_NONE);
 
     // update whish-lists
-    int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, IMISC_NONE/* this->is->_iMiscId*/);
+    int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, AllItemList[idx].iMiscId/* this->is->_iMiscId*/);
     int source = (ci & CF_TOWN) >> 8;
     int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
     int lvl = ci & CF_LEVEL;
@@ -419,7 +380,7 @@ void ItemsDialog::updateFields()
     uniqComboBox->addItem(tr("Any"), QVariant::fromValue(-1));
 
     if ((ci & ~CF_LEVEL) != 0) {
-        for (int i = 0; i < (this->ui->isHellfireCheckBox->isChecked() ? NUM_UITEM : NUM_UITEM_DIABLO); i++) {
+        for (int i = 0; i < (IsHellfireGame ? NUM_UITEM : NUM_UITEM_DIABLO); i++) {
             const UniqItemData &uid = UniqueItemList[i];
             if (uid.UIUniqType == AllItemList[idx].iUniqType && uid.UIMinLvl <= lvl) {
                 uniqComboBox->addItem(uid.UIName, QVariant::fromValue(i));
@@ -447,7 +408,7 @@ void ItemsDialog::updateFields()
 
         if ((ci & ~CF_LEVEL) != 0) {
             int alvl = lvl;
-            if (flgs != PLT_MISC) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
+            if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
                 alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
             si = 0;
             for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
@@ -463,6 +424,9 @@ void ItemsDialog::updateFields()
                     sufComboBox->addItem(QString("%1 (%2-%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
                 }
             }
+        }
+        if (flgs == PLT_MISC) {
+            sufComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL)), AFFIX_SKILL);
         }
         preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
         sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
@@ -500,7 +464,7 @@ void ItemsDialog::updateFields()
     sufComboBox->setCurrentIndex(si);
 
     si = preComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
     this->ui->itemPrefixLimitedCheckBox->setToolTip(cs == Qt::Unchecked ? tr("unrestricted") : (cs == Qt::PartiallyChecked ? tr("lower limited to:") : tr("upper limited to:")));
@@ -508,7 +472,18 @@ void ItemsDialog::updateFields()
     limitMode = cs == Qt::Unchecked ? 0 : cs == Qt::PartiallyChecked ? 1 : cs == Qt::Checked ? 2 : cs;
     if (active) {
         int minval, maxval;
-        if (uniqIdx >= 0) {
+        if (si == AFFIX_SKILL) {
+            minval = maxval = 0;
+            if (limitMode == 1) {
+                switch (AllItemList[idx].iMiscId) {
+                case IMISC_BOOK:   maxval = GetBookSpell(lvl, -2);   break;
+                case IMISC_SCROLL: maxval = GetScrollSpell(lvl, -2); break;
+                case IMISC_RUNE:   maxval = GetRuneSpell(lvl, -2);   break;
+                }
+                maxval--;
+                limitMode = 3;
+            }
+        } else if (uniqIdx >= 0) {
             const UniqItemData* ui = &UniqueItemList[uniqIdx];
             int power;
             switch (si) {
@@ -521,19 +496,19 @@ void ItemsDialog::updateFields()
             }
             if (power == IPL_SKILLLVL && limitMode == 1) {
                 minval = 0;
-                maxval = GetItemSpell(-1) - 1;
+                maxval = GetBookSpell(lvl, -2) - 1;
                 // QMessageBox::critical(this, "Error", tr("skilllevel %1 ... %2.").arg(minval).arg(maxval));
                 limitMode = 3;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
-            maxval = GetItemSpell(-1) - 1;
+            maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
         } else {
             minval = PL_Prefix[si].PLParam1;
             maxval = PL_Prefix[si].PLParam2;
         }
-        active &= minval != maxval;
+        active &= minval < maxval;
         if (active) {
             this->ui->itemPrefixLimitSlider->setMinimum(minval);
             this->ui->itemPrefixLimitSlider->setMaximum(maxval);
@@ -567,18 +542,18 @@ void ItemsDialog::updateFields()
             }
             if (power == IPL_SKILLLVL && limitMode == 1) {
                 minval = 0;
-                maxval = GetItemSpell(-1) - 1;
+                maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
-            maxval = GetItemSpell(-1) - 1;
+            maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
         } else {
             minval = PL_Suffix[si].PLParam1;
             maxval = PL_Suffix[si].PLParam2;
         }
-        active &= minval != maxval;
+        active &= minval < maxval;
         if (active) {
             this->ui->itemSuffixLimitSlider->setMinimum(minval);
             this->ui->itemSuffixLimitSlider->setMaximum(maxval);
@@ -590,6 +565,9 @@ void ItemsDialog::updateFields()
     }
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
+
+    IsMultiGame = gameMulti;
+    IsHellfireGame = gameHellfire;
 }
 
 void ItemsDialog::on_playersEdit_returnPressed()
@@ -711,7 +689,7 @@ void ItemsDialog::on_itemSuffixLimitedCheckBox_clicked()
     if (this->preLimitMode != 3) {
         text = QString::number(value);
     } else {
-        text = spelldata[GetItemSpell(value)].sNameText;
+        text = spelldata[GetBookSpell(lvl, value)].sNameText;
     }
     this->ui->itemPrefixLimitSlider->setToolTip(text);
     QToolTip::showText(this->ui->itemPrefixLimitSlider->mapToGlobal(QPoint(0, 0)), text);
@@ -723,7 +701,7 @@ void ItemsDialog::on_itemSuffixLimitSlider_valueChanged(int value)
     if (this->sufLimitMode != 3) {
         text = QString::number(value);
     } else {
-        text = spelldata[GetItemSpell(value)].sNameText;
+        text = spelldata[GetBookSpell(lvl, value)].sNameText;
     }
     this->ui->itemSuffixLimitSlider->setToolTip(text);
     QToolTip::showText(this->ui->itemSuffixLimitSlider->mapToGlobal(QPoint(0, 0)), text);
@@ -784,7 +762,11 @@ bool ItemsDialog::recreateItem()
     prefix.active = preIdx != AFFIX_ANY;
     if (prefix.active) {
         if (preIdx != AFFIX_NONE) {
-            if (uniqIdx >= 0) {
+            if (preidx == AFFIX_SKILL) {
+                prefix.power = IPL_SKILL;
+                prefix.param1 = INT_MIN;
+                prefix.param2 = INT_MAX;
+            } else if (uniqIdx >= 0) {
                 const UniqItemData* ui = &UniqueItemList[uniqIdx];
                 switch (preIdx) {
                 case 0: prefix.power = ui->UIPower1; prefix.param1 = ui->UIParam1a; prefix.param2 = ui->UIParam1b; break;
@@ -803,8 +785,13 @@ bool ItemsDialog::recreateItem()
             if (this->ui->itemPrefixLimitSlider->isEnabled()) {
                 int val = this->ui->itemPrefixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-                if (prefix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
-                    prefix.param1 = GetItemSpell(val);
+                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
+                    switch (AllItemList[wIdx].iMiscId) {
+                    case IMISC_SCROLL: prefix.param1 = GetScrollSpell(lvl, val); break;
+                    case IMISC_RUNE:   prefix.param1 = GetRuneSpell(lvl, val);   break;
+                    case IMISC_BOOK:
+                    default:           prefix.param1 = GetBookSpell(lvl, val);   break;
+                    }
                     prefix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     prefix.param1 = val;
@@ -839,7 +826,7 @@ bool ItemsDialog::recreateItem()
                 int val = this->ui->itemSuffixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemSuffixLimitedCheckBox->checkState();
                 if (suffix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
-                    suffix.param1 = GetItemSpell(val);
+                    suffix.param1 = GetBookSpell(lvl, val);
                     suffix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     suffix.param1 = val;
@@ -900,6 +887,11 @@ start:
             goto restart;
         }
         if (prefix.active) {
+            if (items[MAXITEMS]._iMiscId != IMISC_NONE) {
+                if (prefix.param2 == MAXSPLLEVEL + 1 && items[MAXITEMS]._iSpell != prefix.param1) {
+                    goto restart;
+                }
+            } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
                 // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
                 goto restart;
@@ -915,6 +907,7 @@ start:
                     // LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
                     goto restart;
                 }
+            }
             }
         }
         if (suffix.active) {
@@ -961,8 +954,15 @@ void ItemsDialog::on_calculateButton_clicked()
     bool unique = this->ui->isUniqueCheckBox->isChecked();
     int lvl = this->is->_iCreateInfo & CF_LEVEL;
     int idx = this->ui->itemIdxComboBox->currentData().value<int>();
+    auto gameHellfire = IsHellfireGame;
+    IsHellfireGame = this->ui->isHellfireCheckBox->isChecked();
+    auto gameMulti = IsMultiGame;
+    IsMultiGame = this->ui->isMultiCheckBox->isChecked();
 
-    float dropChance = ItemDropChance(idx, lvl, this->numPlayers, unique);
+    float dropChance = this->ui->itemSourceComboBox->currentIndex() == 0 ? ItemDropChance(idx, lvl, this->numPlayers, unique) : (.0 / .0);
+
+    IsMultiGame = gameMulti;
+    IsHellfireGame = gameHellfire;
 
     this->ui->itemChance->setText(tr("Chance: %1").arg(dropChance)); // QString::number(dropChance, 'f'));
 }
