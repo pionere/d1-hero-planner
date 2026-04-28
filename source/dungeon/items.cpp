@@ -2186,6 +2186,7 @@ int GetItemBonusFlags(int itype, int misc_id)
         flgs = PLT_JEWEL;
         break;
     }
+    QMessageBox::critical(nullptr, "Error", QString("GetItemBonusFlags %1:%2 -> %3").arg(itype).arg(misc_id).arg(flgs));
     return flgs;
 }
 
