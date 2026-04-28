@@ -26,12 +26,12 @@ extern int numitems;
 extern int ac_rnd;
 extern int affix_rnd[6];
 
-BYTE GetBookSpell(unsigned lvl, int idx -1);
-BYTE GetScrollSpell(unsigned lvl, int idx -1);
+BYTE GetBookSpell(unsigned lvl, int idx = -1);
+BYTE GetScrollSpell(unsigned lvl, int idx = -1);
 #ifdef HELLFIRE
-BYTE GetRuneSpell(unsigned lvl, int idx -1);
+BYTE GetRuneSpell(unsigned lvl, int idx = -1);
 #endif
-int GetStaffSpell(unsigned lvl, int idx -1);
+int GetStaffSpell(unsigned lvl, int idx = -1);
 int GetItemBonusFlags(int itype, int misc_id);
 float ItemDropChance(int wIndex, int level, int numPlayers, bool uniqueMonster);
 

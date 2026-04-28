@@ -324,9 +324,9 @@ static QString ItemColor(const ItemStruct* is)
 void ItemSelectorDialog::updateFields()
 {
     auto gameHellfire = IsHellfireGame;
-    IsHellfireGame = this->ui->isHellfireCheckBox->isChecked();
+    IsHellfireGame = this->hero->isHellfire();
     auto gameMulti = IsMultiGame;
-    IsMultiGame = this->ui->isMultiCheckBox->isChecked();
+    IsMultiGame = this->hero->isMulti();
 
     // QComboBox *typeComboBox = this->ui->itemTypeComboBox;
     // QComboBox *locComboBox = this->ui->itemLocComboBox;
@@ -522,6 +522,7 @@ void ItemSelectorDialog::updateFields()
             }
         }
     }
+    this->ui->itemPrefixLimitSlider->setItemLevel(lvl);
     this->ui->itemPrefixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
@@ -567,6 +568,7 @@ void ItemSelectorDialog::updateFields()
             }
         }
     }
+    this->ui->itemSuffixLimitSlider->setItemLevel(lvl);
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 

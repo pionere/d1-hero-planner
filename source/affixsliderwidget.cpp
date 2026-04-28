@@ -34,12 +34,17 @@ void AffixSliderWidget::setLimitMode(int mode)
     }
 }
 
+void AffixSliderWidget::setItemLevel(int level)
+{
+    this->itemLevel = lvl;
+}
+
 void AffixSliderWidget::updateToolTip()
 {
     int val = this->value();
     QString text;
     if (this->limitMode == 3) {
-        text = spelldata[GetItemSpell(val)].sNameText;
+        text = spelldata[GetBookSpell(this->itemLevel, val)].sNameText;
     } else if (this->limitMode >= 0) {
         text = QString::number(val);
     }

@@ -518,6 +518,7 @@ void ItemsDialog::updateFields()
             }
         }
     }
+    this->ui->itemPrefixLimitSlider->setItemLevel(lvl);
     this->ui->itemPrefixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
@@ -563,6 +564,7 @@ void ItemsDialog::updateFields()
             }
         }
     }
+    this->ui->itemSuffixLimitSlider->setItemLevel(lvl);
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
@@ -750,6 +752,7 @@ bool ItemsDialog::recreateItem()
             acHighest = val;
         }
     }
+    int lvl = wCI & CF_LEVEL;
 
     typedef struct UIAffixData {
         bool active;
@@ -762,7 +765,7 @@ bool ItemsDialog::recreateItem()
     prefix.active = preIdx != AFFIX_ANY;
     if (prefix.active) {
         if (preIdx != AFFIX_NONE) {
-            if (preidx == AFFIX_SKILL) {
+            if (preIdx == AFFIX_SKILL) {
                 prefix.power = IPL_SKILL;
                 prefix.param1 = INT_MIN;
                 prefix.param2 = INT_MAX;
