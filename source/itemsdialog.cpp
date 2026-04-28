@@ -426,7 +426,7 @@ void ItemsDialog::updateFields()
             }
         }
         if (flgs == PLT_MISC) {
-            sufComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL)), AFFIX_SKILL);
+            preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL)), AFFIX_SKILL);
         }
         preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
         sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
