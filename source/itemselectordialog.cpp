@@ -743,6 +743,7 @@ bool ItemSelectorDialog::recreateItem()
             acHighest = val;
         }
     }
+    int lvl = wCI & CF_LEVEL;
 
     typedef struct UIAffixData {
         bool active;

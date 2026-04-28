@@ -962,7 +962,7 @@ void ItemsDialog::on_calculateButton_clicked()
     auto gameMulti = IsMultiGame;
     IsMultiGame = this->ui->isMultiCheckBox->isChecked();
 
-    float dropChance = this->ui->itemSourceComboBox->currentIndex() == 0 ? ItemDropChance(idx, lvl, this->numPlayers, unique) : (.0 / .0);
+    float dropChance = this->ui->itemSourceComboBox->currentIndex() == 0 ? ItemDropChance(idx, lvl, this->numPlayers, unique) : (.0f / .0f);
 
     IsMultiGame = gameMulti;
     IsHellfireGame = gameHellfire;

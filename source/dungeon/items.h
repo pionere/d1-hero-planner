@@ -31,7 +31,7 @@ BYTE GetScrollSpell(unsigned lvl, int idx = -1);
 #ifdef HELLFIRE
 BYTE GetRuneSpell(unsigned lvl, int idx = -1);
 #endif
-int GetStaffSpell(unsigned lvl, int idx = -1);
+BYTE GetStaffSpell(unsigned lvl, int idx = -1);
 int GetItemBonusFlags(int itype, int misc_id);
 float ItemDropChance(int wIndex, int level, int numPlayers, bool uniqueMonster);
 

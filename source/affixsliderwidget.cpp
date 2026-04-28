@@ -36,7 +36,7 @@ void AffixSliderWidget::setLimitMode(int mode)
 
 void AffixSliderWidget::setItemLevel(int level)
 {
-    this->itemLevel = lvl;
+    this->itemLevel = level;
 }
 
 void AffixSliderWidget::updateToolTip()

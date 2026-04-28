@@ -898,7 +898,7 @@ void CreatePlrItems(int pnum)
 	// CalcPlrInv(pnum, false);
 }
 
-BYTE GetBookSpell(unsigned lvl)
+BYTE GetBookSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetBookSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
@@ -916,6 +916,10 @@ BYTE GetBookSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -950,7 +954,7 @@ static void SetBookSpell(ItemStruct* is, unsigned lvl)
 	is->_iCurs = bs;
 }
 
-static BYTE GetScrollSpell(unsigned lvl)
+BYTE GetScrollSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetScrollSpell stores spell-ids in BYTEs.");
 #ifdef HELLFIRE
@@ -973,6 +977,10 @@ static BYTE GetScrollSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -992,7 +1000,7 @@ static void SetScrollSpell(ItemStruct* is, unsigned lvl)
 }
 
 #ifdef HELLFIRE
-static BYTE GetRuneSpell(unsigned lvl)
+BYTE GetRuneSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetRuneSpell stores spell-ids in BYTEs.");
 	BYTE ss[SPL_RUNE_LAST - SPL_RUNE_FIRST + 1];
@@ -1010,6 +1018,10 @@ static BYTE GetRuneSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -1045,7 +1057,7 @@ static void SetRuneSpell(ItemStruct* is, unsigned lvl)
 }
 #endif
 
-static BYTE GetStaffSpell(unsigned lvl)
+BYTE GetStaffSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetStaffSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
@@ -1063,6 +1075,10 @@ static BYTE GetStaffSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(18, ns)];
 }
 
@@ -1088,25 +1104,6 @@ static void SetStaffSpell(ItemStruct* is, unsigned lvl)
 	v = is->_iCharges * sd->sStaffCost;
 	is->_ivalue += v;
 	is->_iIvalue += v;
-}
-
-int GetItemSpell(int idx)
-{
-	int ns, bs;
-	BYTE ss[NUM_SPELLS];
-
-	ns = 0;
-	for (bs = 0; bs < (IsHellfireGame ? NUM_SPELLS : NUM_SPELLS_DIABLO); bs++) {
-		if (spelldata[bs].sManaCost != 0) { // TODO: use sSkillFlags ?
-			// assert(!IsMultiGame || bs != SPL_RESURRECT);
-			ss[ns] = bs;
-			ns++;
-		}
-	}
-	// assert(ns > 0);
-	if ((unsigned)idx >= (unsigned)ns)
-		return ns;
-	return ss[idx];
 }
 
 static void GetItemAttrs(int ii, int idata, unsigned lvl)
