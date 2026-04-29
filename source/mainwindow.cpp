@@ -747,7 +747,7 @@ void MainWindow::loadFile(const OpenAsParam &params, MainWindow *instance, LoadF
     // result->trnUnique = nullptr;
     // result->trnBase = nullptr;
     result->hero = nullptr;
-LogErrorF("loadFile 0");
+
     ProgressDialog::start(PROGRESS_DIALOG_STATE::BACKGROUND, tr("Loading..."), 0, PAF_NONE); // PAF_UPDATE_WINDOW
 
     // Loading default.pal
@@ -772,15 +772,12 @@ LogErrorF("loadFile 0");
     }
 
     result->baseDir = baseDir;
-LogErrorF("loadFile 1");
+
     result->hero = D1Hero::instance();
     // assert(result->hero != nullptr);
     result->hero->setPalette(result->trnBase->getResultingPalette());
-LogErrorF("loadFile 2 %d", fileType);
     if (fileType == FILE_CONTENT::HRO) {
-LogErrorF("loadFile 3");
         if (!result->hero->load(filePath, params)) {
-LogErrorF("loadFile 4");
             MainWindow::failWithError(instance, result, tr("Failed loading HRO file: %1.").arg(QDir::toNativeSeparators(filePath)));
             return;
         }
@@ -792,12 +789,11 @@ LogErrorF("loadFile 4");
 
 void MainWindow::openFile(const OpenAsParam &params)
 {
-LogErrorF("openFile 0");
     LoadFileContent fileContent;
     MainWindow::loadFile(params, this, &fileContent);
     if (fileContent.fileType == FILE_CONTENT::UNKNOWN)
         return;
-LogErrorF("openFile 1");
+
 #if (defined (_WIN32) || defined (_WIN64))
     // SHAddToRecentDocs(SHARD_PATHA, params.filePath.toLatin1().constData());
     SHAddToRecentDocs(SHARD_PATHA, params.filePath.toStdWString().data());
@@ -826,12 +822,12 @@ LogErrorF("openFile 1");
     // initialize context
     IsHellfireGame = this->hero->isHellfire();
     gnDifficulty = this->hero->getRank();
-LogErrorF("openFile 2");
+
     QWidget *view;
         // build a HeroView
         this->heroView = new HeroView(this);
         this->heroView->initialize(this->pal, this->hero, this->bottomPanelHidden);
-LogErrorF("openFile 3");
+
         // Refresh palette widgets when frame is changed
         // QObject::connect(this->heroView, &HeroView::frameRefreshed, this->palWidget, &PaletteWidget::refresh);
 
@@ -877,7 +873,7 @@ LogErrorF("openFile 3");
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnUniqueWidget, &PaletteWidget::stopTrnColorPicking);      // cancel color picking
     QObject::connect(this->palWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);        // cancel color picking
     QObject::connect(this->trnUniqueWidget, &PaletteWidget::colorPicking_stopped, this->trnBaseWidget, &PaletteWidget::stopTrnColorPicking);  // cancel color picking
-LogErrorF("openFile 4");
+
     // Look for all palettes in the same folder as the CEL/CL2 file
     QString firstPaletteFound;
     if (!baseDir.isEmpty()) {
@@ -893,9 +889,8 @@ LogErrorF("openFile 4");
     if (firstPaletteFound.isEmpty()) {
         firstPaletteFound = D1Pal::DEFAULT_PATH;
     }
-LogErrorF("openFile 5");
     this->setPal(firstPaletteFound); // should trigger view->displayFrame()
-LogErrorF("openFile 6");
+
     // update available menu entries
     this->ui->menuEdit->setEnabled(true);
     this->ui->menuView->setEnabled(true);
@@ -905,7 +900,7 @@ LogErrorF("openFile 6");
     this->ui->actionSave->setEnabled(true);
     this->ui->actionSaveAs->setEnabled(true);
     this->ui->actionClose->setEnabled(true);
-LogErrorF("openFile 7");
+
     // Clear loading message from status bar
     ProgressDialog::done();
 }

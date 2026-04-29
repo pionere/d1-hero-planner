@@ -359,7 +359,7 @@ const AffixData PL_Prefix[] = {
 /** Contains the data related to each item suffix. */
 const AffixData PL_Suffix[] = {
 	// clang-format off
-//                  PLPower,            PLParam1, PLParam2, PLRanges, IAR_DROP,   from_1, IAR_SHOP,  from_2, IAR_CRAFT, PLIType,                                                          PLDouble, PLOk,  PLMinVal, PLMaxVal, PLMultVal
+//                  PLPower,            PLParam1, PLParam2, PLRanges, IAR_DROP,   from_1, IAR_SHOP,  from_2, IAR_CRAFT, PLIType,                                                           PLDouble, PLOk,  PLMinVal, PLMaxVal, PLMultVal
 /*quality*/       { IPL_DAMMOD,                1,        2,        3,       16,        3,       10,        3,  ILVLMAX,                       PLT_MELEE                                  , FALSE,    TRUE,      1000,     2000,         4 },
 /*maiming*/       { IPL_DAMMOD,                2,        5,        8,       32,        8,       24,        8,  ILVLMAX,                       PLT_MELEE                                  , FALSE,    TRUE,      3000,     5000,         6 },
 /*slaying*/       { IPL_DAMMOD,                6,        8,       15,       64,       15,       48,       15,  ILVLMAX,                       PLT_MELEE                                  , FALSE,    TRUE,      6000,     8000,        10 },

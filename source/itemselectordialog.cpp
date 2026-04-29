@@ -928,7 +928,6 @@ done:
     }
     IsMultiGame = gameMulti;
     IsHellfireGame = gameHellfire;
-    QMessageBox::critical(this, "Error", tr("Created item numaffixes:%1 %2,%3 vs %4:%5").arg(this->is->_iNumAffixes).arg(this->is->_iAffixes[0].asPower).arg(this->is->_iAffixes[1].asPower).arg(prefix.power).arg(suffix.power));
     return true;
 }
 

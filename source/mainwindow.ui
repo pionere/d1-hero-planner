@@ -323,14 +323,6 @@
     <string>Settings</string>
    </property>
   </action>
-  <action name="actionPatch">
-   <property name="text">
-    <string>Patch</string>
-   </property>
-   <property name="toolTip">
-    <string>Patch the current graphics</string>
-   </property>
-  </action>
   <action name="actionTogglePalTrn">
    <property name="text">
     <string>Show PAL &amp;&amp; TRNs</string>
