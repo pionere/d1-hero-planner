@@ -262,7 +262,7 @@ static int GetItemBonusFlags(int itype, int misc_id)
         break;
     case ITYPE_RING:
     case ITYPE_AMULET:
-        flgs = PLT_MISC;
+        flgs = PLT_JEWEL;
         break;
     }
     return flgs;
@@ -466,7 +466,7 @@ void ItemSelectorDialog::updateFields()
 
         if ((ci & ~CF_LEVEL) != 0) {
             int alvl = lvl;
-            if (flgs != PLT_MISC) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
+            if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
                 alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
             si = 0;
             for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
