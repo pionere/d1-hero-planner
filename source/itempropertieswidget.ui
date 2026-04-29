@@ -26,61 +26,41 @@
      <item row="1" column="1">
       <widget class="QLabel" name="itemDAMText"/>
      </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="itemPrePowerLabel">
-       <property name="text">
-        <string>Prefix:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QLabel" name="itemPrePowerText"/>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="itemSufPowerLabel">
-       <property name="text">
-        <string>Suffix:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QLabel" name="itemSufPowerText"/>
-     </item>
      <item row="4" column="0">
-      <widget class="QLabel" name="itemUniquePower1Label"/>
+      <widget class="QLabel" name="itemPower1Label"/>
      </item>
      <item row="4" column="1">
-      <widget class="QLabel" name="itemUniquePower1Text"/>
+      <widget class="QLabel" name="itemPower1Text"/>
      </item>
      <item row="5" column="0">
-      <widget class="QLabel" name="itemUniquePower2Label"/>
+      <widget class="QLabel" name="itemPower2Label"/>
      </item>
      <item row="5" column="1">
-      <widget class="QLabel" name="itemUniquePower2Text"/>
+      <widget class="QLabel" name="itemPower2Text"/>
      </item>
      <item row="6" column="0">
-      <widget class="QLabel" name="itemUniquePower3Label"/>
+      <widget class="QLabel" name="itemPower3Label"/>
      </item>
      <item row="6" column="1">
-      <widget class="QLabel" name="itemUniquePower3Text"/>
+      <widget class="QLabel" name="itemPower3Text"/>
      </item>
      <item row="7" column="0">
-      <widget class="QLabel" name="itemUniquePower4Label"/>
+      <widget class="QLabel" name="itemPower4Label"/>
      </item>
      <item row="7" column="1">
-      <widget class="QLabel" name="itemUniquePower4Text"/>
+      <widget class="QLabel" name="itemPower4Text"/>
      </item>
      <item row="8" column="0">
-      <widget class="QLabel" name="itemUniquePower5Label"/>
+      <widget class="QLabel" name="itemPower5Label"/>
      </item>
      <item row="8" column="1">
-      <widget class="QLabel" name="itemUniquePower5Text"/>
+      <widget class="QLabel" name="itemPower5Text"/>
      </item>
      <item row="9" column="0">
-      <widget class="QLabel" name="itemUniquePower6Label"/>
+      <widget class="QLabel" name="itemPower6Label"/>
      </item>
      <item row="9" column="1">
-      <widget class="QLabel" name="itemUniquePower6Text"/>
+      <widget class="QLabel" name="itemPower6Text"/>
      </item>
      <item row="10" column="0">
       <widget class="QLabel" name="itemRequirementsLabel">

@@ -54,89 +54,31 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     this->ui->itemDAMText->setVisible(active != 0);
     this->ui->itemDAMText->setText(text);
     this->ui->itemDAMText->setToolTip(tooltip);
-#if 0
-    active = 0;
-    if (is->_iPrePower != IPL_INVALID) {
-        PrintItemPower(is->_iPrePower, is);
-        this->ui->itemPrePowerText->setText(tempstr);
-        active = 1;
-    }
-    this->ui->itemPrePowerLabel->setVisible(active != 0);
-    this->ui->itemPrePowerText->setVisible(active != 0);
 
-    active = 0;
-    if (is->_iSufPower != IPL_INVALID) {
-        PrintItemPower(is->_iSufPower, is);
-        this->ui->itemSufPowerText->setText(tempstr);
-        active = 1;
-    }
-        this->ui->itemSufPowerLabel->setVisible(active != 0);
-        this->ui->itemSufPowerText->setVisible(active != 0);
-
-    active = 0;
-    if (is->_iMagical == ITEM_QUALITY_UNIQUE && (unsigned)is->_iUid < NUM_UITEM) {
-        // DrawUniqueInfo(is, x, y);
-        const UniqItemData* uis;
-        uis = &UniqueItemList[is->_iUid];
-        PrintItemPower(uis->UIPower1, is);
-        this->ui->itemUniquePower1Text->setText(tempstr);
-        active++;
-        if (uis->UIPower2 != IPL_INVALID) {
-            PrintItemPower(uis->UIPower2, is);
-            this->ui->itemUniquePower2Text->setText(tempstr);
-            active++;
-            if (uis->UIPower3 != IPL_INVALID) {
-                PrintItemPower(uis->UIPower3, is);
-                this->ui->itemUniquePower3Text->setText(tempstr);
-                active++;
-                if (uis->UIPower4 != IPL_INVALID) {
-                    PrintItemPower(uis->UIPower4, is);
-                    this->ui->itemUniquePower4Text->setText(tempstr);
-                    active++;
-                    if (uis->UIPower5 != IPL_INVALID) {
-                        PrintItemPower(uis->UIPower5, is);
-                        this->ui->itemUniquePower5Text->setText(tempstr);
-                        active++;
-                        if (uis->UIPower6 != IPL_INVALID) {
-                            PrintItemPower(uis->UIPower6, is);
-                            this->ui->itemUniquePower6Text->setText(tempstr);
-                            active++;
-                        }
-                    }
-                }
-            }
-        }
-    }
-#else
-    this->ui->itemSufPowerLabel->setVisible(false);
-    this->ui->itemSufPowerText->setVisible(false);
-    this->ui->itemPrePowerLabel->setVisible(false);
-    this->ui->itemPrePowerText->setVisible(false);
     active = is->_iNumAffixes;
     for (int i = 0; i < active; i++) {
         PrintItemPower(i, is);
         switch (i) {
-        case 0: this->ui->itemUniquePower1Text->setText(tempstr); break;
-        case 1: this->ui->itemUniquePower2Text->setText(tempstr); break;
-        case 2: this->ui->itemUniquePower3Text->setText(tempstr); break;
-        case 3: this->ui->itemUniquePower4Text->setText(tempstr); break;
-        case 4: this->ui->itemUniquePower5Text->setText(tempstr); break;
-        case 5: this->ui->itemUniquePower6Text->setText(tempstr); break;
+        case 0: this->ui->itemPower1Text->setText(tempstr); break;
+        case 1: this->ui->itemPower2Text->setText(tempstr); break;
+        case 2: this->ui->itemPower3Text->setText(tempstr); break;
+        case 3: this->ui->itemPower4Text->setText(tempstr); break;
+        case 4: this->ui->itemPower5Text->setText(tempstr); break;
+        case 5: this->ui->itemPower6Text->setText(tempstr); break;
         }
     }
-#endif
-    this->ui->itemUniquePower1Label->setVisible(active > 0);
-    this->ui->itemUniquePower1Text->setVisible(active > 0);
-    this->ui->itemUniquePower2Label->setVisible(active > 1);
-    this->ui->itemUniquePower2Text->setVisible(active > 1);
-    this->ui->itemUniquePower3Label->setVisible(active > 2);
-    this->ui->itemUniquePower3Text->setVisible(active > 2);
-    this->ui->itemUniquePower4Label->setVisible(active > 3);
-    this->ui->itemUniquePower4Text->setVisible(active > 3);
-    this->ui->itemUniquePower5Label->setVisible(active > 4);
-    this->ui->itemUniquePower5Text->setVisible(active > 4);
-    this->ui->itemUniquePower6Label->setVisible(active > 5);
-    this->ui->itemUniquePower6Text->setVisible(active > 5);
+    this->ui->itemPower1Label->setVisible(active > 0);
+    this->ui->itemPower1Text->setVisible(active > 0);
+    this->ui->itemPower2Label->setVisible(active > 1);
+    this->ui->itemPower2Text->setVisible(active > 1);
+    this->ui->itemPower3Label->setVisible(active > 2);
+    this->ui->itemPower3Text->setVisible(active > 2);
+    this->ui->itemPower4Label->setVisible(active > 3);
+    this->ui->itemPower4Text->setVisible(active > 3);
+    this->ui->itemPower5Label->setVisible(active > 4);
+    this->ui->itemPower5Text->setVisible(active > 4);
+    this->ui->itemPower6Label->setVisible(active > 5);
+    this->ui->itemPower6Text->setVisible(active > 5);
 
     active = 0;
     if ((is->_iMinStr | is->_iMinMag | is->_iMinDex) != 0) {
