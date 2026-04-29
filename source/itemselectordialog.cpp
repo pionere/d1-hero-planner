@@ -529,7 +529,6 @@ void ItemSelectorDialog::updateFields()
     active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-    this->ui->itemPrefixLimitedCheckBox->setToolTip(cs == Qt::Unchecked ? tr("unrestricted") : (cs == Qt::PartiallyChecked ? tr("lower limited to:") : tr("upper limited to:")));
     active &= cs != Qt::Unchecked;
     limitMode = cs == Qt::Unchecked ? 0 : cs == Qt::PartiallyChecked ? 1 : cs == Qt::Checked ? 2 : cs;
     if (active) {
