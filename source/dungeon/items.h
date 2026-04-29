@@ -33,7 +33,7 @@ BYTE GetRuneSpell(unsigned lvl, int idx = -1);
 #endif
 BYTE GetStaffSpell(unsigned lvl, int idx = -1);
 int GetItemBonusFlags(int itype, int misc_id);
-float ItemDropChance(int wIndex, int level, int numPlayers, bool uniqueMonster);
+float ItemDropChance(int wIndex, int sn, int level, int numPlayers, bool uniqueMonster);
 
 void CalcPlrItemVals(int pnum, bool Loadgfx);
 void ItemStatOk(int pnum, ItemStruct* is);

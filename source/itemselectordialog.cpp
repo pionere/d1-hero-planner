@@ -405,8 +405,8 @@ void ItemSelectorDialog::updateFields()
             }
         }
     }
-
-    uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
+    if (uniqComboBox->count() > 1)
+        uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
     uniqComboBox->setEnabled(drop);
     uniqComboBox->adjustSize();
     si = uniqComboBox->findData(QVariant::fromValue(this->wishUniq));
@@ -443,8 +443,10 @@ void ItemSelectorDialog::updateFields()
                 }
             }
         }
-        preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
-        sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+        if (preComboBox->count() > 1)
+            preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+        if (sufComboBox->count() > 1)
+            sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
     } else {
         // if ((ci & ~CF_LEVEL) != 0) {
             const UniqItemData* ui = &UniqueItemList[uniqIdx];
@@ -482,7 +484,6 @@ void ItemSelectorDialog::updateFields()
     active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-    this->ui->itemPrefixLimitedCheckBox->setToolTip(cs == Qt::Unchecked ? tr("unrestricted") : (cs == Qt::PartiallyChecked ? tr("lower limited to:") : tr("upper limited to:")));
     active &= cs != Qt::Unchecked;
     limitMode = cs == Qt::Unchecked ? 0 : cs == Qt::PartiallyChecked ? 1 : cs == Qt::Checked ? 2 : cs;
     if (active) {

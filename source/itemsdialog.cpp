@@ -387,8 +387,8 @@ void ItemsDialog::updateFields()
             }
         }
     }
-
-    uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
+    if (uniqComboBox->count() > 1)
+        uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
     uniqComboBox->setEnabled(drop);
     uniqComboBox->adjustSize();
     si = uniqComboBox->findData(QVariant::fromValue(this->wishUniq));
@@ -428,8 +428,10 @@ void ItemsDialog::updateFields()
         if (flgs == PLT_MISC) {
             preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL)), AFFIX_SKILL);
         } else {
-            preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
-            sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+            if (preComboBox->count() > 1)
+                preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+            if (sufComboBox->count() > 1)
+                sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
         }
     } else {
         // if ((ci & ~CF_LEVEL) != 0) {
@@ -468,7 +470,6 @@ void ItemsDialog::updateFields()
     active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-    this->ui->itemPrefixLimitedCheckBox->setToolTip(cs == Qt::Unchecked ? tr("unrestricted") : (cs == Qt::PartiallyChecked ? tr("lower limited to:") : tr("upper limited to:")));
     active &= cs != Qt::Unchecked;
     limitMode = cs == Qt::Unchecked ? 0 : cs == Qt::PartiallyChecked ? 1 : cs == Qt::Checked ? 2 : cs;
     if (active) {
@@ -960,12 +961,27 @@ void ItemsDialog::on_calculateButton_clicked()
     bool unique = this->ui->isUniqueCheckBox->isChecked();
     int lvl = this->is->_iCreateInfo & CF_LEVEL;
     int idx = this->ui->itemIdxComboBox->currentData().value<int>();
+    int sn = SPL_NULL;
+    if (this->ui->itemPrefixComboBox->currentData().value<int>() == AFFIX_SKILL && this->ui->itemPrefixLimitSlider->isEnabled()) {
+#if 0
+        int val = this->ui->itemPrefixLimitSlider->value();
+        switch (AllItemList[wIdx].iMiscId) {
+        case IMISC_SCROLL: sn = GetScrollSpell(lvl, val); break;
+        case IMISC_RUNE:   sn = GetRuneSpell(lvl, val);   break;
+        case IMISC_BOOK:
+        default:           sn = GetBookSpell(lvl, val);   break;
+        }
+#else
+        sn++;
+#endif
+    }
+
     auto gameHellfire = IsHellfireGame;
     IsHellfireGame = this->ui->isHellfireCheckBox->isChecked();
     auto gameMulti = IsMultiGame;
     IsMultiGame = this->ui->isMultiCheckBox->isChecked();
 
-    float dropChance = this->ui->itemSourceComboBox->currentIndex() == 0 ? ItemDropChance(idx, lvl, this->numPlayers, unique) : NAN;
+    float dropChance = this->ui->itemSourceComboBox->currentIndex() == 0 ? ItemDropChance(idx, sn, lvl, this->numPlayers, unique) : NAN;
 
     IsMultiGame = gameMulti;
     IsHellfireGame = gameHellfire;

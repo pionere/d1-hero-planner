@@ -2189,7 +2189,7 @@ int GetItemBonusFlags(int itype, int misc_id)
     return flgs;
 }
 
-float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
+float ItemDropChance(int wIndex, int sn, int lvl, int numPlayers, bool uniqueMonster)
 {
     int quality = CFDQ_UNIQUE;
     int mpl = 1;
@@ -2219,11 +2219,11 @@ float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
 	int i, ri;
 	int ril[NUM_IDI - IDI_RNDDROP_FIRST];
 
-	for (i = IDI_RNDDROP_FIRST; i < NUM_IDI; i++) {
+	for (i = IDI_RNDDROP_FIRST; i < (IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO); i++) {
 		ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
 	}
 	ri = 0;
-	for (i = 0; i < (NUM_IDI - IDI_RNDDROP_FIRST); i++)
+	for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++)
 		ri += ril[i];
 
     if (ri == 0) {
@@ -2236,19 +2236,30 @@ float ItemDropChance(int wIndex, int lvl, int numPlayers, bool uniqueMonster)
         }
         mpl *= ril[wIndex - IDI_RNDDROP_FIRST];
     } else {
-        int first, n;
+        int n;
         switch (wIndex) {
-        case NUM_IDI + 0: first = IDI_BOOK1;   n = 4; break;
-        case NUM_IDI + 1: first = IDI_SCROLL1; n = 7; break;
-        case NUM_IDI + 2: first = IDI_RUNE1;   n = 7; break;
-        case NUM_IDI + 3: first = IDI_RING1;   n = 5; break;
-        case NUM_IDI + 4: first = IDI_AMULET1; n = 3; break;
+        case NUM_IDI + 0: wIndex = IDI_BOOK1;   n = 4; break;
+        case NUM_IDI + 1: wIndex = IDI_SCROLL1; n = 7; break;
+        case NUM_IDI + 2: wIndex = IDI_RUNE1;   n = 7; break;
+        case NUM_IDI + 3: wIndex = IDI_RING1;   n = 5; break;
+        case NUM_IDI + 4: wIndex = IDI_AMULET1; n = 3; break;
         }
         ri = 0;
-        for (i = first; i < first + n; i++) {
+        for (i = wIndex; i < wIndex + n; i++) {
             ri += ril[i - IDI_RNDDROP_FIRST];
         }
         mpl *= ri;
+    }
+
+    if (sn != SPL_NULL) {
+        switch (AllItemList[wIndex].iMiscId) {
+        case IMISC_BOOK:   dvs *= GetBookSpell(lvl, -2);   break;
+        case IMISC_SCROLL: dvs *= GetScrollSpell(lvl, -2); break;
+        case IMISC_RUNE:   dvs *= GetRuneSpell(lvl, -2);   break;
+        case IMISC_NONE:   dvs *= GetStaffSpell(lvl, -2);  break;
+        }
+        if (dvs == 0)
+            return 0;
     }
 
     return (float)mpl / (float)dvs;
