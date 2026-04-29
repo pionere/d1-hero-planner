@@ -368,6 +368,11 @@ static QString ItemColor(const ItemStruct* is)
 
 void ItemSelectorDialog::updateFields()
 {
+    auto gameHellfire = IsHellfireGame;
+    IsHellfireGame = this->hero->isHellfire();
+    auto gameMulti = IsMultiGame;
+    IsMultiGame = this->hero->isMulti();
+
     // QComboBox *typeComboBox = this->ui->itemTypeComboBox;
     // QComboBox *locComboBox = this->ui->itemLocComboBox;
     QComboBox *idxComboBox = this->ui->itemIdxComboBox;
@@ -609,6 +614,9 @@ void ItemSelectorDialog::updateFields()
     }
     this->ui->itemSuffixLimitSlider->setLimitMode(active ? limitMode : -1);
     this->ui->itemSuffixLimitedCheckBox->setToolTip(limitMode == 0 ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
+
+    IsMultiGame = gameMulti;
+    IsHellfireGame = gameHellfire;
 }
 
 void ItemSelectorDialog::on_itemTypeComboBox_activated(int index)
