@@ -2225,7 +2225,7 @@ float ItemDropChance(int wIndex, int sn, int lvl, int numPlayers, bool uniqueMon
 	ri = 0;
     for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++) {
 if (ril[i] != 0) {
-    QmessageBox::critical(nullptr, "Error", QString("Drop chance %1 - %2 (%3): %4").arg(i).arg(i + IDI_RNDDROP_FIRST).arg(IsHellfireGame).arg(ril[i]));
+    QMessageBox::critical(nullptr, "Error", QString("Drop chance %1 - %2 (%3): %4").arg(i).arg(i + IDI_RNDDROP_FIRST).arg(IsHellfireGame).arg(ril[i]));
 }
         ri += ril[i];
     }
