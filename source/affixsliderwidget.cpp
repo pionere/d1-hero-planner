@@ -5,7 +5,7 @@
 #include "dungeon/all.h"
 
 AffixSliderWidget::AffixSliderWidget(QWidget *parent)
-    : SliderWidget(parent)
+    : SliderWidget(parent), miscId(IMISC_NONE)
 {
     QObject::connect(this, SIGNAL(valueChanged(int)), this, SLOT(on_valueChanged(int)));
 }

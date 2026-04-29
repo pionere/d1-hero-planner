@@ -2,8 +2,6 @@
 
 #include "sliderwidget.h"
 
-#include "dungeon/enums.h"
-
 class AffixSliderWidget : public SliderWidget {
     Q_OBJECT
 
@@ -23,6 +21,6 @@ private:
     void updateToolTip();
 
     int itemLevel = 0;
-    int miscId = IMISC_NONE;
+    int miscId = 0;
     int limitMode = 0;
 };
