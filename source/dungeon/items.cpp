@@ -2140,4 +2140,50 @@ void RecreateItem(int32_t iseed, uint16_t wIndex, uint16_t wCI)
     snprintf(items[MAXITEMS]._iName, sizeof(items[MAXITEMS]._iName), "%s", ItemName(&items[MAXITEMS]));
 }
 
+int GetItemBonusFlags(int itype, int misc_id)
+{
+    int flgs = 0;
+    switch (itype) {
+    case ITYPE_MISC:
+        if (misc_id != IMISC_MAP) {
+            break;
+        }
+        flgs = PLT_MAP;
+        break;
+    case ITYPE_SWORD:
+    case ITYPE_AXE:
+    case ITYPE_MACE:
+        flgs = PLT_MELEE;
+        break;
+    case ITYPE_BOW:
+        flgs = PLT_BOW;
+        break;
+    case ITYPE_SHIELD:
+        flgs = PLT_SHLD;
+        break;
+    case ITYPE_LARMOR:
+        flgs = PLT_ARMO | PLT_LARMOR;
+        break;
+    case ITYPE_HELM:
+        flgs = PLT_ARMO;
+        break;
+    case ITYPE_MARMOR:
+        flgs = PLT_ARMO | PLT_MARMOR;
+        break;
+    case ITYPE_HARMOR:
+        flgs = PLT_ARMO | PLT_HARMOR;
+        break;
+    case ITYPE_STAFF:
+        flgs = PLT_STAFF | PLT_CHRG;
+        break;
+    case ITYPE_GOLD:
+        break;
+    case ITYPE_RING:
+    case ITYPE_AMULET:
+        flgs = PLT_JEWEL;
+        break;
+    }
+    return flgs;
+}
+
 DEVILUTION_END_NAMESPACE

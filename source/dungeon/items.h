@@ -27,6 +27,7 @@ extern int ac_rnd;
 extern int affix_rnd[6];
 
 int GetItemSpell(int idx);
+int GetItemBonusFlags(int itype, int misc_id);
 
 void CalcPlrItemVals(int pnum, bool Loadgfx);
 void ItemStatOk(int pnum, ItemStruct* is);
