@@ -450,8 +450,8 @@ void ItemSelectorDialog::updateFields()
             }
         }
     }
-
-    uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
+    if (uniqComboBox->count() > 1)
+        uniqComboBox->addItem(tr("None"), QVariant::fromValue(-2));
     uniqComboBox->setEnabled(drop);
     uniqComboBox->adjustSize();
     si = uniqComboBox->findData(QVariant::fromValue(this->wishUniq));
@@ -488,8 +488,10 @@ void ItemSelectorDialog::updateFields()
                 }
             }
         }
-        preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
-        sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+        if (preComboBox->count() > 1)
+            preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
+        if (sufComboBox->count() > 1)
+            sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
     } else {
         // if ((ci & ~CF_LEVEL) != 0) {
             const UniqItemData* ui = &UniqueItemList[uniqIdx];
