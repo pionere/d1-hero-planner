@@ -2223,8 +2223,12 @@ float ItemDropChance(int wIndex, int sn, int lvl, int numPlayers, bool uniqueMon
 		ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
 	}
 	ri = 0;
-	for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++)
-		ri += ril[i];
+    for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++) {
+if (ril[i] != 0) {
+    QmessageBox::critical(nullptr, "Error", QString("Drop chance %1 - %2 (%3): %4").arg(i).arg(i + IDI_RNDDROP_FIRST).arg(IsHellfireGame).arg(ril[i]));
+}
+        ri += ril[i];
+    }
 
     if (ri == 0) {
         return 0;
