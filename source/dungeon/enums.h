@@ -183,6 +183,10 @@ typedef enum item_indexes {
 #ifdef HELLFIRE
 	NUM_IDI        = 0x9B,
 	NUM_IDI_DIABLO = 0x94,
+    IDI_SCROLL1    = 0x56,
+    IDI_RUNE1      = 0x94,
+    IDI_RING1      = 0x8B,
+    IDI_AMULET1    = 0x90,
 #else
 	NUM_IDI        = 0x94,
 #endif
@@ -529,6 +533,7 @@ typedef enum item_effect_type {
 	IPL_SETDAM,
 	IPL_SETDUR,
 	IPL_REQSTR,
+	IPL_SKILL,
 	IPL_SETSKILL,
 	IPL_ONEHAND,
 	IPL_ALLRESZERO,
@@ -568,6 +573,7 @@ typedef enum affix_item_type {
 	PLT_MARMOR = 1 << 8,
 	PLT_HARMOR = 1 << 9,
 	PLT_MAP    = 1 << 10,
+	PLT_MISC   = 1 << 11,
 	PLT_ARMO   = (PLT_HELM | PLT_LARMOR | PLT_MARMOR | PLT_HARMOR),
 } affix_item_type;
 

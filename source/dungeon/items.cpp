@@ -898,7 +898,7 @@ void CreatePlrItems(int pnum)
 	// CalcPlrInv(pnum, false);
 }
 
-BYTE GetBookSpell(unsigned lvl)
+BYTE GetBookSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetBookSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
@@ -916,6 +916,10 @@ BYTE GetBookSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -950,7 +954,7 @@ static void SetBookSpell(ItemStruct* is, unsigned lvl)
 	is->_iCurs = bs;
 }
 
-static BYTE GetScrollSpell(unsigned lvl)
+BYTE GetScrollSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetScrollSpell stores spell-ids in BYTEs.");
 #ifdef HELLFIRE
@@ -973,6 +977,10 @@ static BYTE GetScrollSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -992,7 +1000,7 @@ static void SetScrollSpell(ItemStruct* is, unsigned lvl)
 }
 
 #ifdef HELLFIRE
-static BYTE GetRuneSpell(unsigned lvl)
+BYTE GetRuneSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetRuneSpell stores spell-ids in BYTEs.");
 	BYTE ss[SPL_RUNE_LAST - SPL_RUNE_FIRST + 1];
@@ -1010,6 +1018,10 @@ static BYTE GetRuneSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(14, ns)];
 }
 
@@ -1045,7 +1057,7 @@ static void SetRuneSpell(ItemStruct* is, unsigned lvl)
 }
 #endif
 
-static BYTE GetStaffSpell(unsigned lvl)
+BYTE GetStaffSpell(unsigned lvl, int idx)
 {
 	static_assert((int)NUM_SPELLS < UCHAR_MAX, "GetStaffSpell stores spell-ids in BYTEs.");
 	BYTE ss[NUM_SPELLS];
@@ -1063,6 +1075,10 @@ static BYTE GetStaffSpell(unsigned lvl)
 		}
 	}
 	// assert(ns > 0);
+    if (idx < -1)
+        return ns;
+    if (idx >= 0)
+        return ss[idx];
 	return ss[random_low(18, ns)];
 }
 
@@ -2146,6 +2162,8 @@ int GetItemBonusFlags(int itype, int misc_id)
     switch (itype) {
     case ITYPE_MISC:
         if (misc_id != IMISC_MAP) {
+            if (misc_id == IMISC_BOOK || misc_id == IMISC_SCROLL || misc_id == IMISC_RUNE)
+                flgs = PLT_MISC;
             break;
         }
         flgs = PLT_MAP;
@@ -2184,6 +2202,79 @@ int GetItemBonusFlags(int itype, int misc_id)
         break;
     }
     return flgs;
+}
+
+float ItemDropChance(int wIndex, int sn, int lvl, int numPlayers, bool uniqueMonster)
+{
+    int quality = CFDQ_UNIQUE;
+    int mpl = 1;
+    int dvs = 1;
+    if (!uniqueMonster) {
+        dvs *= 128;
+        mpl *= 47 + numPlayers * 4;
+
+        quality = CFDQ_NORMAL;
+    }
+
+    bool (*func)(const ItemData& item, void* arg);
+    void* arg = NULL;
+    if (quality >= CFDQ_GOOD) {
+        func = &RndUItemOk;
+    } else {
+        if (wIndex == IDI_GOLD) {
+            mpl *= 128 - 33;
+            dvs *= 128;
+            return (float)mpl / (float)dvs;
+        }
+        mpl *= 33;
+        dvs *= 128;
+        func = &RndItemOk;
+    }
+
+	int i, ri;
+	int ril[NUM_IDI - IDI_RNDDROP_FIRST];
+
+	for (i = IDI_RNDDROP_FIRST; i < (IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO); i++) {
+		ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
+	}
+	ri = 0;
+	for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++)
+		ri += ril[i];
+
+    if (ri == 0) {
+        return 0;
+    }
+    dvs *= ri;
+    if (wIndex < NUM_IDI) {
+        mpl *= (wIndex >= IDI_RNDDROP_FIRST && (wIndex - IDI_RNDDROP_FIRST) < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST)) ? ril[wIndex - IDI_RNDDROP_FIRST] : 0;
+    } else {
+        int n;
+        switch (wIndex) {
+        case NUM_IDI + 0: wIndex = IDI_BOOK1;   n = 4; break;
+        case NUM_IDI + 1: wIndex = IDI_SCROLL1; n = 7; break;
+        case NUM_IDI + 2: wIndex = IDI_RUNE1;   n = 7; break;
+        case NUM_IDI + 3: wIndex = IDI_RING1;   n = 5; break;
+        case NUM_IDI + 4: wIndex = IDI_AMULET1; n = 3; break;
+        }
+        ri = 0;
+        for (i = wIndex; i < wIndex + n; i++) {
+            ri += ril[i - IDI_RNDDROP_FIRST];
+        }
+        mpl *= ri;
+    }
+
+    if (sn != SPL_NULL) {
+        switch (AllItemList[wIndex].iMiscId) {
+        case IMISC_BOOK:   dvs *= GetBookSpell(lvl, -2);   break;
+        case IMISC_SCROLL: dvs *= GetScrollSpell(lvl, -2); break;
+        case IMISC_RUNE:   dvs *= GetRuneSpell(lvl, -2);   break;
+        case IMISC_NONE:   dvs *= GetStaffSpell(lvl, -2);  break;
+        }
+        if (dvs == 0)
+            return 0;
+    }
+
+    return (float)mpl / (float)dvs;
 }
 
 DEVILUTION_END_NAMESPACE

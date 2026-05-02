@@ -5,7 +5,7 @@
 #include "dungeon/all.h"
 
 AffixSliderWidget::AffixSliderWidget(QWidget *parent)
-    : SliderWidget(parent)
+    : SliderWidget(parent), miscId(IMISC_NONE)
 {
     QObject::connect(this, SIGNAL(valueChanged(int)), this, SLOT(on_valueChanged(int)));
 }
@@ -34,12 +34,30 @@ void AffixSliderWidget::setLimitMode(int mode)
     }
 }
 
+void AffixSliderWidget::setItemLevel(int level)
+{
+    this->itemLevel = level;
+}
+
+void AffixSliderWidget::setItemMiscId(int miscId)
+{
+    this->miscId = miscId;
+}
+
 void AffixSliderWidget::updateToolTip()
 {
     int val = this->value();
     QString text;
     if (this->limitMode == 3) {
-        text = spelldata[GetItemSpell(val)].sNameText;
+        int lvl = this->itemLevel;
+        int sn;
+        switch (this->miscId) {
+        case IMISC_SCROLL: sn = GetScrollSpell(lvl, val); break;
+        case IMISC_RUNE:   sn = GetRuneSpell(lvl, val);   break;
+        case IMISC_BOOK:
+        default:           sn = GetBookSpell(lvl, val);   break;
+        }
+        text = spelldata[sn].sNameText;
     } else if (this->limitMode >= 0) {
         text = QString::number(val);
     }

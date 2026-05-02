@@ -13,6 +13,7 @@
 #include "d1pal.h"
 #include "d1trn.h"
 #include "heroview.h"
+#include "itemsdialog.h"
 #include "itemselectordialog.h"
 #include "openasdialog.h"
 #include "palettewidget.h"
@@ -174,6 +175,8 @@ private slots:
     void on_actionClose_Translation_Base_triggered();
     void on_actionPatch_Translation_Base_triggered();
 
+    void on_actionItems_triggered();
+
     void on_actionAbout_triggered();
     void on_actionAbout_Qt_triggered();
 
@@ -210,6 +213,8 @@ private:
     SaveAsDialog *saveAsDialog = nullptr;
     SettingsDialog *settingsDialog = nullptr;
     ItemSelectorDialog *itemSelectorDialog = nullptr;
+
+    ItemsDialog *itemsDialog = nullptr;
 
     D1Pal *pal = nullptr;
     D1Trn *trnUnique = nullptr;

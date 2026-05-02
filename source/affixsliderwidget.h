@@ -10,6 +10,8 @@ public:
     ~AffixSliderWidget() = default;
 
     void changeValue(int value);
+    void setItemLevel(int level);
+    void setItemMiscId(int miscId);
     void setLimitMode(int mode);
 
 private slots:
@@ -18,5 +20,7 @@ private slots:
 private:
     void updateToolTip();
 
+    int itemLevel = 0;
+    int miscId = 0;
     int limitMode = 0;
 };
