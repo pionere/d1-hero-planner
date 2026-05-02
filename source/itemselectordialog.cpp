@@ -121,7 +121,6 @@ void ItemSelectorDialog::initialize(D1Hero *h, int ii)
     }
 
     int idx = locComboBox->findData(QVariant::fromValue((item_equip_type)this->is->_iLoc));
-    // QMessageBox::critical(this, "Error", tr("Loc %1 idx%2 ii %3 wth%4.").arg(this->is->_iLoc).arg(idx).arg(ii).arg(this->is->_iLoc == ILOC_ONEHAND));
     if (idx < 0) idx = 0;
     locComboBox->setCurrentIndex(idx);
 
@@ -137,7 +136,6 @@ void ItemSelectorDialog::updateFilters()
     typeComboBox->clear();
     idxComboBox->clear();
 
-    // QMessageBox::critical(this, "Error", tr("updateFilters loc %1.").arg(locComboBox->currentData().value<int>()));
     int iloc = locComboBox->currentData().value<int>();
     switch (iloc) {
     case ILOC_HELM:
@@ -275,7 +273,8 @@ static QString AffixPowerName(int power)
     case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
     case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
     case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SETSKILL:       result = QApplication::tr("spell");                 break;
+    case IPL_SKILL:          result = QApplication::tr("rnd spell");             break;
+    case IPL_SETSKILL:       result = QApplication::tr("fix spell");             break;
     case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
     case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
     case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;

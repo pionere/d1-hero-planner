@@ -82,11 +82,6 @@ void ItemsDialog::initialize()
     locComboBox->addItem(tr("Two handed"), QVariant::fromValue(ILOC_TWOHAND));
     locComboBox->addItem(tr("Ring"), QVariant::fromValue(ILOC_RING));
 
-    //int idx = locComboBox->findData(QVariant::fromValue((item_equip_type)this->is->_iLoc));
-    // QMessageBox::critical(this, "Error", tr("Loc %1 idx%2 ii %3 wth%4.").arg(this->is->_iLoc).arg(idx).arg(ii).arg(this->is->_iLoc == ILOC_ONEHAND));
-    //if (idx < 0) idx = 0;
-    //locComboBox->setCurrentIndex(idx);
-
     this->updateFilters();
     this->updateFields();
 }
@@ -99,7 +94,6 @@ void ItemsDialog::updateFilters()
     typeComboBox->clear();
     idxComboBox->clear();
 
-    // QMessageBox::critical(this, "Error", tr("updateFilters loc %1.").arg(locComboBox->currentData().value<int>()));
     int iloc = locComboBox->currentData().value<int>();
     switch (iloc) {
     case ILOC_HELM:
@@ -154,18 +148,10 @@ void ItemsDialog::updateFilters()
     }
 
     int idx = typeComboBox->findData(QVariant::fromValue((item_type)this->itemType));
-    // QMessageBox::critical(this, "Error", tr("updateFilters type %1 val %2 - %3.").arg(this->itemType).arg(idx).arg(this->itemType == ITYPE_AMULET));
-    // for (int i = 0; i < typeComboBox->count(); i++) {
-    //     int tv = typeComboBox->currentData().value<int>();
-    //     if (tv == this->itemType && idx != i) {
-    //         QMessageBox::critical(this, "Error", tr("Fuck you!!!!!"));
-    //     }
-    // }
     if (idx < 0) idx = 0;
     typeComboBox->setCurrentIndex(idx);
 
     int itype = typeComboBox->currentData().value<int>();
-    // QMessageBox::critical(this, "Error", tr("updateFilters filter idx by loc %1 type %2.").arg(iloc).arg(itype));
     for (int i = 0; i < NUM_IDI; ++i) {
         const ItemData &id = AllItemList[i];
         //if (id.iClass != this->is->_iClass) {
@@ -248,7 +234,8 @@ static QString AffixPowerName(int power)
     case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
     case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
     case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SETSKILL:       result = QApplication::tr("spell");                 break;
+    case IPL_SKILL:          result = QApplication::tr("rnd spell");             break;
+    case IPL_SETSKILL:       result = QApplication::tr("fix spell");             break;
     case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
     case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
     case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
@@ -499,7 +486,6 @@ void ItemsDialog::updateFields()
             if (power == IPL_SKILLLVL && limitMode == 1) {
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
-                // QMessageBox::critical(this, "Error", tr("skilllevel %1 ... %2.").arg(minval).arg(maxval));
                 limitMode = 3;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
@@ -725,19 +711,6 @@ void ItemsDialog::on_itemACLimitSlider_valueChanged(int value)
 
 bool ItemsDialog::recreateItem()
 {
-    /*bool ok;
-    QString seedTxt = this->ui->itemSeedEdit->text();
-    int seed = seedTxt.toInt(&ok);
-    if (!ok && !seedTxt.isEmpty()) {
-        QMessageBox::critical(this, "Error", "Failed to parse the seed to a 32-bit integer.");
-        return false;
-    }
-    int wCI = this->ui->itemLevelEdit->text().toShort();
-    wCI &= CF_LEVEL;
-    wCI |= this->ui->itemSourceComboBox->currentIndex() << 8;
-    wCI |= this->ui->itemQualityComboBox->currentIndex() << 11;
-
-    int wIdx = this->ui->itemIdxComboBox->currentData().value<int>();*/
     int seed = this->itemSeed;
     int wCI = this->is->_iCreateInfo;
     int wIdx = this->is->_iIdx;
