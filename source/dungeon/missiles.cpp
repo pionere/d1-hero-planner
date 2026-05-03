@@ -324,9 +324,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		*mindam = mind;
 		*maxdam = maxd;
 	} return;
-#ifdef HELLFIRE
 	case SPL_FIRERING:
-#endif
 	case SPL_FIREWALL:
 		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
 		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);
@@ -488,6 +486,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNELIGHT:
+        QMessageBox::critical(nullptr, "Error", QString("GetSkillDesc rune light:%1").arg(sl));
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
@@ -594,9 +593,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 			dur = 239;
 		snprintf(infostr, sizeof(infostr), "Dur <= %.1fs", tickToSec(dur));
 		return;
-#ifdef HELLFIRE
 	case SPL_FIRERING:
-#endif
 	case SPL_FIREWALL:
 		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
 		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);

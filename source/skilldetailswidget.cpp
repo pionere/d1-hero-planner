@@ -165,6 +165,7 @@ void SkillDetailsWidget::updateFields()
 
         QString desc = tr("Not available");
         if (lvl >= 0) {
+            QMessageBox::critical(nullptr, "Error", QString("SkillDesc:%1").arg(sn));
             GetSkillDesc(this->hero, sn, lvl);
             desc = infostr;
         }
