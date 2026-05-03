@@ -163,7 +163,7 @@ void SkillDetailsWidget::updateFields()
         this->ui->skillLevel->setText(lvl >= 0 ? QString::number(lvl) : QString());
         this->ui->skillManaCost->setText(lvl >= 0 ? QString::number(GetSkillCost(sn, lvl, this->hero->getLevel())) : QString());
 
-        GetSkillDesc(this->hero, sn, lvl < 0 : 0 : lvl);
+        GetSkillDesc(this->hero, sn, lvl < 0 ? 0 : lvl);
         QString desc = tr("Not available");
         if (infostr[0] != '\0')
             desc = infostr;
