@@ -369,7 +369,7 @@ void ItemSelectorDialog::updateFields()
             }
             si = 0;
             for (const AffixData *sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++, si++) {
-                if ((flgs & sufs->PLIType && good <= pres->PLOk)
+                if ((flgs & sufs->PLIType && good <= sufs->PLOk)
                     && sufs->PLRanges[range].from <= alvl && sufs->PLRanges[range].to >= alvl) {
                     sufComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
                 }
