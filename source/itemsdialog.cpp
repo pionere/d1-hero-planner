@@ -873,10 +873,11 @@ start:
                 }
             } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
-                LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
+                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
+                LogErrorF("matched prefix rndval: %d (%d..%d) (%d) seed%d", affix_rnd[0], prefix.param1, prefix.param2, preIdx, seed);
                 if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
                     if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
