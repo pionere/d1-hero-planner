@@ -314,7 +314,7 @@ void ItemsDialog::updateFields()
             this->is->_iCreateInfo &= CF_LEVEL;
         this->resetSlider = 7;
     }
-    int ci = this->is->_iCreateInfo;
+    const int ci = this->is->_iCreateInfo;
     this->ui->itemSeedEdit->setText(QString::number(this->itemSeed));
     this->ui->itemLevelEdit->setText(QString::number(ci & CF_LEVEL));
     static_assert(((int)CF_TOWN & ((1 << 8) - 1)) == 0, "ItemsDialog hardcoded CF_TOWN must be adjusted I.");
@@ -394,19 +394,20 @@ void ItemsDialog::updateFields()
         sufComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
 
         if ((ci & ~CF_LEVEL) != 0) {
+            const BOOLEAN good = ((ci & CF_DROP_QUALITY) >> 11) >= CFDQ_GOOD;
             int alvl = lvl;
             if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
                 alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
             si = 0;
             for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
-                if ((flgs & pres->PLIType)
+                if ((flgs & pres->PLIType && good <= pres->PLOk)
                     && pres->PLRanges[range].from <= alvl && pres->PLRanges[range].to >= alvl) {
                     preComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(pres)).arg(pres->PLParam1).arg(pres->PLParam2), QVariant::fromValue(si));
                 }
             }
             si = 0;
             for (const AffixData *sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++, si++) {
-                if ((flgs & sufs->PLIType)
+                if ((flgs & sufs->PLIType && good <= sufs->PLOk)
                     && sufs->PLRanges[range].from <= alvl && sufs->PLRanges[range].to >= alvl) {
                     sufComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
                 }
