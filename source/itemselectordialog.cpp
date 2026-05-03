@@ -10,6 +10,7 @@
 #include <QWidgetAction>
 
 #include "d1hro.h"
+#include "itemsdialog.h"
 #include "mainwindow.h"
 #include "sidepanelwidget.h"
 #include "ui_itemselectordialog.h"
@@ -221,78 +222,9 @@ void ItemSelectorDialog::updateFilters()
     idxComboBox->setCurrentIndex(idx);
 }
 
-static QString AffixPowerName(int power)
-{
-    QString result = "";
-    switch (power) {
-    case IPL_TOHIT:          result = QApplication::tr("to hit");                break;
-    case IPL_DAMP:           result = QApplication::tr("damage %");              break;
-    case IPL_TOHIT_DAMP:     result = QApplication::tr("to hit + damage");       break;
-    case IPL_ACP:            result = QApplication::tr("armor %");               break;
-    case IPL_TOBLOCK:        result = QApplication::tr("block %");               break;
-    case IPL_FIRERES:        result = QApplication::tr("fire res.");             break;
-    case IPL_LIGHTRES:       result = QApplication::tr("light res.");            break;
-    case IPL_MAGICRES:       result = QApplication::tr("magic res.");            break;
-    case IPL_ACIDRES:        result = QApplication::tr("acid res.");             break;
-    case IPL_ALLRES:         result = QApplication::tr("all res.");              break;
-    case IPL_CRITP:          result = QApplication::tr("crit. %");               break;
-    case IPL_SKILLLVL:       result = QApplication::tr("skill");                 break;
-    case IPL_SKILLLEVELS:    result = QApplication::tr("skills");                break;
-    case IPL_CHARGES:        result = QApplication::tr("charges");               break;
-    case IPL_FIREDAM:        result = QApplication::tr("fire damage");           break;
-    case IPL_LIGHTDAM:       result = QApplication::tr("lightning  damage");     break;
-    case IPL_MAGICDAM:       result = QApplication::tr("magic damage");          break;
-    case IPL_ACIDDAM:        result = QApplication::tr("acid damage");           break;
-    case IPL_STR:            result = QApplication::tr("strength");              break;
-    case IPL_MAG:            result = QApplication::tr("magic");                 break;
-    case IPL_DEX:            result = QApplication::tr("dexterity");             break;
-    case IPL_VIT:            result = QApplication::tr("vitality");              break;
-    case IPL_ATTRIBS:        result = QApplication::tr("attributes");            break;
-    case IPL_ABS_ANYHIT:     result = QApplication::tr("damage taken");          break;
-    case IPL_ABS_PHYHIT:     result = QApplication::tr("phy. damage taken");     break;
-    case IPL_LIFE:           result = QApplication::tr("life");                  break;
-    case IPL_MANA:           result = QApplication::tr("mana");                  break;
-    case IPL_DUR:            result = QApplication::tr("durability");            break;
-    case IPL_INDESTRUCTIBLE: result = QApplication::tr("indestructible");        break;
-    case IPL_LIGHT:          result = QApplication::tr("light range");           break;
-    //case IPL_INVCURS: result = QApplication::tr("xxx"); break;
-    //case IPL_THORNS: result = QApplication::tr("xxx"); break;
-    case IPL_NOMANA:         result = QApplication::tr("no mana");               break;
-    case IPL_KNOCKBACK:      result = QApplication::tr("knockback");             break;
-    case IPL_STUN:           result = QApplication::tr("stun");                  break;
-    //case IPL_NOHEALMON: result = QApplication::tr("xxx"); break;
-    case IPL_NO_BLEED:       result = QApplication::tr("no bleed");              break;
-    case IPL_BLEED:          result = QApplication::tr("bleed");                 break;
-    case IPL_STEALMANA:      result = QApplication::tr("steal mana");            break;
-    case IPL_STEALLIFE:      result = QApplication::tr("steal life");            break;
-    case IPL_PENETRATE_PHYS: result = QApplication::tr("penetrate phy.");        break;
-    case IPL_FASTATTACK:     result = QApplication::tr("attack speed");          break;
-    case IPL_FASTRECOVER:    result = QApplication::tr("recovery speed");        break;
-    case IPL_FASTBLOCK:      result = QApplication::tr("block speed");           break;
-    case IPL_DAMMOD:         result = QApplication::tr("damage +");              break;
-    case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
-    case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
-    case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SKILL:          result = QApplication::tr("rnd spell");             break;
-    case IPL_SETSKILL:       result = QApplication::tr("fix spell");             break;
-    case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
-    case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
-    case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
-    //case IPL_INFRAVISION: result = QApplication::tr("xxx"); break;
-    case IPL_SETAC:          result = QApplication::tr("armor *");               break;
-    case IPL_ACMOD:          result = QApplication::tr("armor +");               break;
-    case IPL_CRYSTALLINE:    result = QApplication::tr("damage % durability -"); break;
-    case IPL_MANATOLIFE:     result = QApplication::tr("mana to life");          break;     /* only used in hellfire */
-    case IPL_LIFETOMANA:     result = QApplication::tr("life to mana");          break;     /* only used in hellfire */
-    case IPL_FASTCAST:       result = QApplication::tr("cast speed");            break;
-    case IPL_FASTWALK:       result = QApplication::tr("walk speed");            break;
-    }
-    return result;
-}
-
 static QString AffixName(const AffixData *affix)
 {
-    return AffixPowerName(affix->PLPower);
+    return ItemsDialog::AffixPowerName(affix->PLPower);
 }
 
 static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBox *preComboBox, QComboBox *sufComboBox)
@@ -305,7 +237,7 @@ static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBo
     if (paramA == paramB) {
         return;
     }
-    comboBox->addItem(QString("%1 (%2-%3)").arg(AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
+    comboBox->addItem(QString("%1 (%2..%3)").arg(ItemsDialog::AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
 }
 
 static QString ItemColor(const ItemStruct* is)

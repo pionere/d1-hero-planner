@@ -182,7 +182,7 @@ void ItemsDialog::updateFilters()
     idxComboBox->setCurrentIndex(idx);
 }
 
-static QString AffixPowerName(int power)
+QString ItemsDialog::AffixPowerName(int power)
 {
     QString result = "";
     switch (power) {
@@ -253,7 +253,7 @@ static QString AffixPowerName(int power)
 
 static QString AffixName(const AffixData *affix)
 {
-    return AffixPowerName(affix->PLPower);
+    return ItemsDialog::AffixPowerName(affix->PLPower);
 }
 
 static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBox *preComboBox, QComboBox *sufComboBox)
@@ -266,7 +266,7 @@ static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBo
     if (paramA == paramB) {
         return;
     }
-    comboBox->addItem(QString("%1 (%2-%3)").arg(AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
+    comboBox->addItem(QString("%1 (%2..%3)").arg(ItemsDialog::AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
 }
 
 static QString ItemColor(const ItemStruct* is)
@@ -873,7 +873,7 @@ start:
                 }
             } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
-                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
+                LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
@@ -884,7 +884,7 @@ start:
                         goto restart;
                     }
                 } else if (affix_rnd[0] < prefix.param1 || affix_rnd[0] > prefix.param2) {
-                    // LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
+                    LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
                     goto restart;
                 }
             }

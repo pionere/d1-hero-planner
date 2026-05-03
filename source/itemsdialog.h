@@ -20,6 +20,8 @@ public:
 
     void initialize();
 
+    static QString AffixPowerName(int power);
+
 private:
     void updateFilters();
     void updateFields();
