@@ -401,14 +401,14 @@ void ItemsDialog::updateFields()
             for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
                 if ((flgs & pres->PLIType)
                     && pres->PLRanges[range].from <= alvl && pres->PLRanges[range].to >= alvl) {
-                    preComboBox->addItem(QString("%1 (%2-%3)").arg(AffixName(pres)).arg(pres->PLParam1).arg(pres->PLParam2), QVariant::fromValue(si));
+                    preComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(pres)).arg(pres->PLParam1).arg(pres->PLParam2), QVariant::fromValue(si));
                 }
             }
             si = 0;
             for (const AffixData *sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++, si++) {
                 if ((flgs & sufs->PLIType)
                     && sufs->PLRanges[range].from <= alvl && sufs->PLRanges[range].to >= alvl) {
-                    sufComboBox->addItem(QString("%1 (%2-%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
+                    sufComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
                 }
             }
         }
@@ -873,7 +873,7 @@ start:
                 }
             } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
-                LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
+                LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
@@ -892,7 +892,7 @@ start:
         }
         if (suffix.active) {
             if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
-                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
+                // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
                 goto restart;
             }
             if (suffix.power != IPL_INVALID) {
