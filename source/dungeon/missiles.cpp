@@ -486,7 +486,6 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNELIGHT:
-        QMessageBox::critical(nullptr, "Error", QString("GetSkillDesc rune light:%1").arg(sl));
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
@@ -954,7 +953,7 @@ int GetBaseMissile(int mtype)
     case MIS_OPITEM:
     case MIS_REPAIR:
     case MIS_DISARM: break;
-    case MIS_INFERNOC: mtype = MIS_FIREWALL; break;
+    case MIS_INFERNOC: mtype = MIS_INFERNO; break;
     case MIS_INFERNO:
     //case MIS_FIRETRAP:
     case MIS_BARRELEX: break;
