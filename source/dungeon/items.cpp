@@ -1458,7 +1458,7 @@ static void GetItemBonus(int ii, unsigned lvl, BYTE range, bool onlygood, bool a
 		return;
 	case ITYPE_RING:
 	case ITYPE_AMULET:
-		flgs = PLT_MISC;
+		flgs = PLT_JEWEL;
 		break;
 	default:
 		ASSUME_UNREACHABLE
