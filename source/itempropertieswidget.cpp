@@ -59,7 +59,7 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     for (int i = 0; i < active; i++) {
         PrintItemPower(i, is);
         switch (i) {
-        case 0: this->ui->itemPower1Text->setText(tempstr); break;
+        case 0: this->ui->itemPower1Text->setText(QString("1.:%1").arg(tempstr)); break;
         case 1: this->ui->itemPower2Text->setText(tempstr); break;
         case 2: this->ui->itemPower3Text->setText(tempstr); break;
         case 3: this->ui->itemPower4Text->setText(tempstr); break;

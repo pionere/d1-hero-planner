@@ -1325,12 +1325,10 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 	if (affix >= 2) {
 		nl = 0;
 		for (pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++) {
-bool added = false;
 			if ((flgs & pres->PLIType)
 			 && pres->PLRanges[range].from <= lvl && pres->PLRanges[range].to >= lvl
 			// && (!onlygood || pres->PLOk)) {
 			 && (good <= pres->PLOk)) {
-added = true;
 				l[nl] = pres;
 				nl++;
 				if (pres->PLDouble) {
@@ -1338,11 +1336,6 @@ added = true;
 					nl++;
 				}
 			}
-static int done = 2;
-if (done != 0 && pres->PLPower == IPL_SKILL) {
-    done--;
-    LogErrorF("Added %d option %d flgs %d good %d", added, nl, flgs, good);
-}
 		}
 		if (nl != 0) {
 			// assert(nl <= 0x7FFF);
@@ -1882,7 +1875,7 @@ static void PrintMapPower(BYTE idx, const ItemStruct* is)
 
 void PrintItemPower(BYTE plidx, const ItemStruct* is)
 {
-	if (is->_itype != ITYPE_MISC || is->_iMiscId != IMISC_MAP)
+	if (is->_iMiscId != IMISC_MAP)
 		PrintEquipmentPower(plidx, is);
 	else
 		PrintMapPower(plidx, is);
