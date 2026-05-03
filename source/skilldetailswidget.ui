@@ -197,7 +197,7 @@
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>guided missile</string>
+              <string>Guided Missile</string>
              </property>
             </widget>
            </item>
@@ -268,7 +268,7 @@
               <bool>false</bool>
              </property>
              <property name="toolTip">
-              <string>guided missile</string>
+              <string>Guided Missile</string>
              </property>
             </widget>
            </item>

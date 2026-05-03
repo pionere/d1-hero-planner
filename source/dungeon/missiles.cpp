@@ -524,7 +524,6 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #ifdef HELLFIRE
 	case SPL_BUCKLE:
 	case SPL_WHITTLE:
-	case SPL_RUNESTONE:
 #endif
 		break;
 	case SPL_HEAL:
@@ -583,6 +582,9 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_SHROUD:
 		dur = 32 * sl + 160;
 		break;
+#ifdef HELLFIRE
+	case SPL_RUNESTONE:
+#endif
 	case SPL_STONE:
 		dur = (sl + 1) << (7 + 6);
 		dur >>= 5;
