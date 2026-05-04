@@ -489,7 +489,14 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
+#if 0
 		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+#else
+		magic <<= 2;
+		magic++;
+		sl <<= 5;
+		maxd = 3 * (magic * sl) / (magic + sl);
+#endif
 		break;
 	case SPL_FLASH:
 		mind = magic >> 1;
@@ -728,7 +735,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		magic++;
 		sl <<= 3;
 		mind = 1 + 8 * (magic * sl) / (magic + sl);
-		maxd = mind + sl * 2;
+		maxd = mind + sl;
 #endif
 		break;
 #endif
