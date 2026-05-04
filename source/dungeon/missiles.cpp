@@ -468,8 +468,8 @@ void SkillPlrByPlrDamage(int sn, int sl, int dist, int source, int target, int *
 
 void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 {
-	int k, magic, mind, maxd = 0, dur = 0;
-
+	int k, mind, maxd = 0, dur = 0;
+	unsigned magic;
 	// assert((unsigned)sn < NUM_SPELLS);
 	magic = hero->getMagic(); //  myplr._pMagic;
 #ifdef HELLFIRE
@@ -626,15 +626,30 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
+#if 0
 		mind = ((magic >> 3) + 2 * sl + 1) * 4;
 		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+#else
+		magic >>= 3;
+		magic++;
+		sl <<= 1;
+		mind = 4 * (magic * sl) / (magic + sl);
+		maxd = mind + sl * 8;
+#endif
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNENOVA:
 #endif
 	case SPL_NOVA:
 		mind = 1;
+#if 0
 		maxd = (magic >> 1) + (sl << 5);
+#else
+		magic >>= 1;
+		magic++;
+		sl <<= 5;
+		maxd = (magic * sl) / (magic + sl);
+#endif
 		break;
 	case SPL_INFERNO:
 		mind = (magic * 20) >> 6;
@@ -705,8 +720,16 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		}
 		break;*/
 	case SPL_RUNEFIRE:
+#if 0
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
+#else
+		magic >>= 1;
+		magic++;
+		sl <<= 4;
+		mind = 1 + (magic * sl) / (magic + sl);
+		maxd = mind + sl * 2;
+#endif
 		break;
 #endif
 	default:
