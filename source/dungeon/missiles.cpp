@@ -632,7 +632,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #else
 		magic >>= 3;
 		magic++;
-		sl <<= 1;
+		// sl <<= 1;
 		mind = 32 * (magic * sl) / (magic + sl);
 		maxd = mind + sl * 4;
 #endif
@@ -645,10 +645,10 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #if 0
 		maxd = (magic >> 1) + (sl << 5);
 #else
-		magic >>= 1;
+		magic <<= 1;
 		magic++;
-		sl <<= 5;
-		maxd = 4 * (magic * sl) / (magic + sl);
+		sl <<= 4;
+		maxd = 2 * (magic * sl) / (magic + sl);
 #endif
 		break;
 	case SPL_INFERNO:
@@ -724,9 +724,9 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
 #else
-		magic >>= 1;
+		magic >>= 0;
 		magic++;
-		sl <<= 4;
+		sl <<= 3;
 		mind = 1 + 8 * (magic * sl) / (magic + sl);
 		maxd = mind + sl * 2;
 #endif
