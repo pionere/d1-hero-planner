@@ -81,7 +81,7 @@ SkillDetailsWidget::SkillDetailsWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // static_assert(lengthof(this->skillWidgets) >= NUM_SPELLS, "too many skills to fit to the array");
+    // static_assert(lengthof(this->skills) >= NUM_SPELLS, "too many skills to fit to the array");
     int row = 0, column = 0;
     constexpr int COLUMNS = 3;
     for (int sn = 0; sn < NUM_SPELLS; sn++) {
@@ -110,6 +110,11 @@ void SkillDetailsWidget::initialize(D1Hero *h)
 {
     this->hero = h;
 
+    // static_assert(lengthof(this->skills) >= NUM_SPELLS, "too many skills to fit to the array");
+    for (int sn = 0; sn < NUM_SPELLS; sn++) {
+        this->skills[sn] = this->hero->getSkillLvlBase(sn);
+    }
+
     // LogErrorF("SkillDetailsWidget init 5");
     this->updateFields();
     // LogErrorF("SkillDetailsWidget init 6");
@@ -136,11 +141,11 @@ static QString GetAnimTypeText(int type)
 void SkillDetailsWidget::updateFields()
 {
     int sn;
-    // static_assert(lengthof(this->skillWidgets) >= NUM_SPELLS, "too many skills to fit to the array");
+    // static_assert(lengthof(this->skills) >= NUM_SPELLS, "too many skills to fit to the array");
     for (sn = 0; sn < NUM_SPELLS; sn++) {
         if (this->skillWidgets[sn] == nullptr)
             continue;
-        this->skillWidgets[sn]->changeValue(this->hero->getSkillLvl(sn));
+        this->skillWidgets[sn]->changeValue(this->skills[sn]);
         this->skillWidgets[sn]->setEnabled(spelldata[sn].sBookLvl != SPELL_NA && (this->hero->isHellfire() || sn < NUM_SPELLS_DIABLO));
     }
 
@@ -150,9 +155,9 @@ void SkillDetailsWidget::updateFields()
         this->ui->skillName->setText(infostr);
         this->ui->skillAnimType->setText(GetAnimTypeText(spelldata[sn].sType));
         int lvl = -1;
-        int baseLvl = this->hero->getSkillLvlBase(sn);
+        int baseLvl = this->skills[sn];
         if (baseLvl != 0) {
-            lvl = this->hero->getSkillLvl(sn);
+            lvl = this->skills[sn] + this->hero->getSkillLvl(sn) - this->hero->getSkillLvlBase(sn);
             if (lvl < 0)
                 lvl = 0;
         } else if (this->hero->getFixedSkills() & SPELL_MASK(sn)) {
@@ -173,7 +178,7 @@ void SkillDetailsWidget::updateFields()
 
         this->ui->skillDesc->setText(desc);
         int sources = this->hero->getSkillSources(sn);
-        if (this->hero->getSkillLvlBase(sn) != 0)
+        if (this->skills[sn] != 0)
             sources |= (1 << RSPLTYPE_SPELL);
         else
             sources &= ~(1 << RSPLTYPE_SPELL);
@@ -213,7 +218,7 @@ void SkillDetailsWidget::on_skill_clicked(int sn)
 
 void SkillDetailsWidget::on_skill_changed(int sn, int value)
 {
-    this->hero->setSkillLvlBase(sn, value);
+    this->skills[sn] = value;
 
     this->updateFields();
 }
@@ -221,7 +226,7 @@ void SkillDetailsWidget::on_skill_changed(int sn, int value)
 void SkillDetailsWidget::on_resetButton_clicked()
 {
     for (int sn = 0; sn < NUM_SPELLS; sn++) {
-        this->hero->setSkillLvlBase(sn, 0);
+        this->skills[sn] = 0;
     }
     this->updateFields();
 }
@@ -229,7 +234,7 @@ void SkillDetailsWidget::on_resetButton_clicked()
 void SkillDetailsWidget::on_maxButton_clicked()
 {
     for (int sn = 0; sn < NUM_SPELLS; sn++) {
-        this->hero->setSkillLvlBase(sn, ((this->hero->isHellfire() || sn < NUM_SPELLS_DIABLO) && spelldata[sn].sBookLvl != SPELL_NA) ? MAXSPLLEVEL : 0);
+        this->skills[sn] = ((this->hero->isHellfire() || sn < NUM_SPELLS_DIABLO) && spelldata[sn].sBookLvl != SPELL_NA) ? MAXSPLLEVEL : 0;
     }
     this->updateFields();
 }

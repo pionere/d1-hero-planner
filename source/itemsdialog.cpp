@@ -806,7 +806,7 @@ bool ItemsDialog::recreateItem()
             if (this->ui->itemSuffixLimitSlider->isEnabled()) {
                 int val = this->ui->itemSuffixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemSuffixLimitedCheckBox->checkState();
-                if (suffix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
+                if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
                     suffix.param1 = GetBookSpell(lvl, val);
                     suffix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
