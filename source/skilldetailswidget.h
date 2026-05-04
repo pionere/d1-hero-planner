@@ -76,6 +76,5 @@ private:
     D1Hero *hero;
     // LineEditWidget *skillWidgets[64];
     SkillSpinBox *skillWidgets[64];
-    int skills[64];
     int currentSkill = -1;
 };
