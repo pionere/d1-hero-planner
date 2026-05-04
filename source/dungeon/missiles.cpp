@@ -120,7 +120,14 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
+#if 0
 		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+#else
+		magic <<= 2;
+		magic++;
+		sl <<= 5;
+		maxd = 3 * (magic * sl) / (magic + sl);
+#endif
 		break;
 	case SPL_FLASH:
 		mind = magic >> 1;
@@ -353,15 +360,29 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
+#if 0
 		mind = ((magic >> 3) + 2 * sl + 1) * 4;
 		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+#else
+		magic >>= 3;
+		magic++;
+		mind = 32 * (magic * sl) / (magic + sl);
+		maxd = mind + sl * 4;
+#endif
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNENOVA:
 #endif
 	case SPL_NOVA:
 		mind = 1;
+#if 0
 		maxd = (magic >> 1) + (sl << 5);
+#else
+		magic <<= 3;
+		magic++;
+		sl <<= 6;
+		maxd = (magic * sl) / (magic + sl);
+#endif
 		break;
 	case SPL_INFERNO:
 		mind = (magic * 20) >> 6;
@@ -421,7 +442,6 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind = 1;
 		maxd = ((magic >> 1) + sl) << (-3 + 5);
 		break;
-	case SPL_RUNEWAVE:
 	case SPL_IMMOLAT:
 		mind = 1 + (magic >> 3);
 		maxd = mind + 4;
@@ -431,8 +451,16 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		}
 		break;*/
 	case SPL_RUNEFIRE:
+#if 0
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
+#else
+		magic >>= 0;
+		magic++;
+		sl <<= 3;
+		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		maxd = mind + sl;
+#endif
 		break;
 #endif
 	default:
@@ -639,7 +667,6 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #else
 		magic >>= 3;
 		magic++;
-		// sl <<= 1;
 		mind = 32 * (magic * sl) / (magic + sl);
 		maxd = mind + sl * 4;
 #endif
@@ -652,10 +679,10 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #if 0
 		maxd = (magic >> 1) + (sl << 5);
 #else
-		magic <<= 1;
+		magic <<= 3;
 		magic++;
-		sl <<= 4;
-		maxd = 2 * (magic * sl) / (magic + sl);
+		sl <<= 6;
+		maxd = (magic * sl) / (magic + sl);
 #endif
 		break;
 	case SPL_INFERNO:
