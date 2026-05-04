@@ -197,9 +197,9 @@ QString ItemsDialog::AffixPowerName(int power)
     case IPL_ACIDRES:        result = QApplication::tr("acid res.");             break;
     case IPL_ALLRES:         result = QApplication::tr("all res.");              break;
     case IPL_CRITP:          result = QApplication::tr("crit. %");               break;
-    case IPL_SKILLLVL:       result = QApplication::tr("skill");                 break;
-    case IPL_SKILLLEVELS:    result = QApplication::tr("skills");                break;
-    case IPL_CHARGES:        result = QApplication::tr("charges");               break;
+    case IPL_SKILLLVL:       result = QApplication::tr("bonus to skill");        break;
+    case IPL_SKILLLEVELS:    result = QApplication::tr("bonus to all skills");   break;
+    case IPL_CHARGES:        result = QApplication::tr("bonus charges");         break;
     case IPL_FIREDAM:        result = QApplication::tr("fire damage");           break;
     case IPL_LIGHTDAM:       result = QApplication::tr("lightning  damage");     break;
     case IPL_MAGICDAM:       result = QApplication::tr("magic damage");          break;
@@ -234,8 +234,8 @@ QString ItemsDialog::AffixPowerName(int power)
     case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
     case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
     case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SKILL:          result = QApplication::tr("rnd spell");             break;
-    case IPL_SETSKILL:       result = QApplication::tr("fix spell");             break;
+    case IPL_SKILL:          result = QApplication::tr("rnd spell charge");      break;
+    case IPL_SETSKILL:       result = QApplication::tr("fix spell charge");      break;
     case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
     case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
     case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
