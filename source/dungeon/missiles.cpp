@@ -455,10 +455,10 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
 #else
-		magic >>= 0;
+		magic <<= 3;
 		magic++;
-		sl <<= 3;
-		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		sl <<= 6;
+		mind = (magic * sl) / (magic + sl);
 		maxd = mind + sl;
 #endif
 		break;
@@ -758,10 +758,10 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
 #else
-		magic >>= 0;
+		magic <<= 3;
 		magic++;
-		sl <<= 3;
-		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		sl <<= 6;
+		mind = (magic * sl) / (magic + sl);
 		maxd = mind + sl;
 #endif
 		break;
