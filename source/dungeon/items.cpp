@@ -1314,7 +1314,7 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 	BOOLEAN good;
 
 	// assert(is->_iMagical == ITEM_QUALITY_NORMAL);
-	if (flgs != PLT_MISC) // is->_itype != ITYPE_RING && is->_itype != ITYPE_AMULET)
+	if (flgs != PLT_JEWEL) // is->_itype != ITYPE_RING && is->_itype != ITYPE_AMULET)
 		lvl = lvl > AllItemList[is->_iIdx].iMinMLvl ? lvl - AllItemList[is->_iIdx].iMinMLvl : 0;
 
 	// select affixes (3: both, 2: prefix, 1: suffix)
