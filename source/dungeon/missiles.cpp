@@ -106,7 +106,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	magic = myplr._pMagic;
 #ifdef HELLFIRE
 	if (SPELL_RUNE(sn))
-		sl += myplr._pDexterity >> 3;
+		sl += myplr._pDexterity >> 4;
 #endif
 	switch (sn) {
 	case SPL_FIREBOLT:
@@ -123,7 +123,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 #if 0
 		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
 #else
-		magic <<= 2;
+		magic <<= 1;
 		magic++;
 		sl <<= 5;
 		maxd = 3 * (magic * sl) / (magic + sl);
@@ -364,7 +364,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind = ((magic >> 3) + 2 * sl + 1) * 4;
 		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
 #else
-		magic >>= 3;
+		magic >>= 4;
 		magic++;
 		mind = 32 * (magic * sl) / (magic + sl);
 		maxd = mind + sl * 4;
@@ -378,7 +378,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 #if 0
 		maxd = (magic >> 1) + (sl << 5);
 #else
-		magic <<= 3;
+		magic <<= 2;
 		magic++;
 		sl <<= 6;
 		maxd = (magic * sl) / (magic + sl);
@@ -457,9 +457,9 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 #else
 		magic >>= 0;
 		magic++;
-		sl <<= 3;
+		sl <<= 4;
 		mind = 1 + 8 * (magic * sl) / (magic + sl);
-		maxd = mind + sl;
+		maxd = mind + (sl >> 2);
 #endif
 		break;
 #endif
@@ -758,11 +758,11 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		mind = 1 + (magic >> 1) + 16 * sl;
 		maxd = 1 + (magic >> 1) + 32 * sl;
 #else
-		magic >>= 1;
+		magic >>= 0;
 		magic++;
-		sl <<= 3;
+		sl <<= 4;
 		mind = 1 + 8 * (magic * sl) / (magic + sl);
-		maxd = mind + sl;
+		maxd = mind + (sl >> 2);
 #endif
 		break;
 #endif
