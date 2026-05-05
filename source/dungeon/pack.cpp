@@ -300,9 +300,9 @@ void UnPackPlayer(const PkPlayerStruct* pPack, int pnum)
 	pi = &plr._pInvList[0];
 
 	for (i = 0; i < NUM_INV_GRID_ELEM; i++) {
-LogErrorF("UnPackPlayer 4 %d", i);
+// LogErrorF("UnPackPlayer 4 %d", i);
 		UnPackItem(pki, pi);
-LogErrorF("UnPackPlayer 4 %d", i);
+// LogErrorF("UnPackPlayer 4 %d", i);
 		pki++;
 		pi++;
 	}
@@ -374,12 +374,12 @@ LogErrorF("UnPackPlayer 4 %d", i);
 		}
 	}
 #endif /* INET_MODE */
-LogErrorF("UnPackPlayer 5");
+// LogErrorF("UnPackPlayer 5");
 	// recalculate the cached fields
 	InitPlayer(pnum);
-LogErrorF("UnPackPlayer 6");
+// LogErrorF("UnPackPlayer 6");
 	CalcPlrInv(pnum, false);
-LogErrorF("UnPackPlayer 7");
+// LogErrorF("UnPackPlayer 7");
 }
 
 DEVILUTION_END_NAMESPACE

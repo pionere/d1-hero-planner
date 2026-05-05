@@ -871,24 +871,24 @@ start:
         if (prefix.active) {
             if (items[MAXITEMS]._iMiscId != IMISC_NONE) {
                 if (prefix.param2 == MAXSPLLEVEL + 1 && items[MAXITEMS]._iSpell != prefix.param1) {
-                    LogErrorF("missed prefix spell %d vs %d (%d) seed%d", items[MAXITEMS]._iSpell, prefix.power, preIdx, seed);
+                    // LogErrorF("missed prefix spell %d vs %d (%d) seed%d", items[MAXITEMS]._iSpell, prefix.power, preIdx, seed);
                     goto restart;
                 }
             } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
-                LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
+                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
-                LogErrorF("matched prefix rndval: %d (%d..%d) (%d) seed%d", affix_rnd[0], prefix.param1, prefix.param2, preIdx, seed);
+                // LogErrorF("matched prefix rndval: %d (%d..%d) (%d) seed%d", affix_rnd[0], prefix.param1, prefix.param2, preIdx, seed);
                 if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
                     if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
-                        LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[0] < prefix.param1 || affix_rnd[0] > prefix.param2) {
-                    LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
+                    // LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
                     goto restart;
                 }
             }
@@ -896,18 +896,18 @@ start:
         }
         if (suffix.active) {
             if (items[MAXITEMS]._iNumAffixes == 0) {
-                LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
+                // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
                 goto restart;
             }
             if (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) {
                 if (items[MAXITEMS]._iAffixes[0].asPower != suffix.power) {
-                    LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
+                    // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
                     goto restart;
                 }
             }
             if (items[MAXITEMS]._iNumAffixes > 1) {
                 if (items[MAXITEMS]._iAffixes[1].asPower != suffix.power) {
-                    LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
+                    // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
                     goto restart;
                 }
             }
@@ -915,11 +915,11 @@ start:
                 if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
                     if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
-                        LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                         goto restart;
                     }
                 } else if (affix_rnd[1] < suffix.param1 || affix_rnd[1] > suffix.param2) {
-                    LogErrorF("missed sufval %d vs [%d:%d]", affix_rnd[1], suffix.param1, suffix.param2);
+                    // LogErrorF("missed sufval %d vs [%d:%d]", affix_rnd[1], suffix.param1, suffix.param2);
                     goto restart;
                 }
             }
