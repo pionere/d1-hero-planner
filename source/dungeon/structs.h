@@ -30,6 +30,11 @@ typedef unsigned int UINT;
 // control
 //////////////////////////////////////////////////
 
+typedef struct INTPAIR {
+	int v0;
+	int v1;
+} INTPAIR;
+
 typedef struct POS32 {
 	int x;
 	int y;

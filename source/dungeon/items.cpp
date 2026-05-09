@@ -1365,13 +1365,13 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 	// prefix or suffix added -> recalculate the value of the item
 	if (is->_iMagical == ITEM_QUALITY_MAGIC) {
 		if (is->_iMiscId != IMISC_MAP) {
-			v = vm;
+			v = valmod.v0;
 			if (v >= 0) {
 				v *= is->_ivalue;
 			} else {
 				v = is->_ivalue / -v;
 			}
-			v += va;
+			v += valmod.v1;
 			if (v <= 0) {
 				v = 1;
 			}
