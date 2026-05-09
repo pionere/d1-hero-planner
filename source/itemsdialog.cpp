@@ -270,10 +270,10 @@ static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBo
     if (paramA == paramB) {
         return;
     }
-    comboBox->addItem(QString("%1 (%2..%3)").arg(ItemsDialog::AffixPowerName(power, false)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
+    comboBox->addItem(QString("%1 (%2..%3)").arg(AffixPowerName(power, false)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
 }
 
-/*static*/ void ItemsDialog::addUniqueOptions(int uniqIdx, , QComboBox *preComboBox, QComboBox *sufComboBox)
+/*static*/ void ItemsDialog::addUniqueOptions(int uniqIdx, QComboBox *preComboBox, QComboBox *sufComboBox)
 {
     // if ((ci & ~CF_LEVEL) != 0) {
         const UniqItemData* ui = &UniqueItemList[uniqIdx];
@@ -319,8 +319,8 @@ static void addAffixOption(int idx, const AffixData *affix, int flgs, BYTE range
     const int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
 
     if ((ci & ~CF_LEVEL) != 0) {
-        ItemsDialog::addAffixOption(idx, PL_Prefix, flgs, range, lvl, quality, preComboBox);
-        ItemsDialog::addAffixOption(idx, PL_Suffix, flgs, range, lvl, quality, sufComboBox);
+        addAffixOption(idx, PL_Prefix, flgs, range, lvl, quality, preComboBox);
+        addAffixOption(idx, PL_Suffix, flgs, range, lvl, quality, sufComboBox);
     }
 
     return flgs;
