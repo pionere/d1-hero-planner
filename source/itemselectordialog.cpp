@@ -361,7 +361,7 @@ void ItemSelectorDialog::updateFields()
     sufComboBox->setCurrentIndex(si);
 
     si = preComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || PL_Prefix[si].PLPower == IPL_SKILL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -382,13 +382,20 @@ void ItemSelectorDialog::updateFields()
             if (power == IPL_SKILLLVL && limitMode == 1) {
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
-                // QMessageBox::critical(this, "Error", tr("skilllevel %1 ... %2.").arg(minval).arg(maxval));
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Prefix[si].PLPower == IPL_SKILL && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Prefix[si].PLParam1;
             maxval = PL_Prefix[si].PLParam2;
@@ -409,7 +416,7 @@ void ItemSelectorDialog::updateFields()
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
     si = sufComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || PL_Suffix[si].PLPower == IPL_SKILL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
     this->ui->itemSuffixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemSuffixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -431,11 +438,19 @@ void ItemSelectorDialog::updateFields()
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Prefix[si].PLPower == IPL_SKILL && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Suffix[si].PLParam1;
             maxval = PL_Suffix[si].PLParam2;
@@ -658,8 +673,11 @@ bool ItemSelectorDialog::recreateItem()
             if (this->ui->itemPrefixLimitSlider->isEnabled()) {
                 int val = this->ui->itemPrefixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
+                if (prefix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
                     prefix.param1 = GetBookSpell(lvl, val);
+                    prefix.param2 = MAXSPLLEVEL + 1;
+                } else if (prefix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    prefix.param1 = GetStaffSpell(lvl, val);
                     prefix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     prefix.param1 = val;
@@ -693,8 +711,11 @@ bool ItemSelectorDialog::recreateItem()
             if (this->ui->itemSuffixLimitSlider->isEnabled()) {
                 int val = this->ui->itemSuffixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemSuffixLimitedCheckBox->checkState();
-                if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
+                if (suffix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
                     suffix.param1 = GetBookSpell(lvl, val);
+                    suffix.param2 = MAXSPLLEVEL + 1;
+                } else if (suffix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    suffix.param1 = GetStaffSpell(lvl, val);
                     suffix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     suffix.param1 = val;
@@ -727,9 +748,17 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
+            if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && prefix.param2 == MAXSPLLEVEL + 1) {
                 const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
-                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                if (ia == NULL || ia->asPower != prefix.power) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                    goto restart;
+                }
+                if (prefix.power == IPL_SKILLLVL && ia->asValue1 != prefix.param1) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                    goto restart;
+                }
+                if (prefix.power == IPL_SKILL && items[MAXITEMS]._iSpell != prefix.param1) {
                     // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
@@ -739,9 +768,17 @@ start:
             }
         }
         if (suffix.active) {
-            if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
+            if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && suffix.param2 == MAXSPLLEVEL + 1) {
                 const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
-                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                if (ia == NULL || ia->asPower != suffix.power) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                    goto restart;
+                }
+                if (suffix.power == IPL_SKILLLVL && ia->asValue1 != suffix.param1) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                    goto restart;
+                }
+                if (suffix.power == IPL_SKILL && items[MAXITEMS]._iSpell != suffix.param1) {
                     // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                     goto restart;
                 }
@@ -760,9 +797,17 @@ start:
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
-                if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
+                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && prefix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
-                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                    if (ia == NULL || ia->asPower != prefix.power) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                        goto restart;
+                    }
+                    if (prefix.power == IPL_SKILLLVL && ia->asValue1 != prefix.param1) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                        goto restart;
+                    }
+                    if (prefix.power == IPL_SKILL && items[MAXITEMS]._iSpell != prefix.param1) {
                         // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                         goto restart;
                     }
@@ -774,13 +819,21 @@ start:
         }
         if (suffix.active) {
             if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
-                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
+                // LogErrorF("missed suffix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
                 goto restart;
             }
             if (suffix.power != IPL_INVALID) {
-                if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
+                if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && suffix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
-                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                    if (ia == NULL || ia->asPower != suffix.power) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                        goto restart;
+                    }
+                    if (suffix.power == IPL_SKILLLVL && ia->asValue1 != suffix.param1) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                        goto restart;
+                    }
+                    if (suffix.power == IPL_SKILL && items[MAXITEMS]._iSpell != suffix.param1) {
                         // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                         goto restart;
                     }

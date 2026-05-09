@@ -511,6 +511,10 @@ void ItemsDialog::updateFields()
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
@@ -562,12 +566,16 @@ void ItemsDialog::updateFields()
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
         } else if (PL_Suffix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
-        } else if (PL_Suffix[si].PLPower == IPL_SKILL) && limitMode == 1) {
+        } else if (PL_Suffix[si].PLPower == IPL_SKILL && limitMode == 1) {
             minval = 0;
             maxval = GetStaffSpell(lvl, -2) - 1;
             limitMode = 4;
