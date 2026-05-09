@@ -68,8 +68,16 @@ void UnPackPkItem(const PkItemStruct* src)
 	uint16_t value;
 
 	net_assert(idx < NUM_IDI);
+    if (idx >= NUM_IDI) {
+        items[MAXITEMS]._itype = ITYPE_NONE;
+        return;
+    }
 	if (idx != IDI_EAR) {
 		net_assert(((src->wCI & CF_TOWN) >> 8) <= CFL_CRAFTED);
+        if (((src->wCI & CF_TOWN) >> 8) > CFL_CRAFTED) {
+            items[MAXITEMS]._itype = ITYPE_NONE;
+            return;
+        }
 		RecreateItem(
 			src->dwSeed,
 			src->wIndx,
