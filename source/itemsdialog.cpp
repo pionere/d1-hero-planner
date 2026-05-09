@@ -892,7 +892,7 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (items[MAXITEMS]._iMiscId != IMISC_NONE) {
+            if (items[MAXITEMS]._iMiscId != IMISC_NONE && items[MAXITEMS]._iMiscId != IMISC_MAP) {
                 if (prefix.param2 == MAXSPLLEVEL + 1 && items[MAXITEMS]._iSpell != prefix.param1) {
                     // LogErrorF("missed prefix spell %d vs %d (%d) seed%d", items[MAXITEMS]._iSpell, prefix.power, preIdx, seed);
                     goto restart;
