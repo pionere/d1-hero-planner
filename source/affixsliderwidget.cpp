@@ -58,6 +58,11 @@ void AffixSliderWidget::updateToolTip()
         default:           sn = GetBookSpell(lvl, val);   break;
         }
         text = spelldata[sn].sNameText;
+    } else if (this->limitMode == 4) {
+        int lvl = this->itemLevel;
+        int sn;
+        sn = GetStaffSpell(lvl, val);
+        text = spelldata[sn].sNameText;
     } else if (this->limitMode >= 0) {
         text = QString::number(val);
     }

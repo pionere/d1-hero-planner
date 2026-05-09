@@ -478,7 +478,7 @@ void ItemsDialog::updateFields()
     sufComboBox->setCurrentIndex(si);
 
     si = preComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || PL_Prefix[si].PLPower == IPL_SKILL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -512,10 +512,14 @@ void ItemsDialog::updateFields()
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
             }
-        } else if ((PL_Prefix[si].PLPower == IPL_SKILLLVL || PL_Prefix[si].PLPower == IPL_SKILL) && limitMode == 1) {
+        } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Prefix[si].PLPower == IPL_SKILL && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Prefix[si].PLParam1;
             maxval = PL_Prefix[si].PLParam2;
@@ -536,7 +540,7 @@ void ItemsDialog::updateFields()
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
     si = sufComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || PL_Suffix[si].PLPower == IPL_SKILL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
     this->ui->itemSuffixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemSuffixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -559,10 +563,14 @@ void ItemsDialog::updateFields()
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
             }
-        } else if ((PL_Suffix[si].PLPower == IPL_SKILLLVL || PL_Suffix[si].PLPower == IPL_SKILL) && limitMode == 1) {
+        } else if (PL_Suffix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Suffix[si].PLPower == IPL_SKILL) && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Suffix[si].PLParam1;
             maxval = PL_Suffix[si].PLParam2;
@@ -790,12 +798,18 @@ bool ItemsDialog::recreateItem()
             if (this->ui->itemPrefixLimitSlider->isEnabled()) {
                 int val = this->ui->itemPrefixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
-                    switch (AllItemList[wIdx].iMiscId) {
-                    case IMISC_SCROLL: prefix.param1 = GetScrollSpell(lvl, val); break;
-                    case IMISC_RUNE:   prefix.param1 = GetRuneSpell(lvl, val);   break;
-                    case IMISC_BOOK:
-                    default:           prefix.param1 = GetBookSpell(lvl, val);   break;
+                if (prefix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
+                    prefix.param1 = GetBookSpell(lvl, val);
+                    prefix.param2 = MAXSPLLEVEL + 1;
+                } else if (prefix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    if (preIdx == AFFIX_SKILL) {
+                        switch (AllItemList[wIdx].iMiscId) {
+                        case IMISC_SCROLL: prefix.param1 = GetScrollSpell(lvl, val); break;
+                        case IMISC_RUNE:   prefix.param1 = GetRuneSpell(lvl, val);   break;
+                        case IMISC_BOOK:   prefix.param1 = GetBookSpell(lvl, val);   break;
+                        }
+                    } else {
+                        prefix.param1 = GetStaffSpell(lvl, val);
                     }
                     prefix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
@@ -830,8 +844,11 @@ bool ItemsDialog::recreateItem()
             if (this->ui->itemSuffixLimitSlider->isEnabled()) {
                 int val = this->ui->itemSuffixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemSuffixLimitedCheckBox->checkState();
-                if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
+                if (suffix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
                     suffix.param1 = GetBookSpell(lvl, val);
+                    suffix.param2 = MAXSPLLEVEL + 1;
+                } else if (suffix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    suffix.param1 = GetStaffSpell(lvl, val);
                     suffix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     suffix.param1 = val;
@@ -870,7 +887,7 @@ start:
                     // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
-                if (prefix.power == IPL_SKILLLVL&& ia->asValue1 != prefix.param1) {
+                if (prefix.power == IPL_SKILLLVL && ia->asValue1 != prefix.param1) {
                     // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
