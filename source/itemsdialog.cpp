@@ -450,7 +450,7 @@ void ItemsDialog::updateFields()
         int flgs = addAffixOptions(idx, ci, preComboBox, sufComboBox);
 
         if (flgs == PLT_MISC) {
-            preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL, false)), AFFIX_SKILL);
+            preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SKILL, false)), AFFIX_SKILL);
         } else {
             if (preComboBox->count() > 1)
                 preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
@@ -911,7 +911,7 @@ start:
                         goto restart;
                     }
                 } else if (affix_rnd[0] < prefix.param1 || affix_rnd[0] > prefix.param2) {
-                    // LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
+                    LogErrorF("missed preval %d vs [%d:%d]", affix_rnd[0], prefix.param1, prefix.param2);
                     goto restart;
                 }
             }
