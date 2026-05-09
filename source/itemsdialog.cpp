@@ -182,77 +182,82 @@ void ItemsDialog::updateFilters()
     idxComboBox->setCurrentIndex(idx);
 }
 
-static QString AffixPowerName(int power)
+static QString AffixPowerName(int power, bool isMap)
 {
     QString result = "";
-    switch (power) {
-    case IPL_TOHIT:          result = QApplication::tr("to hit");                break;
-    case IPL_DAMP:           result = QApplication::tr("damage %");              break;
-    case IPL_TOHIT_DAMP:     result = QApplication::tr("to hit + damage");       break;
-    case IPL_ACP:            result = QApplication::tr("armor %");               break;
-    case IPL_TOBLOCK:        result = QApplication::tr("block %");               break;
-    case IPL_FIRERES:        result = QApplication::tr("fire res.");             break;
-    case IPL_LIGHTRES:       result = QApplication::tr("light res.");            break;
-    case IPL_MAGICRES:       result = QApplication::tr("magic res.");            break;
-    case IPL_ACIDRES:        result = QApplication::tr("acid res.");             break;
-    case IPL_ALLRES:         result = QApplication::tr("all res.");              break;
-    case IPL_CRITP:          result = QApplication::tr("crit. %");               break;
-    case IPL_SKILLLVL:       result = QApplication::tr("skill");                 break;
-    case IPL_SKILLLEVELS:    result = QApplication::tr("skills");                break;
-    case IPL_CHARGES:        result = QApplication::tr("charges");               break;
-    case IPL_FIREDAM:        result = QApplication::tr("fire damage");           break;
-    case IPL_LIGHTDAM:       result = QApplication::tr("lightning  damage");     break;
-    case IPL_MAGICDAM:       result = QApplication::tr("magic damage");          break;
-    case IPL_ACIDDAM:        result = QApplication::tr("acid damage");           break;
-    case IPL_STR:            result = QApplication::tr("strength");              break;
-    case IPL_MAG:            result = QApplication::tr("magic");                 break;
-    case IPL_DEX:            result = QApplication::tr("dexterity");             break;
-    case IPL_VIT:            result = QApplication::tr("vitality");              break;
-    case IPL_ATTRIBS:        result = QApplication::tr("attributes");            break;
-    case IPL_ABS_ANYHIT:     result = QApplication::tr("damage taken");          break;
-    case IPL_ABS_PHYHIT:     result = QApplication::tr("phy. damage taken");     break;
-    case IPL_LIFE:           result = QApplication::tr("life");                  break;
-    case IPL_MANA:           result = QApplication::tr("mana");                  break;
-    case IPL_DUR:            result = QApplication::tr("durability");            break;
-    case IPL_INDESTRUCTIBLE: result = QApplication::tr("indestructible");        break;
-    case IPL_LIGHT:          result = QApplication::tr("light range");           break;
-    //case IPL_INVCURS: result = QApplication::tr("xxx"); break;
-    //case IPL_THORNS: result = QApplication::tr("xxx"); break;
-    case IPL_NOMANA:         result = QApplication::tr("no mana");               break;
-    case IPL_KNOCKBACK:      result = QApplication::tr("knockback");             break;
-    case IPL_STUN:           result = QApplication::tr("stun");                  break;
-    //case IPL_NOHEALMON: result = QApplication::tr("xxx"); break;
-    case IPL_NO_BLEED:       result = QApplication::tr("no bleed");              break;
-    case IPL_BLEED:          result = QApplication::tr("bleed");                 break;
-    case IPL_STEALMANA:      result = QApplication::tr("steal mana");            break;
-    case IPL_STEALLIFE:      result = QApplication::tr("steal life");            break;
-    case IPL_PENETRATE_PHYS: result = QApplication::tr("penetrate phy.");        break;
-    case IPL_FASTATTACK:     result = QApplication::tr("attack speed");          break;
-    case IPL_FASTRECOVER:    result = QApplication::tr("recovery speed");        break;
-    case IPL_FASTBLOCK:      result = QApplication::tr("block speed");           break;
-    case IPL_DAMMOD:         result = QApplication::tr("damage +");              break;
-    case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
-    case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
-    case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
-    case IPL_SETSKILL:       result = QApplication::tr("spell");                 break;
-    case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
-    case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
-    case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
-    //case IPL_INFRAVISION: result = QApplication::tr("xxx"); break;
-    case IPL_SETAC:          result = QApplication::tr("armor *");               break;
-    case IPL_ACMOD:          result = QApplication::tr("armor +");               break;
-    case IPL_CRYSTALLINE:    result = QApplication::tr("damage % durability -"); break;
-    case IPL_MANATOLIFE:     result = QApplication::tr("mana to life");          break;     /* only used in hellfire */
-    case IPL_LIFETOMANA:     result = QApplication::tr("life to mana");          break;     /* only used in hellfire */
-    case IPL_FASTCAST:       result = QApplication::tr("cast speed");            break;
-    case IPL_FASTWALK:       result = QApplication::tr("walk speed");            break;
+    if (!isMap) {
+        switch (power) {
+        case IPL_TOHIT:          result = QApplication::tr("to hit");                break;
+        case IPL_DAMP:           result = QApplication::tr("damage %");              break;
+        case IPL_TOHIT_DAMP:     result = QApplication::tr("to hit + damage");       break;
+        case IPL_ACP:            result = QApplication::tr("armor %");               break;
+        case IPL_TOBLOCK:        result = QApplication::tr("block %");               break;
+        case IPL_FIRERES:        result = QApplication::tr("fire res.");             break;
+        case IPL_LIGHTRES:       result = QApplication::tr("light res.");            break;
+        case IPL_MAGICRES:       result = QApplication::tr("magic res.");            break;
+        case IPL_ACIDRES:        result = QApplication::tr("acid res.");             break;
+        case IPL_ALLRES:         result = QApplication::tr("all res.");              break;
+        case IPL_CRITP:          result = QApplication::tr("crit. %");               break;
+        case IPL_SKILLLVL:       result = QApplication::tr("bonus to skill");        break;
+        case IPL_SKILLLEVELS:    result = QApplication::tr("bonus to all skills");   break;
+        case IPL_CHARGES:        result = QApplication::tr("bonus charges");         break;
+        case IPL_FIREDAM:        result = QApplication::tr("fire damage");           break;
+        case IPL_LIGHTDAM:       result = QApplication::tr("lightning  damage");     break;
+        case IPL_MAGICDAM:       result = QApplication::tr("magic damage");          break;
+        case IPL_ACIDDAM:        result = QApplication::tr("acid damage");           break;
+        case IPL_STR:            result = QApplication::tr("strength");              break;
+        case IPL_MAG:            result = QApplication::tr("magic");                 break;
+        case IPL_DEX:            result = QApplication::tr("dexterity");             break;
+        case IPL_VIT:            result = QApplication::tr("vitality");              break;
+        case IPL_ATTRIBS:        result = QApplication::tr("attributes");            break;
+        case IPL_ABS_ANYHIT:     result = QApplication::tr("damage taken");          break;
+        case IPL_ABS_PHYHIT:     result = QApplication::tr("phy. damage taken");     break;
+        case IPL_LIFE:           result = QApplication::tr("life");                  break;
+        case IPL_MANA:           result = QApplication::tr("mana");                  break;
+        case IPL_DUR:            result = QApplication::tr("durability");            break;
+        case IPL_INDESTRUCTIBLE: result = QApplication::tr("indestructible");        break;
+        case IPL_LIGHT:          result = QApplication::tr("light range");           break;
+//      case IPL_INVCURS:        result = QApplication::tr("xxx");                   break;
+//      case IPL_THORNS:         result = QApplication::tr("xxx");                   break;
+        case IPL_NOMANA:         result = QApplication::tr("no mana");               break;
+        case IPL_KNOCKBACK:      result = QApplication::tr("knockback");             break;
+        case IPL_STUN:           result = QApplication::tr("stun");                  break;
+//      case IPL_NOHEALMON:      result = QApplication::tr("xxx");                   break;
+        case IPL_NO_BLEED:       result = QApplication::tr("no bleed");              break;
+        case IPL_BLEED:          result = QApplication::tr("bleed");                 break;
+        case IPL_STEALMANA:      result = QApplication::tr("steal mana");            break;
+        case IPL_STEALLIFE:      result = QApplication::tr("steal life");            break;
+        case IPL_PENETRATE_PHYS: result = QApplication::tr("penetrate phy.");        break;
+        case IPL_FASTATTACK:     result = QApplication::tr("attack speed");          break;
+        case IPL_FASTRECOVER:    result = QApplication::tr("recovery speed");        break;
+        case IPL_FASTBLOCK:      result = QApplication::tr("block speed");           break;
+        case IPL_DAMMOD:         result = QApplication::tr("damage +");              break;
+        case IPL_SETDAM:         result = QApplication::tr("damage *");              break;
+        case IPL_SETDUR:         result = QApplication::tr("durability *");          break;
+        case IPL_REQSTR:         result = QApplication::tr("altered requirements");  break;
+        case IPL_SKILL:          result = QApplication::tr("rnd spell charge");      break;
+        case IPL_SETSKILL:       result = QApplication::tr("fix spell charge");      break;
+        case IPL_ONEHAND:        result = QApplication::tr("one handed");            break;
+        case IPL_ALLRESZERO:     result = QApplication::tr("all res. zero");         break;
+        case IPL_DRAINLIFE:      result = QApplication::tr("drain life");            break;
+//      case IPL_INFRAVISION:    result = QApplication::tr("xxx");                   break;
+        case IPL_SETAC:          result = QApplication::tr("armor *");               break;
+        case IPL_ACMOD:          result = QApplication::tr("armor +");               break;
+        case IPL_CRYSTALLINE:    result = QApplication::tr("damage % durability -"); break;
+        case IPL_MANATOLIFE:     result = QApplication::tr("mana to life");          break;     /* only used in hellfire */
+        case IPL_LIFETOMANA:     result = QApplication::tr("life to mana");          break;     /* only used in hellfire */
+        case IPL_FASTCAST:       result = QApplication::tr("cast speed");            break;
+        case IPL_FASTWALK:       result = QApplication::tr("walk speed");            break;
+        }
+    } else {
+        switch (power) {
+        case IMP_LVLMOD:         result = QApplication::tr("level +");               break;
+        case IMP_LVLGAIN:        result = QApplication::tr("level ++");              break;
+        case IMP_SETLVL:         result = QApplication::tr("level *");               break;
+        case IMP_AREAMOD:        result = QApplication::tr("area +");                break;
+        }
     }
     return result;
-}
-
-static QString AffixName(const AffixData *affix)
-{
-    return AffixPowerName(affix->PLPower);
 }
 
 static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBox *preComboBox, QComboBox *sufComboBox)
@@ -265,7 +270,60 @@ static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBo
     if (paramA == paramB) {
         return;
     }
-    comboBox->addItem(QString("%1 (%2-%3)").arg(AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
+    comboBox->addItem(QString("%1 (%2..%3)").arg(AffixPowerName(power, false)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
+}
+
+/*static*/ void ItemsDialog::addUniqueOptions(int uniqIdx, QComboBox *preComboBox, QComboBox *sufComboBox)
+{
+    // if ((ci & ~CF_LEVEL) != 0) {
+        const UniqItemData* ui = &UniqueItemList[uniqIdx];
+        addUniqueOption(ui->UIPower1, ui->UIParam1a, ui->UIParam1b, 0, preComboBox, sufComboBox);
+        if (ui->UIPower2 != IPL_INVALID) {
+            addUniqueOption(ui->UIPower2, ui->UIParam2a, ui->UIParam2b, 1, preComboBox, sufComboBox);
+        if (ui->UIPower3 != IPL_INVALID) {
+            addUniqueOption(ui->UIPower3, ui->UIParam3a, ui->UIParam3b, 2, preComboBox, sufComboBox);
+        if (ui->UIPower4 != IPL_INVALID) {
+            addUniqueOption(ui->UIPower4, ui->UIParam4a, ui->UIParam4b, 3, preComboBox, sufComboBox);
+        if (ui->UIPower5 != IPL_INVALID) {
+            addUniqueOption(ui->UIPower5, ui->UIParam5a, ui->UIParam5b, 4, preComboBox, sufComboBox);
+        if (ui->UIPower6 != IPL_INVALID) {
+            addUniqueOption(ui->UIPower6, ui->UIParam6a, ui->UIParam6b, 5, preComboBox, sufComboBox);
+        }}}}}
+    // }
+}
+
+static void addAffixOption(int idx, const AffixData *affix, int flgs, BYTE range, unsigned lvl, unsigned quality, QComboBox *comboBox)
+{
+    const bool isMap = AllItemList[idx].iMiscId == IMISC_MAP;
+
+    if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
+        lvl = lvl > AllItemList[idx].iMinMLvl ? lvl - AllItemList[idx].iMinMLvl : 0;
+
+    const BOOLEAN good = quality >= CFDQ_GOOD;
+
+    int si = 0;
+    for ( ; affix->PLRnd != 0; affix++, si++) {
+        if ((flgs & affix->PLIType && good <= affix->PLOk)
+            && affix->PLRanges[range].from <= lvl && affix->PLRanges[range].to >= lvl) {
+            comboBox->addItem(QString("%1 (%2..%3)").arg(AffixPowerName(affix->PLPower, isMap)).arg(affix->PLParam1).arg(affix->PLParam2), QVariant::fromValue(si));
+        }
+    }
+}
+
+/*static*/ int ItemsDialog::addAffixOptions(int idx, int ci, QComboBox *preComboBox, QComboBox *sufComboBox)
+{
+    const int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, AllItemList[idx].iMiscId/* this->is->_iMiscId*/);
+    const int lvl = ci & CF_LEVEL;
+    const unsigned quality = ((ci & CF_DROP_QUALITY) >> 11);
+    const int source = (ci & CF_TOWN) >> 8;
+    const int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
+
+    if ((ci & ~CF_LEVEL) != 0) {
+        addAffixOption(idx, PL_Prefix, flgs, range, lvl, quality, preComboBox);
+        addAffixOption(idx, PL_Suffix, flgs, range, lvl, quality, sufComboBox);
+    }
+
+    return flgs;
 }
 
 static QString ItemColor(const ItemStruct* is)
@@ -313,7 +371,7 @@ void ItemsDialog::updateFields()
             this->is->_iCreateInfo &= CF_LEVEL;
         this->resetSlider = 7;
     }
-    int ci = this->is->_iCreateInfo;
+    const int ci = this->is->_iCreateInfo;
     this->ui->itemSeedEdit->setText(QString::number(this->itemSeed));
     this->ui->itemLevelEdit->setText(QString::number(ci & CF_LEVEL));
     static_assert(((int)CF_TOWN & ((1 << 8) - 1)) == 0, "ItemsDialog hardcoded CF_TOWN must be adjusted I.");
@@ -333,9 +391,6 @@ void ItemsDialog::updateFields()
     this->itemProps->setVisible(this->is->_itype != ITYPE_NONE);
 
     // update whish-lists
-    int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, AllItemList[idx].iMiscId/* this->is->_iMiscId*/);
-    int source = (ci & CF_TOWN) >> 8;
-    int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
     int lvl = ci & CF_LEVEL;
     int si, limitMode;
     bool active;
@@ -392,27 +447,10 @@ void ItemsDialog::updateFields()
         preComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
         sufComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
 
-        if ((ci & ~CF_LEVEL) != 0) {
-            int alvl = lvl;
-            if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
-                alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
-            si = 0;
-            for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
-                if ((flgs & pres->PLIType)
-                    && pres->PLRanges[range].from <= alvl && pres->PLRanges[range].to >= alvl) {
-                    preComboBox->addItem(QString("%1 (%2-%3)").arg(AffixName(pres)).arg(pres->PLParam1).arg(pres->PLParam2), QVariant::fromValue(si));
-                }
-            }
-            si = 0;
-            for (const AffixData *sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++, si++) {
-                if ((flgs & sufs->PLIType)
-                    && sufs->PLRanges[range].from <= alvl && sufs->PLRanges[range].to >= alvl) {
-                    sufComboBox->addItem(QString("%1 (%2-%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
-                }
-            }
-        }
+        int flgs = addAffixOptions(idx, ci, preComboBox, sufComboBox);
+
         if (flgs == PLT_MISC) {
-            preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SETSKILL)), AFFIX_SKILL);
+            preComboBox->addItem(QString("%1").arg(AffixPowerName(IPL_SKILL, false)), AFFIX_SKILL);
         } else {
             if (preComboBox->count() > 1)
                 preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
@@ -420,21 +458,8 @@ void ItemsDialog::updateFields()
                 sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
         }
     } else {
-        // if ((ci & ~CF_LEVEL) != 0) {
-            const UniqItemData* ui = &UniqueItemList[uniqIdx];
-            addUniqueOption(ui->UIPower1, ui->UIParam1a, ui->UIParam1b, 0, preComboBox, sufComboBox);
-            if (ui->UIPower2 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower2, ui->UIParam2a, ui->UIParam2b, 1, preComboBox, sufComboBox);
-            if (ui->UIPower3 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower3, ui->UIParam3a, ui->UIParam3b, 2, preComboBox, sufComboBox);
-            if (ui->UIPower4 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower4, ui->UIParam4a, ui->UIParam4b, 3, preComboBox, sufComboBox);
-            if (ui->UIPower5 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower5, ui->UIParam5a, ui->UIParam5b, 4, preComboBox, sufComboBox);
-            if (ui->UIPower6 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower6, ui->UIParam6a, ui->UIParam6b, 5, preComboBox, sufComboBox);
-            }}}}}
-        // }
+        addUniqueOptions(uniqIdx, preComboBox, sufComboBox);
+
         if (preComboBox->count() == 0)
             preComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
         if (sufComboBox->count() == 0)
@@ -453,7 +478,7 @@ void ItemsDialog::updateFields()
     sufComboBox->setCurrentIndex(si);
 
     si = preComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (si == AFFIX_SKILL || uniqIdx >= 0 || PL_Prefix[si].PLPower == IPL_SKILLLVL || PL_Prefix[si].PLPower == IPL_SKILL || (PL_Prefix[si].PLParam1 != PL_Prefix[si].PLParam2));
     this->ui->itemPrefixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemPrefixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -486,11 +511,19 @@ void ItemsDialog::updateFields()
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
         } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Prefix[si].PLPower == IPL_SKILL && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Prefix[si].PLParam1;
             maxval = PL_Prefix[si].PLParam2;
@@ -511,7 +544,7 @@ void ItemsDialog::updateFields()
     this->ui->itemPrefixLimitedCheckBox->setToolTip((!active || limitMode == 0) ? tr("unrestricted") : (limitMode == 1 ? tr("lower limited to:") : (limitMode == 2 ? tr("upper limited to:") : tr("limited to:"))));
 
     si = sufComboBox->currentData().value<int>();
-    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
+    active = (si != AFFIX_ANY && si != AFFIX_NONE) && (uniqIdx >= 0 || PL_Suffix[si].PLPower == IPL_SKILLLVL || PL_Suffix[si].PLPower == IPL_SKILL || (PL_Suffix[si].PLParam1 != PL_Suffix[si].PLParam2));
     this->ui->itemSuffixLimitedCheckBox->setEnabled(active);
     cs = this->ui->itemSuffixLimitedCheckBox->checkState();
     active &= cs != Qt::Unchecked;
@@ -533,11 +566,19 @@ void ItemsDialog::updateFields()
                 minval = 0;
                 maxval = GetBookSpell(lvl, -2) - 1;
                 limitMode = 3;
+            } else if (power == IPL_SKILL && limitMode == 1) {
+                minval = 0;
+                maxval = GetStaffSpell(lvl, -2) - 1;
+                limitMode = 4;
             }
-        } else if (PL_Prefix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
+        } else if (PL_Suffix[si].PLPower == IPL_SKILLLVL && limitMode == 1) {
             minval = 0;
             maxval = GetBookSpell(lvl, -2) - 1;
             limitMode = 3;
+        } else if (PL_Suffix[si].PLPower == IPL_SKILL && limitMode == 1) {
+            minval = 0;
+            maxval = GetStaffSpell(lvl, -2) - 1;
+            limitMode = 4;
         } else {
             minval = PL_Suffix[si].PLParam1;
             maxval = PL_Suffix[si].PLParam2;
@@ -764,12 +805,18 @@ bool ItemsDialog::recreateItem()
             if (this->ui->itemPrefixLimitSlider->isEnabled()) {
                 int val = this->ui->itemPrefixLimitSlider->value();
                 Qt::CheckState cs = this->ui->itemPrefixLimitedCheckBox->checkState();
-                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && cs == Qt::PartiallyChecked) {
-                    switch (AllItemList[wIdx].iMiscId) {
-                    case IMISC_SCROLL: prefix.param1 = GetScrollSpell(lvl, val); break;
-                    case IMISC_RUNE:   prefix.param1 = GetRuneSpell(lvl, val);   break;
-                    case IMISC_BOOK:
-                    default:           prefix.param1 = GetBookSpell(lvl, val);   break;
+                if (prefix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
+                    prefix.param1 = GetBookSpell(lvl, val);
+                    prefix.param2 = MAXSPLLEVEL + 1;
+                } else if (prefix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    if (preIdx == AFFIX_SKILL) {
+                        switch (AllItemList[wIdx].iMiscId) {
+                        case IMISC_SCROLL: prefix.param1 = GetScrollSpell(lvl, val); break;
+                        case IMISC_RUNE:   prefix.param1 = GetRuneSpell(lvl, val);   break;
+                        case IMISC_BOOK:   prefix.param1 = GetBookSpell(lvl, val);   break;
+                        }
+                    } else {
+                        prefix.param1 = GetStaffSpell(lvl, val);
                     }
                     prefix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
@@ -807,6 +854,9 @@ bool ItemsDialog::recreateItem()
                 if (suffix.power == IPL_SKILLLVL && cs == Qt::PartiallyChecked) {
                     suffix.param1 = GetBookSpell(lvl, val);
                     suffix.param2 = MAXSPLLEVEL + 1;
+                } else if (suffix.power == IPL_SKILL && cs == Qt::PartiallyChecked) {
+                    suffix.param1 = GetStaffSpell(lvl, val);
+                    suffix.param2 = MAXSPLLEVEL + 1;
                 } else if (cs == Qt::PartiallyChecked) {
                     suffix.param1 = val;
                 } else {
@@ -838,9 +888,17 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
+            if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && prefix.param2 == MAXSPLLEVEL + 1) {
                 const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
-                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                if (ia == NULL || ia->asPower != prefix.power) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                    goto restart;
+                }
+                if (prefix.power == IPL_SKILLLVL && ia->asValue1 != prefix.param1) {
+                    // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                    goto restart;
+                }
+                if (prefix.power == IPL_SKILL && items[MAXITEMS]._iSpell != prefix.param1) {
                     // LogErrorF("missed uniq-prefix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                     goto restart;
                 }
@@ -850,9 +908,17 @@ start:
             }
         }
         if (suffix.active) {
-            if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
+            if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && suffix.param2 == MAXSPLLEVEL + 1) {
                 const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
-                if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                if (ia == NULL || ia->asPower != suffix.power) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                    goto restart;
+                }
+                if (suffix.power == IPL_SKILLLVL && ia->asValue1 != suffix.param1) {
+                    // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                    goto restart;
+                }
+                if (suffix.power == IPL_SKILL && items[MAXITEMS]._iSpell != suffix.param1) {
                     // LogErrorF("missed uniq-suffix %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                     goto restart;
                 }
@@ -866,19 +932,29 @@ start:
             goto restart;
         }
         if (prefix.active) {
-            if (items[MAXITEMS]._iMiscId != IMISC_NONE) {
+            if (items[MAXITEMS]._iMiscId != IMISC_NONE && items[MAXITEMS]._iMiscId != IMISC_MAP) {
                 if (prefix.param2 == MAXSPLLEVEL + 1 && items[MAXITEMS]._iSpell != prefix.param1) {
+                    // LogErrorF("missed prefix spell %d vs %d (%d) seed%d", items[MAXITEMS]._iSpell, prefix.power, preIdx, seed);
                     goto restart;
                 }
             } else {
             if (items[MAXITEMS]._iNumAffixes == 0 || items[MAXITEMS]._iAffixes[0].asPower != prefix.power) {
-                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, prefix.power, preIdx, seed);
+                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iAffixes[0].asPower, prefix.power, preIdx, seed);
                 goto restart;
             }
             if (prefix.power != IPL_INVALID) {
-                if (prefix.power == IPL_SKILLLVL && prefix.param2 == MAXSPLLEVEL + 1) {
+                // LogErrorF("matched prefix rndval: %d (%d..%d) (%d) seed%d", affix_rnd[0], prefix.param1, prefix.param2, preIdx, seed);
+                if ((prefix.power == IPL_SKILLLVL || prefix.power == IPL_SKILL) && prefix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : &items[MAXITEMS]._iAffixes[0];
-                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != prefix.param1) {
+                    if (ia == NULL || ia->asPower != prefix.power) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                        goto restart;
+                    }
+                    if (prefix.power == IPL_SKILLLVL && ia->asValue1 != prefix.param1) {
+                        // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
+                        goto restart;
+                    }
+                    if (prefix.power == IPL_SKILL && items[MAXITEMS]._iSpell != prefix.param1) {
                         // LogErrorF("missed preval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, prefix.param1, preIdx, seed);
                         goto restart;
                     }
@@ -890,14 +966,34 @@ start:
             }
         }
         if (suffix.active) {
-            if (items[MAXITEMS]._iNumAffixes == 0 || (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) || (items[MAXITEMS]._iNumAffixes > 1 && items[MAXITEMS]._iAffixes[1].asPower != suffix.power)) {
-                // LogErrorF("missed prefix %d vs %d (%d) seed%d", items[MAXITEMS]._iPrePower, suffix.power, sufIdx);
+            if (items[MAXITEMS]._iNumAffixes == 0) {
+                // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
                 goto restart;
             }
+            if (items[MAXITEMS]._iNumAffixes == 1 && items[MAXITEMS]._iAffixes[0].asPower != suffix.power) {
+                if (items[MAXITEMS]._iAffixes[0].asPower != suffix.power) {
+                    // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
+                    goto restart;
+                }
+            }
+            if (items[MAXITEMS]._iNumAffixes > 1) {
+                if (items[MAXITEMS]._iAffixes[1].asPower != suffix.power) {
+                    // LogErrorF("missed suffix %d (%d,%d) vs %d (%d) seed%d", items[MAXITEMS]._iNumAffixes, items[MAXITEMS]._iAffixes[0].asPower, items[MAXITEMS]._iAffixes[1].asPower, suffix.power, sufIdx);
+                    goto restart;
+                }
+            }
             if (suffix.power != IPL_INVALID) {
-                if (suffix.power == IPL_SKILLLVL && suffix.param2 == MAXSPLLEVEL + 1) {
+                if ((suffix.power == IPL_SKILLLVL || suffix.power == IPL_SKILL) && suffix.param2 == MAXSPLLEVEL + 1) {
                     const ItemAffixStruct *ia = items[MAXITEMS]._iNumAffixes == 0 ? NULL : (items[MAXITEMS]._iNumAffixes == 1 ? &items[MAXITEMS]._iAffixes[0] : &items[MAXITEMS]._iAffixes[1]);
-                    if (ia == NULL || ia->asPower != IPL_SKILLLVL || ia->asValue1 != suffix.param1) {
+                    if (ia == NULL || ia->asPower != suffix.power) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                        goto restart;
+                    }
+                    if (suffix.power == IPL_SKILLLVL && ia->asValue1 != suffix.param1) {
+                        // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
+                        goto restart;
+                    }
+                    if (suffix.power == IPL_SKILL && items[MAXITEMS]._iSpell != suffix.param1) {
                         // LogErrorF("missed sufval %d vs %d (%d) seed%d", ia == NULL ? -1 : ia->asPower, suffix.param1, sufIdx, seed);
                         goto restart;
                     }

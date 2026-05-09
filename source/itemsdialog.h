@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QComboBox>
 
 #include "itempropertieswidget.h"
 #include "affixsliderwidget.h"
@@ -19,6 +20,9 @@ public:
     ~ItemsDialog();
 
     void initialize();
+
+    static int addAffixOptions(int idx, int ci, QComboBox *preComboBox, QComboBox *sufComboBox);
+    static void addUniqueOptions(int uniqIdx, QComboBox *preComboBox, QComboBox *sufComboBox);
 
 private:
     void updateFilters();

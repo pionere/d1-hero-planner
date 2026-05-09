@@ -106,7 +106,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	magic = myplr._pMagic;
 #ifdef HELLFIRE
 	if (SPELL_RUNE(sn))
-		sl += myplr._pDexterity >> 3;
+		sl += myplr._pDexterity >> 4;
 #endif
 	switch (sn) {
 	case SPL_FIREBOLT:
@@ -120,7 +120,10 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
-		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+		magic <<= 1;
+		magic++;
+		sl <<= 5;
+		maxd = 3 * (magic * sl) / (magic + sl);
 		break;
 	case SPL_FLASH:
 		mind = magic >> 1;
@@ -324,9 +327,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		*mindam = mind;
 		*maxdam = maxd;
 	} return;
-#ifdef HELLFIRE
 	case SPL_FIRERING:
-#endif
 	case SPL_FIREWALL:
 		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
 		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);
@@ -355,15 +356,20 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
-		mind = ((magic >> 3) + 2 * sl + 1) * 4;
-		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+		magic >>= 4;
+		magic++;
+		mind = 32 * (magic * sl) / (magic + sl);
+		maxd = mind + sl * 4;
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNENOVA:
 #endif
 	case SPL_NOVA:
 		mind = 1;
-		maxd = (magic >> 1) + (sl << 5);
+		magic <<= 2;
+		magic++;
+		sl <<= 6;
+		maxd = (magic * sl) / (magic + sl);
 		break;
 	case SPL_INFERNO:
 		mind = (magic * 20) >> 6;
@@ -423,7 +429,6 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		mind = 1;
 		maxd = ((magic >> 1) + sl) << (-3 + 5);
 		break;
-	case SPL_RUNEWAVE:
 	case SPL_IMMOLAT:
 		mind = 1 + (magic >> 3);
 		maxd = mind + 4;
@@ -433,8 +438,11 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		}
 		break;*/
 	case SPL_RUNEFIRE:
-		mind = 1 + (magic >> 1) + 16 * sl;
-		maxd = 1 + (magic >> 1) + 32 * sl;
+		magic >>= 0;
+		magic++;
+		sl <<= 4;
+		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		maxd = mind + (sl >> 2);
 		break;
 #endif
 	default:
@@ -470,13 +478,13 @@ void SkillPlrByPlrDamage(int sn, int sl, int dist, int source, int target, int *
 
 void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 {
-	int k, magic, mind, maxd = 0, dur = 0;
-
+	int k, mind, maxd = 0, dur = 0;
+	unsigned magic;
 	// assert((unsigned)sn < NUM_SPELLS);
 	magic = hero->getMagic(); //  myplr._pMagic;
 #ifdef HELLFIRE
 	if (SPELL_RUNE(sn))
-		sl += hero->getDexterity() /*myplr._pDexterity*/ >> 3;
+		sl += hero->getDexterity() /*myplr._pDexterity*/ >> 4;
 #endif
 	switch (sn) {
 	case SPL_GUARDIAN:
@@ -491,7 +499,10 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #endif
 	case SPL_LIGHTNING:
 		mind = 1;
-		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+		magic <<= 1;
+		magic++;
+		sl <<= 5;
+		maxd = 3 * (magic * sl) / (magic + sl);
 		break;
 	case SPL_FLASH:
 		mind = magic >> 1;
@@ -526,7 +537,6 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 #ifdef HELLFIRE
 	case SPL_BUCKLE:
 	case SPL_WHITTLE:
-	case SPL_RUNESTONE:
 #endif
 		break;
 	case SPL_HEAL:
@@ -585,6 +595,9 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_SHROUD:
 		dur = 32 * sl + 160;
 		break;
+#ifdef HELLFIRE
+	case SPL_RUNESTONE:
+#endif
 	case SPL_STONE:
 		dur = (sl + 1) << (7 + 6);
 		dur >>= 5;
@@ -594,9 +607,7 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 			dur = 239;
 		snprintf(infostr, sizeof(infostr), "Dur <= %.1fs", tickToSec(dur));
 		return;
-#ifdef HELLFIRE
 	case SPL_FIRERING:
-#endif
 	case SPL_FIREWALL:
 		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
 		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);
@@ -628,15 +639,20 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
-		mind = ((magic >> 3) + 2 * sl + 1) * 4;
-		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+		magic >>= 4;
+		magic++;
+		mind = 32 * (magic * sl) / (magic + sl);
+		maxd = mind + sl * 4;
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNENOVA:
 #endif
 	case SPL_NOVA:
 		mind = 1;
-		maxd = (magic >> 1) + (sl << 5);
+		magic <<= 2;
+		magic++;
+		sl <<= 6;
+		maxd = (magic * sl) / (magic + sl);
 		break;
 	case SPL_INFERNO:
 		mind = (magic * 20) >> 6;
@@ -707,8 +723,11 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		}
 		break;*/
 	case SPL_RUNEFIRE:
-		mind = 1 + (magic >> 1) + 16 * sl;
-		maxd = 1 + (magic >> 1) + 32 * sl;
+		magic >>= 0;
+		magic++;
+		sl <<= 4;
+		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		maxd = mind + (sl >> 2);
 		break;
 #endif
 	default:
@@ -957,7 +976,7 @@ int GetBaseMissile(int mtype)
     case MIS_OPITEM:
     case MIS_REPAIR:
     case MIS_DISARM: break;
-    case MIS_INFERNOC: mtype = MIS_FIREWALL; break;
+    case MIS_INFERNOC: mtype = MIS_INFERNO; break;
     case MIS_INFERNO:
     //case MIS_FIRETRAP:
     case MIS_BARRELEX: break;

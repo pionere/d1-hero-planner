@@ -155,19 +155,27 @@ void SkillDetailsWidget::updateFields()
         this->ui->skillName->setText(infostr);
         this->ui->skillAnimType->setText(GetAnimTypeText(spelldata[sn].sType));
         int lvl = -1;
-        if ((this->hero->getFixedSkills() & SPELL_MASK(sn)) || this->skills[sn] != 0) {
+        int baseLvl = this->skills[sn];
+        if (baseLvl != 0) {
             lvl = this->skills[sn] + this->hero->getSkillLvl(sn) - this->hero->getSkillLvlBase(sn);
             if (lvl < 0)
                 lvl = 0;
+        } else if (this->hero->getFixedSkills() & SPELL_MASK(sn)) {
+            lvl = 1;
         }
+
         this->ui->skillLevel->setText(lvl >= 0 ? QString::number(lvl) : QString());
         this->ui->skillManaCost->setText(lvl >= 0 ? QString::number(GetSkillCost(sn, lvl, this->hero->getLevel())) : QString());
 
-        QString desc = tr("Not available");
-        if (lvl >= 0) {
+        infostr[0] = '\0';
+        if (lvl < 0 && (spelldata[sn].sStaffLvl != SPELL_NA || SPELL_RUNE(sn)))
+            lvl = 1;
+        if (lvl > 0)
             GetSkillDesc(this->hero, sn, lvl);
+        QString desc = tr("Not available");
+        if (infostr[0] != '\0')
             desc = infostr;
-        }
+
         this->ui->skillDesc->setText(desc);
         int sources = this->hero->getSkillSources(sn);
         if (this->skills[sn] != 0)

@@ -1106,25 +1106,6 @@ static void SetStaffSpell(ItemStruct* is, unsigned lvl)
 	is->_iIvalue += v;
 }
 
-int GetItemSpell(int idx)
-{
-	int ns, bs;
-	BYTE ss[NUM_SPELLS];
-
-	ns = 0;
-	for (bs = 0; bs < (IsHellfireGame ? NUM_SPELLS : NUM_SPELLS_DIABLO); bs++) {
-		if (spelldata[bs].sManaCost != 0) { // TODO: use sSkillFlags ?
-			// assert(!IsMultiGame || bs != SPL_RESURRECT);
-			ss[ns] = bs;
-			ns++;
-		}
-	}
-	// assert(ns > 0);
-	if ((unsigned)idx >= (unsigned)ns)
-		return ns;
-	return ss[idx];
-}
-
 static void GetItemAttrs(int ii, int idata, unsigned lvl)
 {
 	ItemStruct* is;
@@ -1279,6 +1260,14 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 	case IPL_REQSTR:
 		is->_iMinStr += r;
 		break;
+	case IPL_SKILL:
+		param1 = GetStaffSpell(is->_iCreateInfo & CF_LEVEL);
+		param2 = RandRangeLow(spelldata[param1].sStaffMin, spelldata[param1].sStaffMax);
+
+		r2 = param2 * spelldata[param1].sStaffCost;
+		is->_ivalue += r2;
+		is->_iIvalue += r2;
+		/* fall-through */
 	case IPL_SETSKILL:
 		ias->asValue0 = param1;
 
@@ -1315,12 +1304,46 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 	return r;
 }
 
+static void AddItemAffix(const AffixData *pres, int flgs, BYTE range, unsigned lvl, BOOLEAN good, ItemStruct* is, INTPAIR& valmod, int i)
+{
+	int v, tw = 0;
+	std::pair<const AffixData*, int> lw[ITEM_RNDAFFIX_MAX];
+	std::pair<const AffixData*, int>* lwp = &lw[0];
+	for ( ; pres->PLRnd != 0; pres++) {
+		if ((flgs & pres->PLIType)
+			&& pres->PLRanges[range].from <= lvl && pres->PLRanges[range].to >= lvl
+			// && (!onlygood || pres->PLOk)) {
+			&& (good <= pres->PLOk)) {
+			tw += pres->PLRnd;
+			lwp->first = pres;
+			lwp->second = tw;
+			lwp++;
+		}
+	}
+	if (tw != 0) {
+		// assert(tw <= 0x7FFF);
+		tw = random_low(23, tw);
+		lwp = &lw[0];
+		while (tw >= lwp->second) {
+			lwp++;
+		}
+		pres = lwp->first;
+		is->_iMagical = ITEM_QUALITY_MAGIC;
+		is->_iUnidentified = TRUE;
+		affix_rnd[i] = v = SaveItemPower(
+			is,
+			pres->PLPower,
+			pres->PLParam1,
+			pres->PLParam2);
+		valmod.v1 += PLVal(pres, v);
+		valmod.v0 += pres->PLMultVal;
+	}
+}
+
 static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, bool onlygood)
 {
-	int nl, v;
-	int va = 0, vm = 0;
-	const AffixData *pres, *sufs;
-	const AffixData* l[ITEM_RNDAFFIX_MAX];
+	int v;
+	INTPAIR valmod = { 0 , 0 };
 	BYTE affix;
 	BOOLEAN good;
 
@@ -1334,69 +1357,21 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 	static_assert(TRUE > FALSE, "GetItemPower assumes TRUE is greater than FALSE.");
 	good = (onlygood || random_(0, 3) != 0) ? TRUE : FALSE;
 	if (affix >= 2) {
-		nl = 0;
-		for (pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++) {
-			if ((flgs & pres->PLIType)
-			 && pres->PLRanges[range].from <= lvl && pres->PLRanges[range].to >= lvl
-			// && (!onlygood || pres->PLOk)) {
-			 && (good <= pres->PLOk)) {
-				l[nl] = pres;
-				nl++;
-				if (pres->PLDouble) {
-					l[nl] = pres;
-					nl++;
-				}
-			}
-		}
-		if (nl != 0) {
-			// assert(nl <= 0x7FFF);
-			pres = l[random_low(23, nl)];
-			is->_iMagical = ITEM_QUALITY_MAGIC;
-			is->_iUnidentified = TRUE;
-			affix_rnd[0] = v = SaveItemPower(
-			    is,
-			    pres->PLPower,
-			    pres->PLParam1,
-			    pres->PLParam2);
-			va += PLVal(pres, v);
-			vm += pres->PLMultVal;
-		}
+		AddItemAffix(PL_Prefix, flgs, range, lvl, good, is, valmod, 0);
 	}
 	if (affix & 1) {
-		nl = 0;
-		for (sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++) {
-			if ((sufs->PLIType & flgs)
-			    && sufs->PLRanges[range].from <= lvl && sufs->PLRanges[range].to >= lvl
-			   // && (!onlygood || sufs->PLOk)) {
-			    && (good <= sufs->PLOk)) {
-				l[nl] = sufs;
-				nl++;
-			}
-		}
-		if (nl != 0) {
-			// assert(nl <= 0x7FFF);
-			sufs = l[random_low(23, nl)];
-			is->_iMagical = ITEM_QUALITY_MAGIC;
-			is->_iUnidentified = TRUE;
-			affix_rnd[1] = v = SaveItemPower(
-			    is,
-			    sufs->PLPower,
-			    sufs->PLParam1,
-			    sufs->PLParam2);
-			va += PLVal(sufs, v);
-			vm += sufs->PLMultVal;
-		}
+		AddItemAffix(PL_Suffix, flgs, range, lvl, good, is, valmod, 1);
 	}
 	// prefix or suffix added -> recalculate the value of the item
 	if (is->_iMagical == ITEM_QUALITY_MAGIC) {
 		if (is->_iMiscId != IMISC_MAP) {
-			v = vm;
+			v = valmod.v0;
 			if (v >= 0) {
 				v *= is->_ivalue;
 			} else {
 				v = is->_ivalue / -v;
 			}
-			v += va;
+			v += valmod.v1;
 			if (v <= 0) {
 				v = 1;
 			}
@@ -1807,6 +1782,7 @@ static void PrintEquipmentPower(BYTE idx, const ItemStruct* is)
 	case IPL_REQSTR:
 		copy_cstr(tempstr, "altered requirements");
 		break;
+	case IPL_SKILL:
 	case IPL_SETSKILL:
 		snprintf(tempstr, sizeof(tempstr), "%s (%d/%d)", spelldata[ias->asValue0].sNameText, is->_iCharges, is->_iMaxCharges);
 		break;
@@ -1853,6 +1829,8 @@ static void PrintEquipmentPower(BYTE idx, const ItemStruct* is)
 		break;
 	default:
 		ASSUME_UNREACHABLE
+		snprintf(tempstr, sizeof(tempstr), "unhandled affix %d", plidx);
+		break;
 	}
 }
 
@@ -1876,12 +1854,14 @@ static void PrintMapPower(BYTE idx, const ItemStruct* is)
 	} break;
 	default:
 		ASSUME_UNREACHABLE
+		snprintf(tempstr, sizeof(tempstr), "unhandled map affix %d", plidx);
+		break;
 	}
 }
 
 void PrintItemPower(BYTE plidx, const ItemStruct* is)
 {
-	if (is->_itype != ITYPE_MISC || is->_iMiscId != IMISC_MAP)
+	if (is->_iMiscId != IMISC_MAP)
 		PrintEquipmentPower(plidx, is);
 	else
 		PrintMapPower(plidx, is);
@@ -1891,19 +1871,18 @@ const char* ItemName(const ItemStruct* is)
 {
 	const char* name = AllItemList[is->_iIdx].iName;
 	if (is->_iIdx == IDI_EAR) {
-		snprintf(tempstr, sizeof(tempstr), "%s%s", name, is->_iPlrName);
+		snprintf(tempstr, sizeof(tempstr), "%s of %s", name, is->_iPlrName);
 		name = tempstr;
-	} else if (is->_iMagical == ITEM_QUALITY_UNIQUE && !is->_iUnidentified)
-		name = UniqueItemList[is->_iUid].UIName;
-	else if (is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL) {
-		snprintf(tempstr, sizeof(tempstr), "%s of %s", name, spelldata[is->_iSpell].sNameText);
-		name = tempstr;
-	} else if (is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
+	} else if (is->_iMagical == ITEM_QUALITY_UNIQUE) {
+		if (!is->_iUnidentified)
+			name = UniqueItemList[is->_iUid].UIName;
+	} else if ((is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL)
+		|| is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
 #ifdef HELLFIRE
 		|| is->_iMiscId == IMISC_RUNE
 #endif
 		) {
-		snprintf(tempstr, sizeof(tempstr), "%s%s", name, spelldata[is->_iSpell].sNameText);
+		snprintf(tempstr, sizeof(tempstr), "%s of %s", name, spelldata[is->_iSpell].sNameText);
 		name = tempstr;
 	}
 	return name;

@@ -30,6 +30,11 @@ typedef unsigned int UINT;
 // control
 //////////////////////////////////////////////////
 
+typedef struct INTPAIR {
+	int v0;
+	int v1;
+} INTPAIR;
+
 typedef struct POS32 {
 	int x;
 	int y;
@@ -68,13 +73,13 @@ typedef struct RANGE {
 } RANGE;
 
 typedef struct AffixData {
+	BYTE PLRnd;
+	BOOLEAN PLOk;
 	BYTE PLPower; // item_effect_type
 	int PLParam1;
 	int PLParam2;
 	RANGE PLRanges[NUM_IARS];
 	int PLIType; // affix_item_type
-	BOOLEAN PLDouble;
-	BOOLEAN PLOk;
 	int PLMinVal;
 	int PLMaxVal;
 	int PLMultVal;
