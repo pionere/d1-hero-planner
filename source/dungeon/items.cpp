@@ -1304,12 +1304,46 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 	return r;
 }
 
+static void AddItemAffix(const AffixData *pres, int flgs, BYTE range, unsigned lvl, BOOLEAN good, ItemStruct* is, INTPAIR& valmod, int i)
+{
+	int v, tw = 0;
+	std::pair<const AffixData*, int> lw[ITEM_RNDAFFIX_MAX];
+	std::pair<const AffixData*, int>* lwp = &lw[0];
+	for ( ; pres->PLRnd != 0; pres++) {
+		if ((flgs & pres->PLIType)
+			&& pres->PLRanges[range].from <= lvl && pres->PLRanges[range].to >= lvl
+			// && (!onlygood || pres->PLOk)) {
+			&& (good <= pres->PLOk)) {
+			tw += pres->PLRnd;
+			lwp->first = pres;
+			lwp->second = tw;
+			lwp++;
+		}
+	}
+	if (tw != 0) {
+		// assert(tw <= 0x7FFF);
+		tw = random_low(23, tw);
+		lwp = &lw[0];
+		while (tw >= lwp->second) {
+			lwp++;
+		}
+		pres = lwp->first;
+		is->_iMagical = ITEM_QUALITY_MAGIC;
+		is->_iUnidentified = TRUE;
+		affix_rnd[i] = v = SaveItemPower(
+			is,
+			pres->PLPower,
+			pres->PLParam1,
+			pres->PLParam2);
+		valmod.v1 += PLVal(pres, v);
+		valmod.v0 += pres->PLMultVal;
+	}
+}
+
 static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, bool onlygood)
 {
-	int nl, v;
-	int va = 0, vm = 0;
-	const AffixData *pres, *sufs;
-	const AffixData* l[ITEM_RNDAFFIX_MAX];
+	int v;
+	INTPAIR valmod = { 0 , 0 };
 	BYTE affix;
 	BOOLEAN good;
 
@@ -1323,58 +1357,10 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 	static_assert(TRUE > FALSE, "GetItemPower assumes TRUE is greater than FALSE.");
 	good = (onlygood || random_(0, 3) != 0) ? TRUE : FALSE;
 	if (affix >= 2) {
-		nl = 0;
-		for (pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++) {
-			if ((flgs & pres->PLIType)
-			 && pres->PLRanges[range].from <= lvl && pres->PLRanges[range].to >= lvl
-			// && (!onlygood || pres->PLOk)) {
-			 && (good <= pres->PLOk)) {
-				l[nl] = pres;
-				nl++;
-				if (pres->PLDouble) {
-					l[nl] = pres;
-					nl++;
-				}
-			}
-		}
-		if (nl != 0) {
-			// assert(nl <= 0x7FFF);
-			pres = l[random_low(23, nl)];
-			is->_iMagical = ITEM_QUALITY_MAGIC;
-			is->_iUnidentified = TRUE;
-			affix_rnd[0] = v = SaveItemPower(
-			    is,
-			    pres->PLPower,
-			    pres->PLParam1,
-			    pres->PLParam2);
-			va += PLVal(pres, v);
-			vm += pres->PLMultVal;
-		}
+		AddItemAffix(PL_Prefix, flgs, range, lvl, good, is, valmod, 0);
 	}
 	if (affix & 1) {
-		nl = 0;
-		for (sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++) {
-			if ((sufs->PLIType & flgs)
-			    && sufs->PLRanges[range].from <= lvl && sufs->PLRanges[range].to >= lvl
-			   // && (!onlygood || sufs->PLOk)) {
-			    && (good <= sufs->PLOk)) {
-				l[nl] = sufs;
-				nl++;
-			}
-		}
-		if (nl != 0) {
-			// assert(nl <= 0x7FFF);
-			sufs = l[random_low(23, nl)];
-			is->_iMagical = ITEM_QUALITY_MAGIC;
-			is->_iUnidentified = TRUE;
-			affix_rnd[1] = v = SaveItemPower(
-			    is,
-			    sufs->PLPower,
-			    sufs->PLParam1,
-			    sufs->PLParam2);
-			va += PLVal(sufs, v);
-			vm += sufs->PLMultVal;
-		}
+		AddItemAffix(PL_Suffix, flgs, range, lvl, good, is, valmod, 1);
 	}
 	// prefix or suffix added -> recalculate the value of the item
 	if (is->_iMagical == ITEM_QUALITY_MAGIC) {

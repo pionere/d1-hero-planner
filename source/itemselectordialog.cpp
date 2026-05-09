@@ -222,24 +222,6 @@ void ItemSelectorDialog::updateFilters()
     idxComboBox->setCurrentIndex(idx);
 }
 
-static QString AffixName(const AffixData *affix)
-{
-    return ItemsDialog::AffixPowerName(affix->PLPower);
-}
-
-static void addUniqueOption(int power, int paramA, int paramB, int idx, QComboBox *preComboBox, QComboBox *sufComboBox)
-{
-    QComboBox *comboBox = preComboBox->count() == 0 ? preComboBox : sufComboBox;
-    if (power == IPL_SKILLLVL && paramA == paramB) {
-        paramA = 0;
-        paramB = GetBookSpell(INT_MAX, -2) - 1;
-    }
-    if (paramA == paramB) {
-        return;
-    }
-    comboBox->addItem(QString("%1 (%2..%3)").arg(ItemsDialog::AffixPowerName(power)).arg(paramA).arg(paramB), QVariant::fromValue(idx));
-}
-
 static QString ItemColor(const ItemStruct* is)
 {
     QString color;
@@ -296,9 +278,6 @@ void ItemSelectorDialog::updateFields()
     this->itemProps->setVisible(this->is->_itype != ITYPE_NONE);
 
     // update whish-lists
-    int flgs = GetItemBonusFlags(AllItemList[idx].itype /* this->is->_itype*/, AllItemList[idx].iMiscId/* this->is->_iMiscId*/);
-    int source = (ci & CF_TOWN) >> 8;
-    int range = source == CFL_NONE ? IAR_DROP : (source == CFL_CRAFTED ? IAR_CRAFT : IAR_SHOP);
     int lvl = ci & CF_LEVEL;
     int si, limitMode;
     bool active;
@@ -355,46 +334,15 @@ void ItemSelectorDialog::updateFields()
         preComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
         sufComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
 
-        if ((ci & ~CF_LEVEL) != 0) {
-            const BOOLEAN good = ((ci & CF_DROP_QUALITY) >> 11) >= CFDQ_GOOD;
-            int alvl = lvl;
-            if (flgs != PLT_JEWEL) // items[ii]._itype != ITYPE_RING && items[ii]._itype != ITYPE_AMULET)
-                alvl = alvl > AllItemList[idx].iMinMLvl ? alvl - AllItemList[idx].iMinMLvl : 0;
-            si = 0;
-            for (const AffixData *pres = PL_Prefix; pres->PLPower != IPL_INVALID; pres++, si++) {
-                if ((flgs & pres->PLIType && good <= pres->PLOk)
-                    && pres->PLRanges[range].from <= alvl && pres->PLRanges[range].to >= alvl) {
-                    preComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(pres)).arg(pres->PLParam1).arg(pres->PLParam2), QVariant::fromValue(si));
-                }
-            }
-            si = 0;
-            for (const AffixData *sufs = PL_Suffix; sufs->PLPower != IPL_INVALID; sufs++, si++) {
-                if ((flgs & sufs->PLIType && good <= sufs->PLOk)
-                    && sufs->PLRanges[range].from <= alvl && sufs->PLRanges[range].to >= alvl) {
-                    sufComboBox->addItem(QString("%1 (%2..%3)").arg(AffixName(sufs)).arg(sufs->PLParam1).arg(sufs->PLParam2), QVariant::fromValue(si));
-                }
-            }
-        }
+        ItemsDialog::addAffixOptions(idx, ci, preComboBox, sufComboBox);
+
         if (preComboBox->count() > 1)
             preComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
         if (sufComboBox->count() > 1)
             sufComboBox->addItem(tr("None"), QVariant::fromValue(AFFIX_NONE));
     } else {
-        // if ((ci & ~CF_LEVEL) != 0) {
-            const UniqItemData* ui = &UniqueItemList[uniqIdx];
-            addUniqueOption(ui->UIPower1, ui->UIParam1a, ui->UIParam1b, 0, preComboBox, sufComboBox);
-            if (ui->UIPower2 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower2, ui->UIParam2a, ui->UIParam2b, 1, preComboBox, sufComboBox);
-            if (ui->UIPower3 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower3, ui->UIParam3a, ui->UIParam3b, 2, preComboBox, sufComboBox);
-            if (ui->UIPower4 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower4, ui->UIParam4a, ui->UIParam4b, 3, preComboBox, sufComboBox);
-            if (ui->UIPower5 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower5, ui->UIParam5a, ui->UIParam5b, 4, preComboBox, sufComboBox);
-            if (ui->UIPower6 != IPL_INVALID) {
-                addUniqueOption(ui->UIPower6, ui->UIParam6a, ui->UIParam6b, 5, preComboBox, sufComboBox);
-            }}}}}
-        // }
+        ItemsDialog::addUniqueOptions(uniqIdx, preComboBox, sufComboBox);
+
         if (preComboBox->count() == 0)
             preComboBox->addItem(tr("Any"), QVariant::fromValue(AFFIX_ANY));
         if (sufComboBox->count() == 0)
