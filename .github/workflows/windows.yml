@@ -37,7 +37,7 @@ jobs:
         mkdir dist
         copy build\Release\${{ env.PROJECT_NAME }}.exe dist
         cd dist
-        windeployqt ${{ env.PROJECT_NAME }}.exe --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler --no-system-dxc-compiler --no-translations --no-quick-import --no-ffmpeg
+        windeployqt ${{ env.PROJECT_NAME }}.exe --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler --no-virtualkeyboard --no-translations --no-quick-import
       shell: cmd
 
     - name: Upload
