@@ -13,7 +13,8 @@ env:
 jobs:
   build:
 
-    runs-on: windows-latest
+    #runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
     - name: Checkout
@@ -22,7 +23,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.8.3'
+        version: '6.2.4'
         cache: 'true'
         modules: 'qtmultimedia'
 
@@ -38,7 +39,7 @@ jobs:
         mkdir dist
         copy build\Release\${{ env.PROJECT_NAME }}.exe dist
         cd dist
-        windeployqt ${{ env.PROJECT_NAME }}.exe --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler --no-translations --no-quick-import
+        windeployqt ${{ env.PROJECT_NAME }}.exe --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler --no-virtualkeyboard --no-translations --no-quick-import
       shell: cmd
 
     - name: Upload
