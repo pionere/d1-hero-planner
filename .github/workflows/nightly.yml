@@ -73,6 +73,51 @@ jobs:
         path: D1HeroPlanner.zip
         name: D1HeroPlanner-Windows-x64.zip
 
+  #  cmake 64bit classic
+  build_win_x64_c:
+    needs: build_check
+    if: ${{ needs.build_check.outputs.should_run != 'false' }}
+    name: Nightly-Win-x64c
+
+    runs-on: windows-2022
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7
+
+    - name: Install Qt
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.2.4'
+        modules: 'qtmultimedia'
+
+    - name: Configure
+      run: cmake -S. -Bbuild
+
+    - name: Make
+      run: cmake --build build -j $(nproc) --config Release
+
+    - name: Package
+      run: |
+        mkdir dist
+        copy build\Release\D1HeroPlanner.exe dist
+        cd dist
+        windeployqt D1HeroPlanner.exe --no-compiler-runtime --no-opengl-sw --no-system-d3d-compiler --no-virtualkeyboard --no-translations --no-quick-import
+      shell: cmd
+
+    - name: Create zip
+      uses: thedoctor0/zip-release@main
+      with:
+        type: 'zip'
+        filename: '../D1HeroPlanner.zip'
+        directory: 'dist'
+
+    - name: Upload
+      uses: actions/upload-artifact@v7
+      with:
+        path: D1HeroPlanner.zip
+        name: D1HeroPlanner-Windows-x64c.zip
+
   #  cmake 32bit
   build_win_x86:
     needs: build_check
@@ -169,6 +214,12 @@ jobs:
         name: D1HeroPlanner-Windows-x64.zip
     - run: mv ${{github.workspace}}/D1HeroPlanner.zip ${{github.workspace}}/D1HeroPlanner-Windows-x64.zip
 
+    - name: Download Classic Win D1HeroPlanner artifact
+      uses: actions/download-artifact@v8
+      with:
+        name: D1HeroPlanner-Windows-x64c.zip
+    - run: mv ${{github.workspace}}/D1HeroPlanner.zip ${{github.workspace}}/D1HeroPlanner-Windows-x64c.zip
+
     - name: Download Linux D1HeroPlanner artifact
       uses: actions/download-artifact@v8
       with:
@@ -183,6 +234,7 @@ jobs:
         echo '_Filename_ | _Description_'   >> RELEASE_NOTE.md
         echo '------------ | -------------' >> RELEASE_NOTE.md
         echo '[D1HeroPlanner-Windows-x64.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Windows-x64.zip)   | D1HeroPlanner for `Windows x64`' >> RELEASE_NOTE.md
+        echo '[D1HeroPlanner-Windows-x64c.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Windows-x64c.zip)   | D1HeroPlanner Classic for `Windows x64`' >> RELEASE_NOTE.md
         echo '[D1HeroPlanner-Windows-x86.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Windows-x86.zip)   | D1HeroPlanner for `Windows x86`' >> RELEASE_NOTE.md
         echo '[D1HeroPlanner-Linux-x64.zip](../../releases/download/dhp-nightly/D1HeroPlanner-Linux-x64.zip)   | D1HeroPlanner for `Linux x64`' >> RELEASE_NOTE.md
 
@@ -214,6 +266,7 @@ jobs:
         prerelease: true
         files: |
           ${{github.workspace}}/D1HeroPlanner-Windows-x64.zip
+          ${{github.workspace}}/D1HeroPlanner-Windows-x64c.zip
           ${{github.workspace}}/D1HeroPlanner-Windows-x86.zip
           ${{github.workspace}}/D1HeroPlanner-Linux-x64.zip
         fail_on_unmatched_files: true
