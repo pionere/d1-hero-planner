@@ -22,7 +22,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.8.5'
+        version: '6.5.*'
         cache: 'true'
         modules: 'qtmultimedia'
 
@@ -32,6 +32,7 @@ jobs:
     - name: Make
       run: cmake --build build -j $(nproc) --config Release
 
+    # --no-system-dxc-compiler --no-ffmpeg
     - name: Package
       run: |
         mkdir dist
