@@ -20,6 +20,8 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
+POS32 myview;
+
 /** Current game seed */
 int32_t sglGameSeed;
 
@@ -178,6 +180,11 @@ void LoadFileWithMem(const char* pszName, BYTE* p)
 	if (fileLen != 0) {
 		memcpy(p, fileData.constData(), fileLen);
 	}
+}
+
+void SStrCopy(char* dest, const char* src, int max_length)
+{
+	snprintf(dest, max_length, "%s", src);
 }
 
 DEVILUTION_END_NAMESPACE

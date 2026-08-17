@@ -153,16 +153,18 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	unsigned cc = 0; // critical hit chance
 	int btochit = 0; // bonus chance to critical hit
+	unsigned pmodp = 0; // added power
 
 	// Loadgfx &= plr._pDunLevel == currLvl._dLevelIdx && !plr._pLvlChanging;
 
 	pi = plr._pInvBody;
 	for (i = NUM_INVLOC; i != 0; i--, pi++) {
-		if (pi->_itype != ITYPE_NONE && pi->_iStatFlag) {
+		if (pi->_itype != ITYPE_NONE && plr._pStrength >= pi->_iReqStr) {
 			cac = pi->_iAC;
 			cdmod = 0;
 			cdmodp = 0;
 
+			const bool doDam = /*plr._pStrength >= pi->_iReqStr && plr._pMagic >= pi->_iReqMag */plr._pDexterity >= pi->_iReqDex;
 			if (pi->_iMagical != ITEM_QUALITY_NORMAL) {
 				idi |= pi->_iUnidentified;
 				btohit += pi->_iPLToHit;
@@ -203,6 +205,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 					case IPL_CRITP:
 						btochit += ias->asValue0;
 						break;
+					case IPL_POWMOD:
+						pmodp += ias->asValue0;
+						break;
 					case IPL_SKILLLVL:
 						skillLvlMods[ias->asValue1] += ias->asValue0;
 						break;
@@ -210,20 +215,28 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 						skillLvlAdds += ias->asValue0;
 						break;
 					case IPL_FIREDAM:
-						fmin += ias->asFrom;
-						fmax += ias->asTo;
+						if (doDam) {
+							fmin += ias->asFrom;
+							fmax += ias->asTo;
+						}
 						break;
 					case IPL_LIGHTDAM:
-						lmin += ias->asFrom;
-						lmax += ias->asTo;
+						if (doDam) {
+							lmin += ias->asFrom;
+							lmax += ias->asTo;
+						}
 						break;
 					case IPL_MAGICDAM:
-						mmin += ias->asFrom;
-						mmax += ias->asTo;
+						if (doDam) {
+							mmin += ias->asFrom;
+							mmax += ias->asTo;
+						}
 						break;
 					case IPL_ACIDDAM:
-						amin += ias->asFrom;
-						amax += ias->asTo;
+						if (doDam) {
+							amin += ias->asFrom;
+							amax += ias->asTo;
+						}
 						break;
 					case IPL_ABS_ANYHIT:
 						absAnyHit += ias->asValue0;
@@ -321,8 +334,9 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			}
 
 			tac += cac;
+			pmodp += pi->_iBasePow;
 			maxdam = pi->_iMaxDam;
-			if (maxdam == 0)
+			if (!doDam || maxdam == 0)
 				continue;
 			cdmodp += 100;
 			cc += pi->_iBaseCrit;
@@ -420,14 +434,12 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	plr._pMana = imana + plr._pManaBase;
 	plr._pMaxMana = imana + plr._pMaxManaBase;
 
-	madd += plr._pBaseMag;
 	vadd += plr._pBaseVit;
-	madd = std::max(0, madd);
 	vadd = std::max(0, vadd);
-	// use calculated str/dex from CalcItemReqs
+	// use calculated str/dex/mag from CalcItemReqs
 	int sadd = plr._pStrength;
 	int dadd = plr._pDexterity;
-	plr._pMagic = madd;
+	madd = plr._pMagic;
 	plr._pVitality = vadd;
 	if (plr._pTimer[PLTR_RAGE] > 0) {
 		sadd += 2 * plr._pLevel;
@@ -450,7 +462,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	bf = false;
 	wt = SFLAG_MELEE;
-	gfx = wLeft->_iStatFlag ? wLeft->_itype : ITYPE_NONE;
+	gfx = plr._pStrength >= wLeft->_iReqStr ? wLeft->_itype : ITYPE_NONE;
 
 	switch (gfx) {
 	case ITYPE_NONE:
@@ -488,16 +500,17 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	}
 #endif*/
 	maxdam = plr._pMaxHP >> (2 + 1 - 1); // ~1/4 hp - halved by resists, doubled by MissToPlr
-	if (wRight->_itype == ITYPE_SHIELD && wRight->_iStatFlag
+	if (wRight->_itype == ITYPE_SHIELD && plr._pStrength >= wRight->_iReqStr
 	 && (gfx == ANIM_ID_UNARMED || gfx == ANIM_ID_SWORD || gfx == ANIM_ID_MACE)) {
-		tac += ((dadd - (1 << 7)) * wRight->_iAC) >> 7;
-		bf = true;
 		static_assert((int)ANIM_ID_UNARMED + 1 == (int)ANIM_ID_UNARMED_SHIELD, "CalcPlrItemVals uses inc to set gfx with shield I.");
 		static_assert((int)ANIM_ID_SWORD + 1 == (int)ANIM_ID_SWORD_SHIELD, "CalcPlrItemVals uses inc to set gfx with shield II.");
 		static_assert((int)ANIM_ID_MACE + 1 == (int)ANIM_ID_MACE_SHIELD, "CalcPlrItemVals uses inc to set gfx with shield III.");
 		gfx++;
-
-		maxdam += wRight->_iAC << (6 + 2 + 1 - 1); // 4*AC - halved by resists, doubled by MissToPlr
+		bf = wRight->_iStatFlag;
+		if (bf) {
+			tac += ((dadd - (1 << 7)) * wRight->_iAC) >> 7;
+			maxdam += wRight->_iAC << (6 + 2 + 1 - 1); // 4*AC - halved by resists, doubled by MissToPlr
+		}
 	}
 	plr._pIChMinDam = maxdam >> 1;
 	plr._pIChMaxDam = maxdam;
@@ -524,6 +537,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 	// calculate bonuses
 	cc = cc * (btochit + 100) / 50;
 	plr._pIBaseHitBonus = btohit == 0 ? IBONUS_NONE : (btohit >= 0 ? IBONUS_POSITIVE : IBONUS_NEGATIVE);
+	plr._pIPower = madd * (100 + pmodp) / 100;
 	plr._pIEvasion = dadd / 5 + 2 * plr._pLevel;
 	plr._pIAC = tac + plr._pIEvasion;
 	btohit += 50; // + plr._pLevel;
@@ -665,8 +679,6 @@ static void CalcItemReqs(int pnum)
 	ItemStruct* pi;
 	int sa, ma, da, sc, mc, dc;
 	int strReq[NUM_INVLOC];
-	int magReq[NUM_INVLOC];
-	int dexReq[NUM_INVLOC];
 
 	sa = plr._pBaseStr;
 	ma = plr._pBaseMag;
@@ -680,9 +692,7 @@ static void CalcItemReqs(int pnum)
 				sa += pi->_iPLStr;
 				ma += pi->_iPLMag;
 				da += pi->_iPLDex;
-				strReq[i] = pi->_iMinStr == 0 ? INT_MIN : pi->_iMinStr + (pi->_iPLStr > 0 ? pi->_iPLStr : 0);
-				magReq[i] = pi->_iMinMag == 0 ? INT_MIN : pi->_iMinMag + (pi->_iPLMag > 0 ? pi->_iPLMag : 0);
-				dexReq[i] = pi->_iMinDex == 0 ? INT_MIN : pi->_iMinDex + (pi->_iPLDex > 0 ? pi->_iPLDex : 0);
+				strReq[i] = pi->_iReqStr == 0 ? INT_MIN : pi->_iReqStr + (pi->_iPLStr > 0 ? pi->_iPLStr : 0);
 			//}
 		}
 	}
@@ -691,7 +701,7 @@ recheck:
 	for (i = 0; i < NUM_INVLOC; i++, pi++) {
 		if (pi->_itype == ITYPE_NONE)
 			continue;
-		if (sa >= strReq[i] && ma >= magReq[i] && da >= dexReq[i])
+		if (sa >= strReq[i])
 			continue;
 		if (pi->_iStatFlag) {
 			pi->_iStatFlag = FALSE;
@@ -714,6 +724,10 @@ recheck:
 
 	pi = &plr._pHoldItem;
 	ItemStatOk(pnum, pi);
+
+	pi = plr._pInvBody;
+	for (i = NUM_INVLOC; i != 0; i--, pi++)
+		ItemStatOk(pnum, pi);
 
 	pi = plr._pInvList;
 	for (i = NUM_INV_GRID_ELEM; i != 0; i--, pi++)
@@ -763,9 +777,9 @@ void SetItemSData(ItemStruct* is, int idata)
 	is->_iMinDam = ids->iMinDam;
 	is->_iMaxDam = ids->iMaxDam;
 	is->_iBaseCrit = ids->iBaseCrit;
-	is->_iMinStr = ids->iMinStr;
-	is->_iMinMag = ids->iMinMag;
-	is->_iMinDex = ids->iMinDex;
+	is->_iReqStr = ids->iReqStr;
+	is->_iReqMag = ids->iReqMag;
+	is->_iReqDex = ids->iReqDex;
 	is->_iUsable = ids->iUsable;
 	ac_rnd = is->_iAC = ids->iMinAC == ids->iMaxAC ? ids->iMinAC : RandRangeLow(ids->iMinAC, ids->iMaxAC);
 	is->_iDurability = ids->iUsable ? 1 : ids->iDurability; // STACK
@@ -873,20 +887,6 @@ void CreatePlrItems(int pnum)
 		CreateBaseItem(&plr._pSpdList[0], IDI_HEAL);
 		CreateBaseItem(&plr._pSpdList[1], IDI_HEAL);
 		break;
-	case PC_BARD:
-		CreateBaseItem(&plr._pInvBody[INVLOC_HAND_LEFT], IDI_BARDSWORD);
-		CreateBaseItem(&plr._pInvBody[INVLOC_HAND_RIGHT], IDI_BARDDAGGER);
-
-		CreateBaseItem(&plr._pSpdList[0], IDI_HEAL);
-		CreateBaseItem(&plr._pSpdList[1], IDI_HEAL);
-		break;
-	case PC_BARBARIAN:
-		CreateBaseItem(&plr._pInvBody[INVLOC_HAND_LEFT], IDI_BARBCLUB);
-		CreateBaseItem(&plr._pInvBody[INVLOC_HAND_RIGHT], IDI_WARRSHLD);
-
-		CreateBaseItem(&plr._pSpdList[0], IDI_HEAL);
-		CreateBaseItem(&plr._pSpdList[1], IDI_HEAL);
-		break;
 #endif
 	}
 
@@ -932,7 +932,8 @@ static void SetBookSpell(ItemStruct* is, unsigned lvl)
 
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
-	is->_iMinMag = sd->sMinMag;
+
+	is->_iReqMag = sd->sReqMag;
 	// assert(is->_ivalue == 0 && is->_iIvalue == 0);
 	is->_ivalue = sd->sBookCost;
 	is->_iIvalue = sd->sBookCost;
@@ -993,7 +994,8 @@ static void SetScrollSpell(ItemStruct* is, unsigned lvl)
 
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
-	is->_iMinMag = sd->sMinMag > SCRL_MAG ? sd->sMinMag - SCRL_MAG : 0;
+
+	is->_iReqMag = sd->sReqMag > SCRL_MAG ? sd->sReqMag - SCRL_MAG : 0;
 	// assert(is->_ivalue == 0 && is->_iIvalue == 0);
 	is->_ivalue = sd->sStaffCost;
 	is->_iIvalue = sd->sStaffCost;
@@ -1034,26 +1036,17 @@ static void SetRuneSpell(ItemStruct* is, unsigned lvl)
 
 	is->_iSpell = bs;
 	sd = &spelldata[bs];
-	is->_iMinMag = sd->sMinMag;
+
+	is->_iReqMag = sd->sReqMag;
 	// assert(is->_ivalue == 0 && is->_iIvalue == 0);
 	is->_ivalue = sd->sStaffCost;
 	is->_iIvalue = sd->sStaffCost;
-	switch (sd->sType) {
-	case STYPE_FIRE:
-		bs = ICURS_RUNE_OF_FIRE;
-		break;
-	case STYPE_LIGHTNING:
-		bs = ICURS_RUNE_OF_LIGHTNING;
-		break;
-	case STYPE_MAGIC:
-	// case STYPE_NONE:
-		bs = ICURS_RUNE_OF_STONE;
-		break;
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
-	is->_iCurs = bs;
+
+	static_assert(ICURS_RUNE_OF_WAVE == ICURS_RUNE_OF_FIRE + SPL_RUNEWAVE - SPL_RUNEFIRE, "SetRuneSpell requires ordered ICURS_RUNE_/SPL_RUNE enums I.");
+	static_assert(ICURS_RUNE_OF_LIGHTNING == ICURS_RUNE_OF_FIRE + SPL_RUNELIGHT - SPL_RUNEFIRE, "SetRuneSpell requires ordered ICURS_RUNE_/SPL_RUNE enums II.");
+	static_assert(ICURS_RUNE_OF_NOVA == ICURS_RUNE_OF_FIRE + SPL_RUNENOVA - SPL_RUNEFIRE, "SetRuneSpell requires ordered ICURS_RUNE_/SPL_RUNE enums III.");
+	static_assert(ICURS_RUNE_OF_STONE == ICURS_RUNE_OF_FIRE + SPL_RUNESTONE - SPL_RUNEFIRE, "SetRuneSpell requires ordered ICURS_RUNE_/SPL_RUNE enums IV.");
+	is->_iCurs = ICURS_RUNE_OF_FIRE + bs - SPL_RUNEFIRE;
 }
 #endif
 
@@ -1100,7 +1093,7 @@ static void SetStaffSpell(ItemStruct* is, unsigned lvl)
 	is->_iAffixes[0].asValue0 = bs;
 	is->_iNumAffixes = 1;
 
-	is->_iMinMag = sd->sMinMag;
+	is->_iReqMag = sd->sReqMag;
 	v = is->_iCharges * sd->sStaffCost;
 	is->_ivalue += v;
 	is->_iIvalue += v;
@@ -1182,6 +1175,7 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 	case IPL_ACIDRES:
 	case IPL_ALLRES:
 	case IPL_CRITP:
+	case IPL_POWMOD:
 		break;
 	case IPL_SKILLLVL:
 		ias->asValue1 = GetBookSpell(is->_iCreateInfo & CF_LEVEL);
@@ -1258,7 +1252,7 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 		is->_iDurability = is->_iMaxDur = r;
 		break;
 	case IPL_REQSTR:
-		is->_iMinStr += r;
+		is->_iReqStr += r;
 		break;
 	case IPL_SKILL:
 		param1 = GetStaffSpell(is->_iCreateInfo & CF_LEVEL);
@@ -1274,7 +1268,7 @@ static int SaveItemPower(ItemStruct* is, int power, int param1, int param2)
 		is->_iSpell = param1;
 		is->_iCharges = param2;
 		is->_iMaxCharges = param2;
-		is->_iMinMag = spelldata[param1].sMinMag;
+		is->_iReqMag = spelldata[param1].sReqMag;
 		break;
 	case IPL_ONEHAND:
 		is->_iLoc = ILOC_ONEHAND;
@@ -1363,7 +1357,7 @@ static void GetItemPower(ItemStruct* is, unsigned lvl, BYTE range, int flgs, boo
 		AddItemAffix(PL_Suffix, flgs, range, lvl, good, is, valmod, 1);
 	}
 	// prefix or suffix added -> recalculate the value of the item
-	if (is->_iMagical == ITEM_QUALITY_MAGIC) {
+	if (is->_iMagical != ITEM_QUALITY_NORMAL) {
 		if (is->_iMiscId != IMISC_MAP) {
 			v = valmod.v0;
 			if (v >= 0) {
@@ -1661,6 +1655,9 @@ static void PrintEquipmentPower(BYTE idx, const ItemStruct* is)
 	case IPL_CRITP:
 		snprintf(tempstr, sizeof(tempstr), "%d%% increased crit. chance", ias->asValue0);
 		break;
+	case IPL_POWMOD:
+		snprintf(tempstr, sizeof(tempstr), "%d%% increased magic power", ias->asValue0);
+		break;
 	case IPL_SKILLLVL:
 		snprintf(tempstr, sizeof(tempstr), "%+d to %s", ias->asValue0, spelldata[ias->asValue1].sNameText);
 		break;
@@ -1876,8 +1873,7 @@ const char* ItemName(const ItemStruct* is)
 	} else if (is->_iMagical == ITEM_QUALITY_UNIQUE) {
 		if (!is->_iUnidentified)
 			name = UniqueItemList[is->_iUid].UIName;
-	} else if ((is->_itype == ITYPE_STAFF && is->_iSpell != SPL_NULL)
-		|| is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
+	} else if (is->_iMiscId == IMISC_SCROLL || is->_iMiscId == IMISC_BOOK
 #ifdef HELLFIRE
 		|| is->_iMiscId == IMISC_RUNE
 #endif
@@ -1890,9 +1886,9 @@ const char* ItemName(const ItemStruct* is)
 
 void ItemStatOk(int pnum, ItemStruct* is)
 {
-	is->_iStatFlag = plr._pStrength >= is->_iMinStr
-				  && plr._pDexterity >= is->_iMinDex
-				  && plr._pMagic >= is->_iMinMag;
+	is->_iStatFlag = plr._pStrength >= is->_iReqStr
+				  && plr._pDexterity >= is->_iReqDex
+				  && plr._pMagic >= is->_iReqMag;
 }
 
 static bool SmithItemOk(const ItemData& item, void* arg)
@@ -1911,9 +1907,11 @@ static int RndSmithItem(unsigned lvl)
 static bool WitchItemOk(const ItemData& item, void* arg)
 {
 	return item.itype == ITYPE_STAFF
-	 || (item.itype == ITYPE_MISC
-	  && (item.iMiscId == IMISC_SCROLL
-	   || item.iMiscId == IMISC_RUNE));
+		|| item.iMiscId == IMISC_SCROLL
+#ifdef HELLFIRE
+		|| item.iMiscId == IMISC_RUNE
+#endif
+		;
 }
 
 static int RndWitchItem(unsigned lvl)
@@ -1938,7 +1936,7 @@ ItemStruct* PlrItem(int pnum, int cii)
 	ItemStruct* pi;
 
 	if (cii <= INVITEM_INV_LAST) {
-		if (cii < INVITEM_INV_FIRST) { // INVITEM_BODY_LAST
+		if (cii < INVITEM_INV_FIRST) {
 			pi = &plr._pInvBody[cii];
 		} else {
 			pi = &plr._pInvList[cii - INVITEM_INV_FIRST];

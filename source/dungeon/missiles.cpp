@@ -44,12 +44,10 @@ static void CalcHealHp(const D1Hero *hero, int sn, int spllvl, int *mind, int *m
 	}
 	if (sn == SPL_HEAL) {
 		switch (hero->getClass()) {
-		case PC_WARRIOR: minhp <<= 1; maxhp <<= 1;               break;
 #ifdef HELLFIRE
-		case PC_BARBARIAN:
-		case PC_MONK:    minhp <<= 1; maxhp <<= 1;               break;
-		case PC_BARD:
+		case PC_MONK:
 #endif
+		case PC_WARRIOR: minhp <<= 1; maxhp <<= 1;               break;
 		case PC_ROGUE: minhp += minhp >> 1; maxhp += maxhp >> 1; break;
 		case PC_SORCERER: break;
 		default:
@@ -60,8 +58,6 @@ static void CalcHealHp(const D1Hero *hero, int sn, int spllvl, int *mind, int *m
 		case PC_WARRIOR:   minhp <<= 1; maxhp <<= 1;             break;
 #ifdef HELLFIRE
 		case PC_MONK:      minhp *= 3;  maxhp *= 3;              break;
-		case PC_BARBARIAN: minhp <<= 1; maxhp <<= 1;             break;
-		case PC_BARD:
 #endif
 		case PC_ROGUE: minhp += minhp >> 1; maxhp += maxhp >> 1; break;
 		case PC_SORCERER: break;
@@ -100,10 +96,10 @@ void GetMissileDamage(int mtype, const MonsterStruct *mon, int *mindam, int *max
 
 static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterStruct *mon, int pnum, int *mindam, int *maxdam)
 {
-	int k, magic, mind, maxd;
+	int k, power, mind, maxd;
 
 	// assert((unsigned)sn < NUM_SPELLS);
-	magic = myplr._pMagic;
+	power = myplr._pIPower;
 #ifdef HELLFIRE
 	if (SPELL_RUNE(sn))
 		sl += myplr._pDexterity >> 4;
@@ -111,7 +107,7 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	switch (sn) {
 	case SPL_FIREBOLT:
 	case SPL_GUARDIAN:
-		k = (magic >> 3) + sl;
+		k = (power >> 3) + sl;
 		mind = k + 1;
 		maxd = k + 10;
 		break;
@@ -121,37 +117,32 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_LIGHTNING:
 		mind = 1;
 #if 0
-		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+		maxd = ((power + (sl << 3)) * (6 + (sl >> 1))) >> 3;
 #else
-		magic <<= 1;
-		magic++;
+		power <<= 1;
+		power++;
 		sl <<= 5;
-		maxd = 3 * (magic * sl) / (magic + sl);
+		maxd = 3 * (power * sl) / (power + sl);
 #endif
 		break;
 	case SPL_FLASH:
-		mind = magic >> 1;
+		mind = power >> 1;
 		for (k = 0; k < sl; k++)
 			mind += mind >> 3;
 
-		mind *= misfiledata[MFILE_BLUEXFR].mfAnimLen[0];
+		mind *= MIA_BLUEXFR_LENGTH * MIA_BLUEXFR_DELAY;
 		maxd = mind << 3;
 		mind >>= 6;
 		maxd >>= 6;
 		break;
 	case SPL_PULSE:
-		k = (magic >> 2) + (sl << 2);
+		k = (power >> 2) + (sl << 2);
 		mind = k * 3 / 4u;
 		maxd = k * 5 / 2u;
 		break;
 	case SPL_NULL:
 	case SPL_WALK:
 	case SPL_BLOCK:
-	case SPL_RAGE:
-	case SPL_SHROUD:
-	case SPL_SWAMP:
-	case SPL_STONE:
-	case SPL_INFRA:
 	case SPL_MANASHIELD:
 	case SPL_ATTRACT:
 	case SPL_TELEKINESIS:
@@ -167,8 +158,14 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_RECHARGE:
 	case SPL_DISARM:
 #ifdef HELLFIRE
-	case SPL_BUCKLE:
 	case SPL_WHITTLE:
+#endif
+	case SPL_RAGE:
+	case SPL_INFRA:
+	case SPL_SHROUD:
+	case SPL_SWAMP:
+	case SPL_STONE:
+#ifdef HELLFIRE
 	case SPL_RUNESTONE:
 #endif
 	case SPL_ATTACK:
@@ -333,11 +330,11 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	} return;
 	case SPL_FIRERING:
 	case SPL_FIREWALL:
-		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
-		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);
+		mind = ((power >> 3) + sl + 5) << (-3 + 5);
+		maxd = ((power >> 3) + sl * 2 + 10) << (-3 + 5);
 		break;
 	case SPL_FIREBALL:
-		mind = (magic >> 2) + 10;
+		mind = (power >> 2) + 10;
 		maxd = mind + 10;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
@@ -345,28 +342,28 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		}
 		break;
 	case SPL_METEOR:
-		mind = (magic >> 2) + (sl << 3) + 40;
-		maxd = (magic >> 2) + (sl << 4) + 40;
+		mind = (power >> 2) + (sl << 3) + 40;
+		maxd = (power >> 2) + (sl << 4) + 40;
 		break;
 	case SPL_BLOODBOIL:
-		mind = (magic >> 2) + (sl << 2) + 10;
-		maxd = (magic >> 2) + (sl << 3) + 10;
+		mind = (power >> 2) + (sl << 2) + 10;
+		maxd = (power >> 2) + (sl << 3) + 10;
 		break;
 	case SPL_CHAIN:
 		mind = 1;
-		maxd = magic;
+		maxd = power;
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
 #if 0
-		mind = ((magic >> 3) + 2 * sl + 1) * 4;
-		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+		mind = ((power >> 3) + 2 * sl + 1) * 4;
+		maxd = ((power >> 3) + 4 * sl + 2) * 4;
 #else
-		magic >>= 4;
-		magic++;
-		mind = 32 * (magic * sl) / (magic + sl);
+		power >>= 4;
+		power++;
+		mind = 32 * (power * sl) / (power + sl);
 		maxd = mind + sl * 4;
 #endif
 		break;
@@ -376,25 +373,31 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 	case SPL_NOVA:
 		mind = 1;
 #if 0
-		maxd = (magic >> 1) + (sl << 5);
+		maxd = (power >> 1) + (sl << 5);
 #else
-		magic <<= 2;
-		magic++;
+		power <<= 2;
+		power++;
 		sl <<= 6;
-		maxd = (magic * sl) / (magic + sl);
+		maxd = (power * sl) / (power + sl);
 #endif
 		break;
 	case SPL_INFERNO:
-		mind = (magic * 20) >> 6;
-		maxd = ((magic + (sl << 4)) * 30) >> 6;
+		mind = power;
+		maxd = power + (sl << 4);
+
+		k = MIA_INFERNO_LENGTH * MIA_INFERNO_DELAY;
+		mind *= k;
+		maxd *= k;
+		mind >>= 6 - 2;
+		maxd >>= 6 - 2;
 		break;
 	case SPL_GOLEM:
 	case SPL_BLDGOLEM:
 	case SPL_SKELAX:
 	case SPL_SKELBW: {
-		sl = sl * 4 + (magic >> 6);
+		sl = sl * 4 + (power >> 6);
 		// sl++;
-		// sl--; -- lvlBonus (PreSpawnGolem)
+		// sl--; -- lvlBonus (PreSpawnMinion)
 		static_assert((int)MMT_GOLEM == 0, "GetSkillDetails expects ordered SPL/MMT enums I.");
 		static_assert((int)MMT_BLDGOLEM == (int)SPL_BLDGOLEM - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums II.");
 		static_assert((int)MMT_SKELAX == (int)SPL_SKELAX - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums III.");
@@ -407,8 +410,8 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		maxd = sl * monData.mMaxDamage / k;
 	} break;
 	case SPL_ELEMENTAL:
-		mind = (magic >> 3) + 2 * sl + 4;
-		maxd = (magic >> 3) + 4 * sl + 20;
+		mind = (power >> 3) + 2 * sl + 4;
+		maxd = (power >> 3) + 4 * sl + 20;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
 			maxd += maxd >> 3;
@@ -416,34 +419,34 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		break;
 	case SPL_CBOLT:
 		mind = 1;
-		maxd = (magic >> 2) + (sl << 2);
+		maxd = (power >> 2) + (sl << 2);
 		break;
 	case SPL_HBOLT:
-		mind = (magic >> 2) + sl;
+		mind = (power >> 2) + sl;
 		maxd = mind + 9;
 		break;
 	case SPL_FLARE:
-		mind = (magic * (sl + 1)) >> 3;
+		mind = (power * (sl + 1)) >> 3;
 		maxd = mind;
 		break;
 	case SPL_POISON:
-		mind = ((magic >> 4) + sl + 2) << (-3 + 5);
-		maxd = ((magic >> 4) + sl + 4) << (-3 + 5);
+		mind = ((power >> 4) + sl + 2) << (-3 + 5);
+		maxd = ((power >> 4) + sl + 4) << (-3 + 5);
 		break;
 	case SPL_WIND:
-		mind = (magic >> 3) + 7 * sl + 1;
-		maxd = (magic >> 3) + 8 * sl + 1;
-		// (dam * 2 * misfiledata[MFILE_WIND].mfAnimLen[0] / 16) << (-3 + 5)
+		mind = (power >> 3) + 7 * sl + 1;
+		maxd = (power >> 3) + 8 * sl + 1;
+		// (dam * 2 * MIA_WIND_LENGTH / 16) << (-3 + 5)
 		mind = mind * 3;
 		maxd = maxd * 3;
 		break;
 #ifdef HELLFIRE
 	/*case SPL_LIGHTWALL:
 		mind = 1;
-		maxd = ((magic >> 1) + sl) << (-3 + 5);
+		maxd = ((power >> 1) + sl) << (-3 + 5);
 		break;
 	case SPL_IMMOLAT:
-		mind = 1 + (magic >> 3);
+		mind = 1 + (power >> 3);
 		maxd = mind + 4;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
@@ -452,13 +455,13 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 		break;*/
 	case SPL_RUNEFIRE:
 #if 0
-		mind = 1 + (magic >> 1) + 16 * sl;
-		maxd = 1 + (magic >> 1) + 32 * sl;
+		mind = 1 + (power >> 1) + 16 * sl;
+		maxd = 1 + (power >> 1) + 32 * sl;
 #else
-		magic >>= 0;
-		magic++;
+		power >>= 0;
+		power++;
 		sl <<= 4;
-		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		mind = 1 + 8 * (power * sl) / (power + sl);
 		maxd = mind + (sl >> 2);
 #endif
 		break;
@@ -482,6 +485,8 @@ static void SkillPlrDamage(int sn, int sl, int dist, int mypnum, const MonsterSt
 
 	*mindam = mind;
 	*maxdam = maxd;
+	// if (skd->type == SDT_DURATION)
+	//	*(double*)&skd->v0 = skd->v0 / (double)gnTicksRate;
 }
 
 void SkillMonByPlrDamage(int sn, int sl, int dist, int source, const MonsterStruct *mon, int *mindam, int *maxdam)
@@ -497,18 +502,18 @@ void SkillPlrByPlrDamage(int sn, int sl, int dist, int source, int target, int *
 void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 {
 	int k, mind, maxd = 0, dur = 0;
-	unsigned magic;
+	unsigned power;
 	// assert((unsigned)sn < NUM_SPELLS);
-	magic = hero->getMagic(); //  myplr._pMagic;
+	power = hero->getPower(); //  myplr._pIPower;
 #ifdef HELLFIRE
 	if (SPELL_RUNE(sn))
 		sl += hero->getDexterity() /*myplr._pDexterity*/ >> 4;
 #endif
 	switch (sn) {
 	case SPL_GUARDIAN:
-		dur = (sl + (hero->getLevel() >> 1)) * misfiledata[MFILE_GUARD].mfAnimLen[1];
+		dur = (sl + (hero->getLevel() >> 1)) * MIA_GUARD1_LENGTH;
 	case SPL_FIREBOLT:
-		k = (magic >> 3) + sl;
+		k = (power >> 3) + sl;
 		mind = k + 1;
 		maxd = k + 10;
 		break;
@@ -518,26 +523,26 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_LIGHTNING:
 		mind = 1;
 #if 0
-		maxd = ((magic + (sl << 3)) * (6 + (sl >> 1))) >> 3;
+		maxd = ((power + (sl << 3)) * (6 + (sl >> 1))) >> 3;
 #else
-		magic <<= 1;
-		magic++;
+		power <<= 1;
+		power++;
 		sl <<= 5;
-		maxd = 3 * (magic * sl) / (magic + sl);
+		maxd = 3 * (power * sl) / (power + sl);
 #endif
 		break;
 	case SPL_FLASH:
-		mind = magic >> 1;
+		mind = power >> 1;
 		for (k = 0; k < sl; k++)
 			mind += mind >> 3;
 
-		mind *= misfiledata[MFILE_BLUEXFR].mfAnimLen[0];
+		mind *= MIA_BLUEXFR_LENGTH * MIA_BLUEXFR_DELAY;
 		maxd = mind << 3;
 		mind >>= 6;
 		maxd >>= 6;
 		break;
 	case SPL_PULSE:
-		k = (magic >> 2) + (sl << 2);
+		k = (power >> 2) + (sl << 2);
 		mind = k * 3 / 4u;
 		maxd = k * 5 / 2u;
 		break;
@@ -557,7 +562,6 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_RECHARGE:
 	case SPL_DISARM:
 #ifdef HELLFIRE
-	case SPL_BUCKLE:
 	case SPL_WHITTLE:
 #endif
 		break;
@@ -631,12 +635,12 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		return;
 	case SPL_FIRERING:
 	case SPL_FIREWALL:
-		mind = ((magic >> 3) + sl + 5) << (-3 + 5);
-		maxd = ((magic >> 3) + sl * 2 + 10) << (-3 + 5);
+		mind = ((power >> 3) + sl + 5) << (-3 + 5);
+		maxd = ((power >> 3) + sl * 2 + 10) << (-3 + 5);
 		dur = 64 * sl + 160;
 		break;
 	case SPL_FIREBALL:
-		mind = (magic >> 2) + 10;
+		mind = (power >> 2) + 10;
 		maxd = mind + 10;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
@@ -644,30 +648,30 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		}
 		break;
 	case SPL_METEOR:
-		mind = (magic >> 2) + (sl << 3) + 40;
-		maxd = (magic >> 2) + (sl << 4) + 40;
+		mind = (power >> 2) + (sl << 3) + 40;
+		maxd = (power >> 2) + (sl << 4) + 40;
 		break;
 	case SPL_BLOODBOIL:
-		mind = (magic >> 2) + (sl << 2) + 10;
-		maxd = (magic >> 2) + (sl << 3) + 10;
+		mind = (power >> 2) + (sl << 2) + 10;
+		maxd = (power >> 2) + (sl << 3) + 10;
 	case SPL_SWAMP:
-		dur = (lengthof(BloodBoilLocs) + sl * 2) * misfiledata[MFILE_BLODBURS].mfAnimFrameLen * misfiledata[MFILE_BLODBURS].mfAnimLen[0] / 2;
+		dur = (lengthof(BloodBoilLocs) + sl * 2) * MIA_BLODBURS_DELAY * MIA_BLODBURS_LENGTH / 2;
 		break;
 	case SPL_CHAIN:
 		mind = 1;
-		maxd = magic;
+		maxd = power;
 		break;
 #ifdef HELLFIRE
 	case SPL_RUNEWAVE:
 #endif
 	case SPL_WAVE:
 #if 0
-		mind = ((magic >> 3) + 2 * sl + 1) * 4;
-		maxd = ((magic >> 3) + 4 * sl + 2) * 4;
+		mind = ((power >> 3) + 2 * sl + 1) * 4;
+		maxd = ((power >> 3) + 4 * sl + 2) * 4;
 #else
-		magic >>= 4;
-		magic++;
-		mind = 32 * (magic * sl) / (magic + sl);
+		power >>= 4;
+		power++;
+		mind = 32 * (power * sl) / (power + sl);
 		maxd = mind + sl * 4;
 #endif
 		break;
@@ -677,23 +681,29 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 	case SPL_NOVA:
 		mind = 1;
 #if 0
-		maxd = (magic >> 1) + (sl << 5);
+		maxd = (power >> 1) + (sl << 5);
 #else
-		magic <<= 2;
-		magic++;
+		power <<= 2;
+		power++;
 		sl <<= 6;
-		maxd = (magic * sl) / (magic + sl);
+		maxd = (power * sl) / (power + sl);
 #endif
 		break;
 	case SPL_INFERNO:
-		mind = (magic * 20) >> 6;
-		maxd = ((magic + (sl << 4)) * 30) >> 6;
+		mind = power;
+		maxd = power + (sl << 4);
+
+		k = MIA_INFERNO_LENGTH * MIA_INFERNO_DELAY;
+		mind *= k;
+		maxd *= k;
+		mind >>= 6 - 2;
+		maxd >>= 6 - 2;
 		break;
 	case SPL_GOLEM:
 	case SPL_BLDGOLEM:
 	case SPL_SKELAX:
 	case SPL_SKELBW: {
-		sl = sl * 4 + (magic >> 6);
+		sl = sl * 4 + (power >> 6);
 		static_assert((int)MMT_GOLEM == 0, "GetSkillDetails expects ordered SPL/MMT enums I.");
 		static_assert((int)MMT_BLDGOLEM == (int)SPL_BLDGOLEM - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums II.");
 		static_assert((int)MMT_SKELAX == (int)SPL_SKELAX - (int)SPL_GOLEM, "GetSkillDetails expects ordered SPL/MMT enums III.");
@@ -709,8 +719,8 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		snprintf(infostr, sizeof(infostr), "Lvl: %d Hp: %d Dam: %d-%d", sl, dur, mind, maxd);
 	} return;
 	case SPL_ELEMENTAL:
-		mind = (magic >> 3) + 2 * sl + 4;
-		maxd = (magic >> 3) + 4 * sl + 20;
+		mind = (power >> 3) + 2 * sl + 4;
+		maxd = (power >> 3) + 4 * sl + 20;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
 			maxd += maxd >> 3;
@@ -718,35 +728,35 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		break;
 	case SPL_CBOLT:
 		mind = 1;
-		maxd = (magic >> 2) + (sl << 2);
+		maxd = (power >> 2) + (sl << 2);
 		break;
 	case SPL_HBOLT:
-		mind = (magic >> 2) + sl;
+		mind = (power >> 2) + sl;
 		maxd = mind + 9;
 		break;
 	case SPL_FLARE:
-		mind = (magic * (sl + 1)) >> 3;
+		mind = (power * (sl + 1)) >> 3;
 		maxd = mind;
 		break;
 	case SPL_POISON:
-		mind = ((magic >> 4) + sl + 2) << (-3 + 5);
-		maxd = ((magic >> 4) + sl + 4) << (-3 + 5);
+		mind = ((power >> 4) + sl + 2) << (-3 + 5);
+		maxd = ((power >> 4) + sl + 4) << (-3 + 5);
 		break;
 	case SPL_WIND:
-		mind = (magic >> 3) + 7 * sl + 1;
-		maxd = (magic >> 3) + 8 * sl + 1;
-		// (dam * 2 * misfiledata[MFILE_WIND].mfAnimLen[0] / 16) << (-3 + 5)
+		mind = (power >> 3) + 7 * sl + 1;
+		maxd = (power >> 3) + 8 * sl + 1;
+		// (dam * 2 * MIA_WIND_LENGTH / 16) << (-3 + 5)
 		mind = mind * 3;
 		maxd = maxd * 3;
 		break;
 #ifdef HELLFIRE
 	/*case SPL_LIGHTWALL:
 		mind = 1;
-		maxd = ((magic >> 1) + sl) << (-3 + 5);
+		maxd = ((power >> 1) + sl) << (-3 + 5);
 		break;
 	case SPL_RUNEWAVE:
 	case SPL_IMMOLAT:
-		mind = 1 + (magic >> 3);
+		mind = 1 + (power >> 3);
 		maxd = mind + 4;
 		for (k = 0; k < sl; k++) {
 			mind += mind >> 3;
@@ -755,13 +765,13 @@ void GetSkillDesc(const D1Hero *hero, int sn, int sl)
 		break;*/
 	case SPL_RUNEFIRE:
 #if 0
-		mind = 1 + (magic >> 1) + 16 * sl;
-		maxd = 1 + (magic >> 1) + 32 * sl;
+		mind = 1 + (power >> 1) + 16 * sl;
+		maxd = 1 + (power >> 1) + 32 * sl;
 #else
-		magic >>= 0;
-		magic++;
+		power >>= 0;
+		power++;
 		sl <<= 4;
-		mind = 1 + 8 * (magic * sl) / (magic + sl);
+		mind = 1 + 8 * (power * sl) / (power + sl);
 		maxd = mind + (sl >> 2);
 #endif
 		break;
@@ -1079,16 +1089,12 @@ const char *GetElementColor(BYTE mRes)
 }
 
 #ifdef HELLFIRE
-int AddFireRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddLightRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddNovaRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddWaveRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddStoneRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
+int AddRune(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddLightwall(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFireexp(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
-int AddRingC(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 //int AddFireball2(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 #endif
+int AddRingC(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddDone(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddArrow(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }
 int AddFirebolt(int mi, int sx, int sy, int dx, int dy, int midir, int micaster, int misource, int spllvl) { return 0; }

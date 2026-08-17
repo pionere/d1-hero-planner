@@ -110,6 +110,7 @@ public:
     int getLightRad() const;
     int getEvasion() const;
     int getAC() const;
+    int getPower() const;
     int getBlockChance() const;
     int getAbsAnyHit() const;
     int getAbsPhyHit() const;

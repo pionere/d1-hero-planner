@@ -11,7 +11,7 @@
 
 DEVILUTION_BEGIN_NAMESPACE
 
-int mypnum;
+int mypnum = 0;
 PlayerStruct players[MAX_PLRS];
 /** The current player while processing the players. */
 static BYTE gbGameLogicPnum;
@@ -36,7 +36,7 @@ static const PlrAnimType PlrAnimTypes[NUM_PGTS] = {
  * Specifies the number of frames of each animation for each player class.
    STAND, WALK, ATTACK, SPELL, BLOCK, GOTHIT, DEATH
  */
-const BYTE PlrGFXAnimLens[NUM_CLASSES][NUM_PLR_ANIMS] = {
+static const BYTE PlrGFXAnimLens[NUM_CLASSES][NUM_PLR_ANIMS] = {
 	// clang-format off
 	{ 10, 8, 16, 20, 2, 6, 20 },
 	{  8, 8, 18, 16, 4, 7, 20 },
@@ -49,15 +49,23 @@ const BYTE PlrGFXAnimLens[NUM_CLASSES][NUM_PLR_ANIMS] = {
 	// clang-format on
 };
 /** Specifies the frame of attack and spell animation for which the action is triggered, for each player class. */
-const BYTE PlrGFXAnimActFrames[NUM_CLASSES][2] = {
+static const BYTE PlrActFrames[NUM_CLASSES][NUM_WANIM_IDS] = {
 	// clang-format off
-	{  9, 14 },
-	{ 10, 12 },
-	{ 12,  9 },
+	{  9,  9,  9,  9, 11, 10,  9,  9, 11 },
+	{ 10, 10, 10, 10,  7, 13, 10, 10, 11 },
+	{ 12,  9, 12, 12, 16, 16, 12, 12, 12 },
 #ifdef HELLFIRE
-	{ 12, 13 },
-	{ 10, 12 },
-	{  9, 14 },
+	{  7,  7, 12, 12, 14, 14, 12, 12,  8 },
+#endif
+	// clang-format on
+};
+static const BYTE PlrSplFrames[NUM_CLASSES] = {
+	// clang-format off
+	14,
+	12,
+	 9,
+#ifdef HELLFIRE
+	13,
 #endif
 	// clang-format on
 };
@@ -72,8 +80,6 @@ const int StrengthTbl[NUM_CLASSES] = {
 	10,
 #ifdef HELLFIRE
 	20,
-	15,
-	35,
 #endif
 	// clang-format on
 };
@@ -85,8 +91,6 @@ const int MagicTbl[NUM_CLASSES] = {
 	30,
 #ifdef HELLFIRE
 	15,
-	20,
-	 0,
 #endif
 	// clang-format on
 };
@@ -98,8 +102,6 @@ const int DexterityTbl[NUM_CLASSES] = {
 	20,
 #ifdef HELLFIRE
 	20,
-	25,
-	10,
 #endif
 	// clang-format on
 };
@@ -111,15 +113,13 @@ const int VitalityTbl[NUM_CLASSES] = {
 	20,
 #ifdef HELLFIRE
 	25,
-	20,
-	35,
 #endif
 	// clang-format on
 };
 const BYTE Abilities[NUM_CLASSES] = {
 	SPL_REPAIR, SPL_DISARM, SPL_RECHARGE,
 #ifdef HELLFIRE
-	SPL_WHITTLE, SPL_IDENTIFY, SPL_BUCKLE,
+	SPL_WHITTLE,
 #endif
 };
 
@@ -216,8 +216,6 @@ static void SetPlrAnims(int pnum)
 	plr._pAnims[PGX_DEATH].paAnimWidth = 128 * ASSET_MPL;
 #endif
 	pc = plr._pClass;
-	plr._pAFNum = PlrGFXAnimActFrames[pc][0];
-	plr._pSFNum = PlrGFXAnimActFrames[pc][1];
 
 	plr._pAnims[PGX_STAND].paFrames = PlrGFXAnimLens[pc][PA_STAND];
 	plr._pAnims[PGX_WALK].paFrames = PlrGFXAnimLens[pc][PA_WALK];
@@ -230,30 +228,26 @@ static void SetPlrAnims(int pnum)
 	plr._pAnims[PGX_DEATH].paFrames = PlrGFXAnimLens[pc][PA_DEATH];
 
 	gn = plr._pgfxnum & 0xF;
+	plr._pAFNum = PlrActFrames[pc][gn];
+	plr._pSFNum = PlrSplFrames[pc];
 	switch (pc) {
 	case PC_WARRIOR:
 		if (gn == ANIM_ID_BOW) {
 			plr._pAnims[PGX_STAND].paFrames = 8;
 //			plr._pAnims[PGX_ATTACK].paAnimWidth = 96 * ASSET_MPL;
-			plr._pAFNum = 11;
 		} else if (gn == ANIM_ID_AXE) {
 			plr._pAnims[PGX_ATTACK].paFrames = 20;
-			plr._pAFNum = 10;
 		} else if (gn == ANIM_ID_STAFF) {
 			// plr._pAnims[PGX_ATTACK].paFrames = 16;
-			plr._pAFNum = 11;
 		}
 		break;
 	case PC_ROGUE:
 		if (gn == ANIM_ID_AXE) {
 			plr._pAnims[PGX_ATTACK].paFrames = 22;
-			plr._pAFNum = 13;
 		} else if (gn == ANIM_ID_BOW) {
 			plr._pAnims[PGX_ATTACK].paFrames = 12;
-			plr._pAFNum = 7;
 		} else if (gn == ANIM_ID_STAFF) {
 			plr._pAnims[PGX_ATTACK].paFrames = 16;
-			plr._pAFNum = 11;
 		}
 		break;
 	case PC_SORCERER:
@@ -263,13 +257,10 @@ static void SetPlrAnims(int pnum)
 		if (gn == ANIM_ID_UNARMED) {
 			plr._pAnims[PGX_ATTACK].paFrames = 20;
 		} else if (gn == ANIM_ID_UNARMED_SHIELD) {
-			plr._pAFNum = 9;
 		} else if (gn == ANIM_ID_BOW) {
 			plr._pAnims[PGX_ATTACK].paFrames = 20;
-			plr._pAFNum = 16;
 		} else if (gn == ANIM_ID_AXE) {
 			plr._pAnims[PGX_ATTACK].paFrames = 24;
-			plr._pAFNum = 16;
 		}
 		break;
 #ifdef HELLFIRE
@@ -289,49 +280,16 @@ static void SetPlrAnims(int pnum)
 		case ANIM_ID_UNARMED:
 		case ANIM_ID_UNARMED_SHIELD:
 			plr._pAnims[PGX_ATTACK].paFrames = 12;
-			plr._pAFNum = 7;
 			break;
 		case ANIM_ID_BOW:
 			plr._pAnims[PGX_ATTACK].paFrames = 20;
-			plr._pAFNum = 14;
 			break;
 		case ANIM_ID_AXE:
 			plr._pAnims[PGX_ATTACK].paFrames = 23;
-			plr._pAFNum = 14;
 			break;
 		case ANIM_ID_STAFF:
 			plr._pAnims[PGX_ATTACK].paFrames = 13;
-			plr._pAFNum = 8;
 			break;
-		}
-		break;
-	case PC_BARD:
-		if (gn == ANIM_ID_AXE) {
-			plr._pAnims[PGX_ATTACK].paFrames = 22;
-			plr._pAFNum = 13;
-		} else if (gn == ANIM_ID_BOW) {
-			plr._pAnims[PGX_ATTACK].paFrames = 12;
-			plr._pAFNum = 11;
-		} else if (gn == ANIM_ID_STAFF) {
-			plr._pAnims[PGX_ATTACK].paFrames = 16;
-			plr._pAFNum = 11;
-		} else if (gn == ANIM_ID_SWORD_SHIELD || gn == ANIM_ID_SWORD) {
-			plr._pAnims[PGX_ATTACK].paFrames = 10; // TODO: check for onehanded swords or daggers?
-		}
-		break;
-	case PC_BARBARIAN:
-		if (gn == ANIM_ID_AXE) {
-			plr._pAnims[PGX_ATTACK].paFrames = 20;
-			plr._pAFNum = 8;
-		} else if (gn == ANIM_ID_BOW) {
-			plr._pAnims[PGX_STAND].paFrames = 8;
-//			plr._pAnims[PGX_ATTACK].paAnimWidth = 96 * ASSET_MPL;
-			plr._pAFNum = 11;
-		} else if (gn == ANIM_ID_STAFF) {
-			//plr._pAnims[PGX_ATTACK].paFrames = 16;
-			plr._pAFNum = 11;
-		} else if (gn == ANIM_ID_MACE || gn == ANIM_ID_MACE_SHIELD) {
-			plr._pAFNum = 8;
 		}
 		break;
 #endif
@@ -360,6 +318,7 @@ void CreatePlayer(int pnum, const _uiheroinfo& heroinfo)
 
 	plr._pLevel = heroinfo.hiLevel;
 	plr._pClass = heroinfo.hiClass;
+	plr._pBuildType = heroinfo.hiBuild;
 	//plr._pRank = heroinfo.hiRank;
 	copy_cstr(plr._pName, heroinfo.hiName);
 
@@ -388,7 +347,7 @@ void CreatePlayer(int pnum, const _uiheroinfo& heroinfo)
 	//plr._pNextExper = PlrExpLvlsTbl[1];
 	plr._pLightRad = 10;
 
-	//plr._pMainSkill = { { SPL_ATTACK, RSPLTYPE_ABILITY } , { SPL_WALK, RSPLTYPE_ABILITY } };
+	//plr._pMainSkill = { { SPL_ATTACK, SPLFROM_ABILITY } , { SPL_WALK, SPLFROM_ABILITY } };
 	//plr._pAltSkill = { { SPL_NULL, 0 } , SPL_NULL, 0 } };
 	static_assert((int)SPL_NULL == 0, "CreatePlayer fails to initialize the skillhotkeys I.");
 	static_assert(offsetof(PlayerStruct, _pAltSkillSwapKey) - offsetof(PlayerStruct, _pSkillHotKey) == sizeof(plr._pSkillHotKey) + sizeof(plr._pAltSkillHotKey) + sizeof(plr._pSkillSwapKey),
@@ -527,7 +486,6 @@ static void StartAttack(int pnum)
 {
 	int sn, ss;
 
-	// plr._pmode = PM_ATTACK;
 	sn = plr._pDestParam3;
 	ss = plr._pIBaseAttackSpeed;
 	if (sn == SPL_WHIPLASH) {
@@ -537,8 +495,12 @@ static void StartAttack(int pnum)
 	} else if (sn == SPL_WALLOP) {
 		ss -= 3;
 	}
+
+	// plr._pmode = PM_ATTACK;
 	plr._pVar4 = ss; // ATTACK_SPEED
-	plr._pVar8 = 0;  // ATTACK_TICK
+	// plr._pVar5 = sn; // ATTACK_SKILL
+	// plr._pVar7 = 0;  // ATTACK_ACTION_PROGRESS : 'flags' of sfx and hit
+	plr._pVar8 = 0;  // ATTACK_TICK : speed helper
 
 	NewPlrAnim(pnum, PGX_ATTACK); //, dir);
 }
@@ -615,8 +577,11 @@ static void StartSpell(int pnum)
 	int animIdx;
 	const SpellData* sd;
 
-	plr._pVar8 = 0;                // SPELL_TICK
-	plr._pVar5 = plr._pDestParam3; // SPELL_NUM
+	plr._pVar5 = plr._pDestParam3; // SPELL_NUM : the spell to be cast
+	// plr._pVar6 = plr._pDestParam4; // SPELL_LEVEL
+	// plr._pVar7 = FALSE;            // SPELL_ACTION_PROGRESS : 'flag' of cast
+	plr._pVar8 = 0;                // SPELL_TICK : speed helper
+	// plr._pmode = PM_SPELL;
 
 	sd = &spelldata[plr._pVar5]; // SPELL_NUM
 	animIdx = PGX_FIRE + sd->sType - STYPE_FIRE;
@@ -677,6 +642,7 @@ static void PlrStartGetHit(int pnum) // , int dir)
 {
 	NewPlrAnim(pnum, PGX_GOTHIT); //, dir);
 
+	// plr._pmode = PM_GOTHIT;
 	plr._pVar8 = 0; // GOTHIT_TICK
 }
 
@@ -791,7 +757,16 @@ void GetMonByPlrDamage(int pnum, int sn, int sl, const MonsterStruct *mon, int *
 		ASSUME_UNREACHABLE
 		break;
 	}
-
+#if 0
+	if (plr._pILifeSteal != 0) {
+		skdam = (dam * plr._pILifeSteal) >> 7;
+		PlrIncHp(pnum, skdam);
+	}
+	if (plr._pIManaSteal != 0) {
+		skdam = (dam * plr._pIManaSteal) >> 7;
+		PlrIncMana(pnum, skdam);
+	}
+#endif
 	int fdam = plr._pIFMaxDam;
 	if (fdam != 0) {
 		maxd += CalcMonsterDam(mon->_mMagicRes, MISR_FIRE, fdam, false);
@@ -812,6 +787,8 @@ void GetMonByPlrDamage(int pnum, int sn, int sl, const MonsterStruct *mon, int *
 		maxd += CalcMonsterDam(mon->_mMagicRes, MISR_ACID, adam, false);
 		mind += CalcMonsterDam(mon->_mMagicRes, MISR_ACID, plr._pIAMinDam, false);
 	}
+
+	// dam += AddElementalExplosion(fdam, ldam, mdam, adam, true, mnum);
 
 	mind >>= 6;
 	maxd >>= 6;
@@ -868,6 +845,18 @@ void GetPlrByPlrDamage(int offp, int sn, int sl, int pnum, int *mindam, int *max
 		break;
 	}
 
+	mind -= plr._pIAbsPhyHit;
+	maxd -= plr._pIAbsPhyHit;
+	if (mind < 0)
+		mind = 0;
+	if (maxd < 0)
+		maxd = 0;
+	mind -= plr._pIAbsAnyHit;
+	maxd -= plr._pIAbsAnyHit;
+	// if (dam > 0 && plx(offp)._pILifeSteal != 0) {
+	//	PlrIncHp(offp, (dam * plx(offp)._pILifeSteal) >> 7);
+	// }
+
 	int fdam = plx(offp)._pIFMaxDam;
 	if (fdam != 0) {
 		maxd += CalcPlrDam(pnum, MISR_FIRE, fdam);
@@ -888,6 +877,15 @@ void GetPlrByPlrDamage(int offp, int sn, int sl, int pnum, int *mindam, int *max
 		maxd += CalcPlrDam(pnum, MISR_ACID, adam);
 		mind += CalcPlrDam(pnum, MISR_ACID, plx(offp)._pIAMinDam);
 	}
+	//if ((fdam | ldam | mdam | adam) != 0) {
+	//	dam += AddElementalExplosion(fdam, ldam, mdam, adam, false, pnum);
+	//}
+	if (mind <= 0) {
+		mind = 1;
+	}
+	if (maxd <= 0) {
+		maxd = 1;
+	}
 
 	mind >>= 6;
 	maxd >>= 6;
@@ -898,57 +896,57 @@ void GetPlrByPlrDamage(int offp, int sn, int sl, int pnum, int *mindam, int *max
 
 void IncreasePlrStr(int pnum)
 {
-	int v;
+	int dv, v;
 
 	dev_assert((unsigned)pnum < MAX_PLRS, "IncreasePlrStr: illegal player %d", pnum);
 	if (plr._pStatPts <= 0)
 		return;
 	plr._pStatPts--;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = (((plr._pBaseStr - StrengthTbl[PC_WARRIOR]) % 5) == 2) ? 3 : 2; break;
-	case PC_ROGUE:		v = 1; break;
-	case PC_SORCERER:	v = 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = 2; break;
-	case PC_BARD:		v = 1; break;
-	case PC_BARBARIAN:	v = 3; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
-	//plr._pStrength += v;
-	plr._pBaseStr += v;
+	// calculate the delta
+	dv = plr._pBaseStr - StrengthTbl[plr._pClass];
+
+	dv *= 2;
+	v = plr._pBuildType._pbStr;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv += v;
+	// str = base strength + (bt.str * inc) / 2
+	v = StrengthTbl[plr._pClass] + dv / 2u;
+
+	//plr._pStrength = v;
+	plr._pBaseStr = v;
 
 	CalcPlrInv(pnum, true);
 }
 
 void IncreasePlrMag(int pnum)
 {
-	int v, ms;
+	int dv, v, ms;
 
 	dev_assert((unsigned)pnum < MAX_PLRS, "IncreasePlrMag: illegal player %d", pnum);
 	if (plr._pStatPts <= 0)
 		return;
 	plr._pStatPts--;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = 1; break;
-	case PC_ROGUE:		v = 2; break;
-	case PC_SORCERER:	v = 3; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = (((plr._pBaseMag - MagicTbl[PC_MONK]) % 3) == 1) ? 2 : 1; break;
-	case PC_BARD:		v = (((plr._pBaseMag - MagicTbl[PC_BARD]) % 3) == 1) ? 2 : 1; break;
-	case PC_BARBARIAN:	v = 1; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
+	// calculate the delta
+	dv = plr._pBaseMag - MagicTbl[plr._pClass];
 
-	//plr._pMagic += v;
-	plr._pBaseMag += v;
+	dv *= 2;
+	v = plr._pBuildType._pbMag;
 
-	ms = v << (6 + 1);
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv += v;
+	// mag = base magic + (bt.mag * inc) / 2
+	v = MagicTbl[plr._pClass] + dv / 2u;
+
+	//plr._pMagic = v;
+	dv = v - plr._pBaseMag;
+	plr._pBaseMag = v;
+
+	ms = dv << (6 + 1);
 
 	plr._pMaxManaBase += ms;
 	//plr._pMaxMana += ms;
@@ -962,58 +960,57 @@ void IncreasePlrMag(int pnum)
 
 void IncreasePlrDex(int pnum)
 {
-	int v;
+	int dv, v;
 
 	dev_assert((unsigned)pnum < MAX_PLRS, "IncreasePlrDex: illegal player %d", pnum);
 	if (plr._pStatPts <= 0)
 		return;
 	plr._pStatPts--;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = (((plr._pBaseDex - DexterityTbl[PC_WARRIOR]) % 3) == 1) ? 2 : 1; break;
-	case PC_ROGUE:		v = 3; break;
-	case PC_SORCERER:	v = (((plr._pBaseDex - DexterityTbl[PC_SORCERER]) % 3) == 1) ? 2 : 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = 2; break;
-	case PC_BARD:		v = 3; break;
-	case PC_BARBARIAN:	v = 1; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
+	// calculate the delta
+	dv = plr._pBaseDex - DexterityTbl[plr._pClass];
 
-	//plr._pDexterity += v;
-	plr._pBaseDex += v;
+	dv *= 2;
+	v = plr._pBuildType._pbDex;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv += v;
+	// dex = base dexterity + (bt.dex * inc) / 2
+	v = DexterityTbl[plr._pClass] + dv / 2u;
+
+	//plr._pDexterity = v;
+	plr._pBaseDex = v;
 
 	CalcPlrInv(pnum, true);
 }
 
 void IncreasePlrVit(int pnum)
 {
-	int v, ms;
+	int dv, v, ms;
 
 	dev_assert((unsigned)pnum < MAX_PLRS, "IncreasePlrVit: illegal player %d", pnum);
 	if (plr._pStatPts <= 0)
 		return;
 	plr._pStatPts--;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = 2; break;
-	case PC_ROGUE:		v = 1; break;
-	case PC_SORCERER:	v = (((plr._pBaseVit - VitalityTbl[PC_SORCERER]) % 3) == 1) ? 2 : 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = (((plr._pBaseVit - VitalityTbl[PC_MONK]) % 3) == 1) ? 2 : 1; break;
-	case PC_BARD:		v = (((plr._pBaseVit - VitalityTbl[PC_BARD]) % 3) == 1) ? 2 : 1; break;
-	case PC_BARBARIAN:	v = 2; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
+	// calculate the delta
+	dv = plr._pBaseVit - VitalityTbl[plr._pClass];
 
-	//plr._pVitality += v;
-	plr._pBaseVit += v;
+	dv *= 2;
+	v = plr._pBuildType._pbVit;
 
-	ms = v << (6 + 1);
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv += v;
+	// vit = base vitality + (bt.vit * inc) / 2
+	v = VitalityTbl[plr._pClass] + dv / 2u;
+
+	//plr._pVitality = v;
+	dv = v - plr._pBaseVit;
+	plr._pBaseVit = v;
+
+	ms = dv << (6 + 1);
 
 	plr._pHPBase += ms;
 	plr._pMaxHPBase += ms;
@@ -1066,25 +1063,25 @@ void RestorePlrHpVit(int pnum)
 
 void DecreasePlrStr(int pnum)
 {
-	int v;
+	int dv, v;
 
-	if (plr._pBaseStr <= StrengthTbl[plr._pClass])
+	// calculate the delta
+	dv = plr._pBaseStr - StrengthTbl[plr._pClass];
+	if (dv <= 0)
 		return;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = (((plr._pBaseStr - StrengthTbl[PC_WARRIOR] - 3) % 5) == 2) ? 3 : 2; break;
-	case PC_ROGUE:		v = 1; break;
-	case PC_SORCERER:	v = 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = 2; break;
-	case PC_BARD:		v = 1; break;
-	case PC_BARBARIAN:	v = 3; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
-	//plr._pStrength -= v;
-	plr._pBaseStr -= v;
+
+	dv *= 2;
+	v = plr._pBuildType._pbStr;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv -= v;
+	// vit = base strength + (bt.str * inc) / 2
+	v = StrengthTbl[plr._pClass] + dv / 2u;
+
+	//plr._pStrength = v;
+	plr._pBaseStr = v;
 
 	plr._pStatPts++;
 
@@ -1093,30 +1090,31 @@ void DecreasePlrStr(int pnum)
 
 void DecreasePlrMag(int pnum)
 {
-	int v, ms;
+	int dv, v, ms;
 
-	if (plr._pBaseMag <= MagicTbl[plr._pClass])
+	// calculate the delta
+	dv = plr._pBaseMag - MagicTbl[plr._pClass];
+	if (dv <= 0)
 		return;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = 1; break;
-	case PC_ROGUE:		v = 2; break;
-	case PC_SORCERER:	v = 3; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = (((plr._pBaseMag - MagicTbl[PC_MONK] - 2) % 3) == 1) ? 2 : 1; break;
-	case PC_BARD:		v = (((plr._pBaseMag - MagicTbl[PC_BARD] - 2) % 3) == 1) ? 2 : 1; break;
-	case PC_BARBARIAN:	v = 1; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
 
-	//plr._pMagic -= v;
-	plr._pBaseMag -= v;
+	dv *= 2;
+	v = plr._pBuildType._pbMag;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv -= v;
+	// vit = base magic + (bt.mag * inc) / 2
+	v = MagicTbl[plr._pClass] + dv / 2u;
+
+
+	//plr._pMagic = v;
+	dv = v - plr._pBaseMag;
+	plr._pBaseMag = v;
 
 	plr._pStatPts++;
 
-	ms = v << (6 + 1);
+	ms = dv << (6 + 1);
 
 	plr._pMaxManaBase -= ms;
 	//plr._pMaxMana -= ms;
@@ -1130,26 +1128,25 @@ void DecreasePlrMag(int pnum)
 
 void DecreasePlrDex(int pnum)
 {
-	int v;
+	int dv, v;
 
-	if (plr._pBaseDex <= DexterityTbl[plr._pClass])
+	// calculate the delta
+	dv = plr._pBaseDex - DexterityTbl[plr._pClass];
+	if (dv <= 0)
 		return;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = (((plr._pBaseDex - DexterityTbl[PC_WARRIOR] - 2) % 3) == 1) ? 2 : 1; break;
-	case PC_ROGUE:		v = 3; break;
-	case PC_SORCERER:	v = (((plr._pBaseDex - DexterityTbl[PC_SORCERER] - 2) % 3) == 1) ? 2 : 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = 2; break;
-	case PC_BARD:		v = 3; break;
-	case PC_BARBARIAN:	v = 1; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
 
-	//plr._pDexterity -= v;
-	plr._pBaseDex -= v;
+	dv *= 2;
+	v = plr._pBuildType._pbDex;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv -= v;
+	// vit = base dexterity + (bt.dex * inc) / 2
+	v = DexterityTbl[plr._pClass] + dv / 2u;
+
+	//plr._pDexterity = v;
+	plr._pBaseDex = v;
 
 	plr._pStatPts++;
 
@@ -1158,30 +1155,31 @@ void DecreasePlrDex(int pnum)
 
 void DecreasePlrVit(int pnum)
 {
-	int v, ms;
+	int dv, v, ms;
 
-	if (plr._pBaseVit <= VitalityTbl[plr._pClass])
+	// calculate the delta
+	dv = plr._pBaseVit - VitalityTbl[plr._pClass];
+	if (dv <= 0)
 		return;
-	switch (plr._pClass) {
-	case PC_WARRIOR:	v = 2; break;
-	case PC_ROGUE:		v = 1; break;
-	case PC_SORCERER:	v = (((plr._pBaseVit - VitalityTbl[PC_SORCERER] - 2) % 3) == 1) ? 2 : 1; break;
-#ifdef HELLFIRE
-	case PC_MONK:		v = (((plr._pBaseVit - VitalityTbl[PC_MONK] - 2) % 3) == 1) ? 2 : 1; break;
-	case PC_BARD:		v = (((plr._pBaseVit - VitalityTbl[PC_BARD] - 2) % 3) == 1) ? 2 : 1; break;
-	case PC_BARBARIAN:	v = 2; break;
-#endif
-	default:
-		ASSUME_UNREACHABLE
-		break;
-	}
 
-	//plr._pVitality -= v;
-	plr._pBaseVit -= v;
+	dv *= 2;
+	v = plr._pBuildType._pbVit;
+
+	if (v != 0 && dv % v != 0)
+		dv++; // value was rounded down last time -> increment it to round up now
+
+	dv -= v;
+	// vit = base vitality + (bt.vit * inc) / 2
+	v = VitalityTbl[plr._pClass] + dv / 2u;
+
+
+	//plr._pVitality = v;
+	dv = v - plr._pBaseVit;
+	plr._pBaseVit = v;
 
 	plr._pStatPts++;
 
-	ms = v << (6 + 1);
+	ms = dv << (6 + 1);
 
 	plr._pHPBase -= ms;
 	plr._pMaxHPBase -= ms;
