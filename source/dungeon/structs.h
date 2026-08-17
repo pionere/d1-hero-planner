@@ -400,6 +400,9 @@ typedef struct PlayerStruct {
 	int _pIAMaxDam; // max acid damage (item's added acid damage)
 	BYTE* _pAnimFileData[NUM_PGXS]; // file-pointers of the animations
 	ALIGNMENT(192, 108)
+
+	uint64_t _pInvSkills;  // Bitmask of skills available via items in inventory (scrolls or runes)
+	uint64_t _pISpells;  // Bitmask of skills available via equipped items (staff)
 } PlayerStruct;
 
 //////////////////////////////////////////////////

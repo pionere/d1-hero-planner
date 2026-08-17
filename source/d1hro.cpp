@@ -1182,7 +1182,7 @@ int D1Hero::getAC() const
     return players[this->pnum]._pIAC;
 }
 
-int getPower() const
+int D1Hero::getPower() const
 {
     return players[this->pnum]._pIPower;
 }

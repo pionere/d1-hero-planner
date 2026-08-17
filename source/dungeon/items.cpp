@@ -157,6 +157,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 
 	// Loadgfx &= plr._pDunLevel == currLvl._dLevelIdx && !plr._pLvlChanging;
 
+	uint64_t spells = 0;
 	pi = plr._pInvBody;
 	for (i = NUM_INVLOC; i != 0; i--, pi++) {
 		if (pi->_itype != ITYPE_NONE && plr._pStrength >= pi->_iReqStr) {
@@ -333,6 +334,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 				cdmodp = pi->_iPLDam;
 			}
 
+			if (pi->_iSpell != SPL_NULL)
+				spells |= SPELL_MASK(pi->_iSpell);
 			tac += cac;
 			pmodp += pi->_iBasePow;
 			maxdam = pi->_iMaxDam;
@@ -368,6 +371,8 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 			}
 		}
 	}
+
+	plr._pISpells |= spells;
 
 	plr._pHasUnidItem = idi;
 	plr._pIAbsAnyHit = absAnyHit << 6;

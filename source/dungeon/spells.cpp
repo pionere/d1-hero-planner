@@ -84,7 +84,6 @@ bool HasSkillDamage(int sn)
     case SPL_RECHARGE:
     case SPL_DISARM:
 #ifdef HELLFIRE
-    case SPL_BUCKLE:
     case SPL_WHITTLE:
     case SPL_RUNESTONE:
 #endif
