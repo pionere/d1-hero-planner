@@ -43,8 +43,6 @@ static const BYTE PlrGFXAnimLens[NUM_CLASSES][NUM_PLR_ANIMS] = {
 	{  8, 8, 16, 12, 6, 8, 20 },
 #ifdef HELLFIRE
 	{  8, 8, 16, 18, 3, 6, 20 },
-	{  8, 8, 18, 16, 4, 7, 20 },
-	{ 10, 8, 16, 20, 2, 6, 20 },
 #endif
 	// clang-format on
 };
