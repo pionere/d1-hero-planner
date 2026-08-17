@@ -528,11 +528,11 @@ typedef struct MonFileData {
 	int moImage;
 	const char* moGfxFile;
 	const char* moSndFile;
-	BYTE moAnimFrameLen[NUM_MON_ANIM];
+	int moAnimFrames[NUM_MON_ANIM];
+	int moAnimFrameLen[NUM_MON_ANIM];
 	BOOLEAN moSndSpecial;
 	BYTE moAFNum;
 	BYTE moAFNum2;
-	ALIGNMENT(2, 6)
 } MonFileData;
 
 #pragma pack(push, 1)

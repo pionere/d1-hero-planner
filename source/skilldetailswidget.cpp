@@ -184,7 +184,6 @@ void SkillDetailsWidget::updateFields()
             sources &= ~(1 << RSPLTYPE_SPELL);
         this->ui->sourceAbilityCheckBox->setChecked((sources & (1 << RSPLTYPE_ABILITY)) != 0);
         this->ui->sourceMemCheckBox->setChecked((sources & (1 << RSPLTYPE_SPELL)) != 0);
-        this->ui->sourceInvCheckBox->setChecked((sources & (1 << RSPLTYPE_INV)) != 0);
         this->ui->sourceItemCheckBox->setChecked((sources & (1 << RSPLTYPE_CHARGES)) != 0);
 
         int mn = -1;

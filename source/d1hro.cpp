@@ -1102,7 +1102,7 @@ void D1Hero::setSkillLvlBase(int sn, int level)
 
 uint64_t D1Hero::getFixedSkills() const
 {
-    return SPELL_MASK(plrAbility) | plr._pInvSkills | plr._pISpells;
+    return SPELL_MASK(plrAbility) | plr._pISpells;
 }
 
 uint64_t D1Hero::getSkills() const
@@ -1117,8 +1117,6 @@ int D1Hero::getSkillSources(int sn) const
         result |= 1 << RSPLTYPE_ABILITY;
     if (plr._pMemSkills & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_SPELL;
-    if (plr._pInvSkills & SPELL_MASK(sn))
-        result |= 1 << RSPLTYPE_INV;
     if (plr._pISpells & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_CHARGES;
     return result;
