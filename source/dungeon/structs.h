@@ -770,6 +770,189 @@ typedef struct ObjectStruct {
 } ObjectStruct;
 
 //////////////////////////////////////////////////
+// endianness
+//////////////////////////////////////////////////
+
+typedef struct LE_UINT16 {
+	uint16_t _value;
+
+	void operator=(uint16_t val) {
+		_value = SwapLE16(val);
+	};
+	//void operator=(const LE_UINT16& val) {
+	//	_value = val._value;
+	//};
+	template <class T>
+	void operator=(T) = delete;
+
+	bool operator==(const LE_UINT16 & oval) const {
+		return _value == oval._value;
+	};
+	bool operator!=(const LE_UINT16& oval) const {
+		return _value != oval._value;
+	};
+	operator uint16_t() const { return SwapLE16(_value); }
+} LE_UINT16;
+
+typedef struct LE_INT16 {
+	int16_t _value;
+
+	void operator=(int16_t val) {
+		_value = SwapLE16(val);
+	};
+	//void operator=(const LE_INT32& val) {
+	//	_value = val._value;
+	//};
+	template <class T>
+	void operator=(T) = delete;
+
+	bool operator==(const LE_INT16 & oval) const {
+		return _value == oval._value;
+	};
+	bool operator!=(const LE_INT16& oval) const {
+		return _value != oval._value;
+	};
+	operator int16_t() const { return SwapLE16(_value); }
+} LE_INT16;
+
+typedef struct LE_UINT32 {
+	uint32_t _value;
+
+	void operator=(unsigned val) {
+		_value = SwapLE32(val);
+	};
+	void operator=(unsigned long val) {
+		_value = SwapLE32(val);
+	};
+#if INT_MAX != INT32_MAX
+	void operator=(uint32_t val) {
+		_value = SwapLE32(val);
+	};
+#endif
+	//void operator=(const LE_UINT32& val) {
+	//	_value = val._value;
+	//};
+	template <class T>
+	void operator=(T) = delete;
+
+	bool operator==(const LE_UINT32 & oval) const {
+		return _value == oval._value;
+	};
+	bool operator!=(const LE_UINT32& oval) const {
+		return _value != oval._value;
+	};
+	operator unsigned() const { return (uint32_t)SwapLE32(_value); }
+} LE_UINT32;
+
+typedef struct LE_INT32 {
+	int32_t _value;
+
+	void operator=(int val) {
+		_value = SwapLE32(val);
+	};
+	void operator=(long val) {
+		_value = SwapLE32(val);
+	};
+#if INT_MAX != INT32_MAX
+	void operator=(int32_t val) {
+		_value = SwapLE32(val);
+	};
+#endif
+	void operator=(const LE_INT32& val) {
+		_value = val._value;
+	};
+	template <class T>
+	void operator=(T) = delete;
+
+	bool operator==(const LE_INT32 & oval) const {
+		return _value == oval._value;
+	};
+	bool operator!=(const LE_INT32& oval) const {
+		return _value != oval._value;
+	};
+	operator int() const { return (int32_t)SwapLE32(_value); }
+} LE_INT32;
+
+typedef struct LE_UINT64 {
+	uint64_t _value;
+
+	void operator=(uint64_t val) {
+		_value = SwapLE64(val);
+	};
+	//void operator=(const LE_UINT64& val) {
+	//	_value = val._value;
+	//};
+	template <class T>
+	void operator=(T) = delete;
+
+	//bool operator==(const LE_UINT64 & oval) const {
+	//	return _value == oval._value;
+	//};
+	//bool operator!=(const LE_UINT64& oval) const {
+	//	return _value != oval._value;
+	//};
+	operator uint64_t() const { return (uint64_t)SwapLE64(_value); }
+} LE_UINT64;
+
+//////////////////////////////////////////////////
+// pack
+//////////////////////////////////////////////////
+
+#pragma pack(push, 1)
+typedef struct PkItemStruct {
+	LE_INT32 dwSeed;
+	LE_UINT16 wIndx;
+	LE_UINT16 wCI;
+	BYTE bId;
+	BYTE bDur;
+	BYTE bMDur;
+	BYTE bCh;
+	BYTE bMCh;
+	LE_UINT16 wValue;
+	LE_UINT32 dwBuff;
+} PkItemStruct;
+
+typedef struct PkPlayerStruct {
+	//BYTE px;
+	//BYTE py;
+	char pName[PLR_NAME_LEN];
+	BOOLEAN pLvlChanging;
+	BYTE pDunLevel;
+	BYTE pClass;
+	BYTE pLevel;
+	BYTE pRank;
+	BYTE pTeam;
+	LE_UINT16 pStatPts;
+	//BYTE pLightRad;
+	//BYTE pManaShield;
+	//LE_INT16 pTimer[NUM_PLRTIMERS];
+	LE_UINT32 pExperience;
+	LE_UINT16 pBaseStr;
+	LE_UINT16 pBaseMag;
+	LE_UINT16 pBaseDex;
+	LE_UINT16 pBaseVit;
+	LE_INT32 pHPBase;
+	LE_INT32 pMaxHPBase;
+	LE_INT32 pManaBase;
+	LE_INT32 pMaxManaBase;
+	PlrSkillStruct pSkillHotKey[4];     // the skill selected by the hotkey
+	PlrSkillStruct pAltSkillHotKey[4];  // the skill selected by the alt-hotkey
+	PlrSkillStruct pSkillSwapKey[4];    // the skill selected by the hotkey after skill-set swap
+	PlrSkillStruct pAltSkillSwapKey[4]; // the skill selected by the alt-hotkey after skill-set swap
+	BYTE pSkillLvlBase[64];
+	BYTE pSkillActivity[64];
+	LE_UINT32 pSkillExp[64];
+	LE_UINT64 pMemSkills;
+	PkItemStruct pHoldItem;
+	PkItemStruct pInvBody[NUM_INVLOC];
+	PkItemStruct pSpdList[MAXBELTITEMS];
+	PkItemStruct pInvList[NUM_INV_GRID_ELEM];
+	int8_t pInvGrid[NUM_INV_GRID_ELEM];
+	LE_INT32 pNumInv; // unused
+} PkPlayerStruct;
+#pragma pack(pop)
+
+//////////////////////////////////////////////////
 // levels
 //////////////////////////////////////////////////
 
