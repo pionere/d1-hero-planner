@@ -10,7 +10,7 @@
 
 #include "dungeon/all.h"
 
-static void initBtDropdown(QComboBox* combobox)
+static void initBtDropdown(QComboBox* comboBox)
 {
     comboBox->addItem(QApplication::tr("Poor"), QVariant::fromValue(2));
     comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
@@ -26,10 +26,10 @@ HeroDetailsWidget::HeroDetailsWidget(QWidget *parent)
     ui->setupUi(this);
 
     // initialize the dropdowns
-    initBtDropdown(this->ui->heroBuildTypeStrCombobox);
-    initBtDropdown(this->ui->heroBuildTypeMagCombobox);
-    initBtDropdown(this->ui->heroBuildTypeDexCombobox);
-    initBtDropdown(this->ui->heroBuildTypeVitCombobox);
+    initBtDropdown(this->ui->heroBuildTypeStrComboBox);
+    initBtDropdown(this->ui->heroBuildTypeMagComboBox);
+    initBtDropdown(this->ui->heroBuildTypeDexComboBox);
+    initBtDropdown(this->ui->heroBuildTypeVitComboBox);
 
     // connect esc events of LineEditWidgets
     QObject::connect(this->ui->heroNameEdit, SIGNAL(cancel_signal()), this, SLOT(on_heroNameEdit_escPressed()));
@@ -210,10 +210,10 @@ void HeroDetailsWidget::updateFields()
     this->ui->heroIncLevelButton->setEnabled(bv < MAXCHARLEVEL);
     this->ui->heroRankEdit->setText(QString::number(this->hero->getRank()));
 
-    this->ui->heroBuildTypeStrCombobox->setCurrentIndex(this->ui->heroBuildTypeStrCombobox->findData(QVariant::fromValue(this->hero->getBtStr())));
-    this->ui->heroBuildTypeMagCombobox->setCurrentIndex(this->ui->heroBuildTypeMagCombobox->findData(QVariant::fromValue(this->hero->getBtMag())));
-    this->ui->heroBuildTypeDexCombobox->setCurrentIndex(this->ui->heroBuildTypeDexCombobox->findData(QVariant::fromValue(this->hero->getBtDex())));
-    this->ui->heroBuildTypeVitCombobox->setCurrentIndex(this->ui->heroBuildTypeVitCombobox->findData(QVariant::fromValue(this->hero->getBtVit())));
+    this->ui->heroBuildTypeStrComboBox->setCurrentIndex(this->ui->heroBuildTypeStrComboBox->findData(QVariant::fromValue(this->hero->getBtStr())));
+    this->ui->heroBuildTypeMagComboBox->setCurrentIndex(this->ui->heroBuildTypeMagComboBox->findData(QVariant::fromValue(this->hero->getBtMag())));
+    this->ui->heroBuildTypeDexComboBox->setCurrentIndex(this->ui->heroBuildTypeDexComboBox->findData(QVariant::fromValue(this->hero->getBtDex())));
+    this->ui->heroBuildTypeVitComboBox->setCurrentIndex(this->ui->heroBuildTypeVitComboBox->findData(QVariant::fromValue(this->hero->getBtVit())));
 
     int statPts = this->hero->getStatPoints();
     this->ui->heroStatPtsLabel->setText(QString::number(statPts));
@@ -390,30 +390,30 @@ void HeroDetailsWidget::on_heroRankEdit_escPressed()
     this->ui->heroRankEdit->clearFocus();
 }
 
-void HeroDetailsWidget::on_heroBuildTypeStrCombobox_activated(int index)
+void HeroDetailsWidget::on_heroBuildTypeStrComboBox_activated(int index)
 {
-    this->hero->setBtStr(this->ui->heroBuildTypeStrCombobox->currentData().value<int>());
+    this->hero->setBtStr(this->ui->heroBuildTypeStrComboBox->currentData().value<int>());
 
     dMainWindow().updateWindow();
 }
 
-void HeroDetailsWidget::on_heroBuildTypeMagCombobox_activated(int index)
+void HeroDetailsWidget::on_heroBuildTypeMagComboBox_activated(int index)
 {
-    this->hero->setBtMag(this->ui->heroBuildTypeMagCombobox->currentData().value<int>());
+    this->hero->setBtMag(this->ui->heroBuildTypeMagComboBox->currentData().value<int>());
 
     dMainWindow().updateWindow();
 }
 
-void HeroDetailsWidget::on_heroBuildTypeDexCombobox_activated(int index)
+void HeroDetailsWidget::on_heroBuildTypeDexComboBox_activated(int index)
 {
-    this->hero->setBtDex(this->ui->heroBuildTypeDexCombobox->currentData().value<int>());
+    this->hero->setBtDex(this->ui->heroBuildTypeDexComboBox->currentData().value<int>());
 
     dMainWindow().updateWindow();
 }
 
-void HeroDetailsWidget::on_heroBuildTypeVitCombobox_activated(int index)
+void HeroDetailsWidget::on_heroBuildTypeVitComboBox_activated(int index)
 {
-    this->hero->setBtVit(this->ui->heroBuildTypeVitCombobox->currentData().value<int>());
+    this->hero->setBtVit(this->ui->heroBuildTypeVitComboBox->currentData().value<int>());
 
     dMainWindow().updateWindow();
 }
