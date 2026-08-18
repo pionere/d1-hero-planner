@@ -10,7 +10,7 @@
 
 #include "dungeon/all.h"
 
-static void setupBtDropdown(QComboBox* comboBox, int value, int remPoints)
+static void setupBtDropdown(QComboBox* comboBox, int value, int maxValue, int remPoints)
 {
     comboBox->clear();
 
@@ -19,9 +19,9 @@ static void setupBtDropdown(QComboBox* comboBox, int value, int remPoints)
         comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
     if (value + remPoints >= 4)
         comboBox->addItem(QApplication::tr("Normal"), QVariant::fromValue(4));
-    if (value + remPoints >= 5)
+    if (value + remPoints >= 5 && maxValue >= 5)
         comboBox->addItem(QApplication::tr("Good"), QVariant::fromValue(5));
-    if (value + remPoints >= 6)
+    if (value + remPoints >= 6 && maxValue >= 6)
         comboBox->addItem(QApplication::tr("Great"), QVariant::fromValue(6));
 
     comboBox->setCurrentIndex(comboBox->findData(QVariant::fromValue(value)));
@@ -214,10 +214,10 @@ void HeroDetailsWidget::updateFields()
 
     // setup the dropdowns
     bv = 14 - (this->hero->getBtStr() + this->hero->getBtMag() + this->hero->getBtDex() + this->hero->getBtVit());
-    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), bv);
-    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), bv);
-    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), bv);
-    setupBtDropdown(this->ui->heroBuildTypeVitComboBox, this->hero->getBtVit(), bv);
+    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), pc == PC_ROGUE ? 4 : 6, bv);
+    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), pc == PC_WARRIOR ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), pc == PC_SORCERER ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeVitComboBox, this->hero->getBtVit(), 6, bv);
 
     int statPts = this->hero->getStatPoints();
     this->ui->heroStatPtsLabel->setText(QString::number(statPts));
