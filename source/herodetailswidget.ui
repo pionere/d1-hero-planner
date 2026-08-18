@@ -433,58 +433,6 @@
           <number>48</number>
          </property>
          <property name="text">
-          <string>Dexterity:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="heroSubDexterityButton">
-         <property name="minimumWidth">
-          <number>24</number>
-         </property>
-         <property name="maximumWidth">
-          <number>24</number>
-         </property>
-         <property name="toolTip">
-          <string>Decrease dexterity</string>
-         </property>
-         <property name="text">
-          <string notr="true">-</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="LineEditWidget" name="heroDexterityEdit">
-         <property name="charWidth">
-          <number>3</number>
-         </property>
-         <property name="alignment">
-          <enum>Qt::AlignCenter</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="heroAddDexterityButton">
-         <property name="minimumWidth">
-          <number>24</number>
-         </property>
-         <property name="maximumWidth">
-          <number>24</number>
-         </property>
-         <property name="toolTip">
-          <string>Increase dexterity</string>
-         </property>
-         <property name="text">
-          <string notr="true">+</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel">
-         <property name="minimumWidth">
-          <number>48</number>
-         </property>
-         <property name="text">
           <string>Magic:</string>
          </property>
         </widget>
@@ -525,6 +473,58 @@
          </property>
          <property name="toolTip">
           <string>Increase magic</string>
+         </property>
+         <property name="text">
+          <string notr="true">+</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="minimumWidth">
+          <number>48</number>
+         </property>
+         <property name="text">
+          <string>Dexterity:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="heroSubDexterityButton">
+         <property name="minimumWidth">
+          <number>24</number>
+         </property>
+         <property name="maximumWidth">
+          <number>24</number>
+         </property>
+         <property name="toolTip">
+          <string>Decrease dexterity</string>
+         </property>
+         <property name="text">
+          <string notr="true">-</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="LineEditWidget" name="heroDexterityEdit">
+         <property name="charWidth">
+          <number>3</number>
+         </property>
+         <property name="alignment">
+          <enum>Qt::AlignCenter</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="heroAddDexterityButton">
+         <property name="minimumWidth">
+          <number>24</number>
+         </property>
+         <property name="maximumWidth">
+          <number>24</number>
+         </property>
+         <property name="toolTip">
+          <string>Increase dexterity</string>
          </property>
          <property name="text">
           <string notr="true">+</string>
