@@ -15,8 +15,6 @@ enum class OPEN_HERO_CLASS {
     ROGUE,
     SORCERER,
     MONK,
-    BARD,
-    BARBARIAN,
 };
 
 class OpenAsParam {

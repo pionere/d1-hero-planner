@@ -118,16 +118,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="sourceInvCheckBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="toolTip">
-              <string>From inventory (scroll / rune)</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QCheckBox" name="sourceItemCheckBox">
              <property name="enabled">
               <bool>false</bool>

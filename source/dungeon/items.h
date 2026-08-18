@@ -44,7 +44,7 @@ void SetGoldItemValue(ItemStruct* is, int value);
 void CreatePlrItems(int pnum);
 void SetItemData(int ii, int idata);
 void SetItemSData(ItemStruct* is, int idata);
-void RecreateItem(int iseed, uint16_t wIndex, uint16_t wCI);
+void RecreateItem(int32_t iseed, uint16_t wIndex, uint16_t wCI);
 ItemStruct* PlrItem(int pnum, int cii);
 bool SwapPlrItem(int pnum, int dst_ii, int src_ii);
 const char* ItemName(const ItemStruct* is);

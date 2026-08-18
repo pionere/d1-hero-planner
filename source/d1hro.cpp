@@ -107,8 +107,6 @@ bool D1Hero::load(const QString &filePath, const OpenAsParam &params)
     case OPEN_HERO_CLASS::ROGUE:     hc = PC_ROGUE;     break;
     case OPEN_HERO_CLASS::SORCERER:  hc = PC_SORCERER;  break;
     case OPEN_HERO_CLASS::MONK:      hc = PC_MONK;      break;
-    case OPEN_HERO_CLASS::BARD:      hc = PC_BARD;      break;
-    case OPEN_HERO_CLASS::BARBARIAN: hc = PC_BARBARIAN; break;
     }
     if (hc != plr._pClass) {
         this->setClass(hc);
@@ -135,6 +133,13 @@ void D1Hero::create(unsigned index)
     selhero_heroInfo.hiMagic = MagicTbl[index];         //defaults.dsMagic;
     selhero_heroInfo.hiDexterity = DexterityTbl[index]; //defaults.dsDexterity;
     selhero_heroInfo.hiVitality = VitalityTbl[index];   //defaults.dsVitality;
+
+    switch (index) {
+    case PC_WARRIOR:   selhero_heroInfo.hiBuild = {  5,  2,  3,  4 }; break;
+    case PC_ROGUE:     selhero_heroInfo.hiBuild = {  2,  4,  6,  2 }; break;
+    case PC_SORCERER:  selhero_heroInfo.hiBuild = {  2,  6,  3,  3 }; break;
+    case PC_MONK:      selhero_heroInfo.hiBuild = {  4,  3,  4,  3 }; break;
+    }
 
     selhero_heroInfo.hiName[0] = '\0';
 
@@ -568,8 +573,6 @@ QImage D1Hero::getEquipmentImage(int pcursinvitem) const
         case PC_ROGUE:     frame = ICURS_SHORT_BOW;   break;
         case PC_SORCERER:  frame = ICURS_SHORT_STAFF; break;
         case PC_MONK:      frame = ICURS_SHORT_STAFF; break;
-        case PC_BARD:      frame = ICURS_DAGGER;      break;
-        case PC_BARBARIAN: frame = ICURS_CLUB;        break;
         }
 		frame += CURSOR_FIRSTITEM;
 		frame_width = InvItemWidth[frame];
@@ -601,7 +604,7 @@ QImage D1Hero::getEquipmentImage(int pcursinvitem) const
 		scrollrt_draw_item(is, pi == is, screen_x + InvRect[SLOTXY_HAND_RIGHT_FIRST].X + dx, screen_y + InvRect[SLOTXY_HAND_RIGHT_LAST].Y + dy, cCels, frame, frame_width);
 	} else {
         is = &plr._pInvBody[INVLOC_HAND_LEFT];
-        if ((is->_itype == ITYPE_NONE && (plr._pClass == PC_WARRIOR || plr._pClass == PC_BARBARIAN || plr._pClass == PC_BARD)) || !TWOHAND_WIELD(&plr, is)) {
+        if ((is->_itype == ITYPE_NONE && (plr._pClass == PC_WARRIOR)) || !TWOHAND_WIELD(&plr, is)) {
             frame = ICURS_SMALL_SHIELD + CURSOR_FIRSTITEM;
             frame_width = InvItemWidth[frame];
 
@@ -1099,7 +1102,7 @@ void D1Hero::setSkillLvlBase(int sn, int level)
 
 uint64_t D1Hero::getFixedSkills() const
 {
-    return SPELL_MASK(plrAbility) | plr._pInvSkills | plr._pISpells;
+    return SPELL_MASK(plrAbility) | plr._pISpells;
 }
 
 uint64_t D1Hero::getSkills() const
@@ -1114,8 +1117,6 @@ int D1Hero::getSkillSources(int sn) const
         result |= 1 << RSPLTYPE_ABILITY;
     if (plr._pMemSkills & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_SPELL;
-    if (plr._pInvSkills & SPELL_MASK(sn))
-        result |= 1 << RSPLTYPE_INV;
     if (plr._pISpells & SPELL_MASK(sn))
         result |= 1 << RSPLTYPE_CHARGES;
     return result;
@@ -1179,6 +1180,11 @@ int D1Hero::getEvasion() const
 int D1Hero::getAC() const
 {
     return players[this->pnum]._pIAC;
+}
+
+int D1Hero::getPower() const
+{
+    return players[this->pnum]._pIPower;
 }
 
 int D1Hero::getBlockChance() const
@@ -1360,60 +1366,80 @@ void D1Hero::rebalance()
         plr._pLevel = MAXCHARLEVEL;
     // if (plr._pStatPts < 0)
     //    plr._pStatPts = 0;
-    if (plr._pBaseStr < StrengthTbl[plr._pClass])
-        plr._pBaseStr = StrengthTbl[plr._pClass];
-    if (plr._pBaseMag < MagicTbl[plr._pClass])
-        plr._pBaseMag = MagicTbl[plr._pClass];
-    if (plr._pBaseDex < DexterityTbl[plr._pClass])
-        plr._pBaseDex = DexterityTbl[plr._pClass];
-    if (plr._pBaseVit < VitalityTbl[plr._pClass])
-        plr._pBaseVit = VitalityTbl[plr._pClass];
 
-    int tmp;
-    switch (plr._pClass) {
-    case PC_WARRIOR:
-        tmp = 5 * ((plr._pBaseStr - StrengthTbl[PC_WARRIOR]) / 5) + StrengthTbl[PC_WARRIOR];
-        plr._pBaseStr = tmp + (tmp == plr._pBaseStr ? 0 : 2);
-        tmp = 3 * ((plr._pBaseDex - DexterityTbl[PC_WARRIOR]) / 3) + DexterityTbl[PC_WARRIOR];
-        plr._pBaseDex = tmp + (tmp == plr._pBaseDex ? 0 : 1);
-        plr._pBaseVit = 2 * ((plr._pBaseVit - VitalityTbl[PC_WARRIOR]) / 2) + VitalityTbl[PC_WARRIOR];
-        break;
-    case PC_ROGUE:
-        plr._pBaseMag = 2 * ((plr._pBaseMag - MagicTbl[PC_ROGUE]) / 2) + MagicTbl[PC_ROGUE];
-        plr._pBaseDex = 3 * ((plr._pBaseDex - DexterityTbl[PC_ROGUE]) / 3) + DexterityTbl[PC_ROGUE];
-        break;
-    case PC_SORCERER:
-        plr._pBaseMag = 3 * ((plr._pBaseMag - MagicTbl[PC_SORCERER]) / 3) + MagicTbl[PC_SORCERER];
-        tmp = 3 * ((plr._pBaseDex - DexterityTbl[PC_SORCERER]) / 3) + DexterityTbl[PC_SORCERER];
-        plr._pBaseDex = tmp + (tmp == plr._pBaseDex ? 0 : 1);
-        tmp = 3 * ((plr._pBaseVit - VitalityTbl[PC_SORCERER]) / 3) + VitalityTbl[PC_SORCERER];
-        plr._pBaseVit = tmp + (tmp == plr._pBaseVit ? 0 : 1);
-        break;
-#ifdef HELLFIRE
-    case PC_MONK:
-        plr._pBaseStr = 2 * ((plr._pBaseStr - StrengthTbl[PC_MONK]) / 2) + StrengthTbl[PC_MONK];
-        tmp = 3 * ((plr._pBaseMag - MagicTbl[PC_MONK]) / 3) + MagicTbl[PC_MONK];
-        plr._pBaseMag = tmp + (tmp == plr._pBaseMag ? 0 : 1);
-        plr._pBaseDex = 2 * ((plr._pBaseDex - DexterityTbl[PC_MONK]) / 2) + DexterityTbl[PC_MONK];
-        tmp = 3 * ((plr._pBaseVit - VitalityTbl[PC_MONK]) / 3) + VitalityTbl[PC_MONK];
-        plr._pBaseVit = tmp + (tmp == plr._pBaseVit ? 0 : 1);
-        break;
-    case PC_BARD:
-        tmp = 3 * ((plr._pBaseMag - MagicTbl[PC_BARD]) / 3) + MagicTbl[PC_BARD];
-        plr._pBaseMag = tmp + (tmp == plr._pBaseMag ? 0 : 1);
-        plr._pBaseDex = 3 * ((plr._pBaseDex - DexterityTbl[PC_BARD]) / 3) + DexterityTbl[PC_BARD];
-        tmp = 3 * ((plr._pBaseVit - VitalityTbl[PC_BARD]) / 3) + VitalityTbl[PC_BARD];
-        plr._pBaseVit = tmp + (tmp == plr._pBaseVit ? 0 : 1);
-        break;
-    case PC_BARBARIAN:
-        plr._pBaseStr = 3 * ((plr._pBaseStr - StrengthTbl[PC_BARBARIAN]) / 3) + StrengthTbl[PC_BARBARIAN];
-        plr._pBaseVit = 2 * ((plr._pBaseVit - VitalityTbl[PC_BARBARIAN]) / 2) + VitalityTbl[PC_BARBARIAN];
-        break;
-#endif
-    default:
-        ASSUME_UNREACHABLE
-            break;
+    int pc, dv, v;
+    pc = plr._pClass;
+    // validate the strength
+    dv = plr._pBaseStr - StrengthTbl[pc];
+    if (dv < 0)
+        dv = 0;
+    dv *= 2;
+    v = plr._pBuildType._pbStr;
+    if (v > 6) {
+        v = plr._pBuildType._pbStr = 6;
     }
+    if (v == 0)
+        dv = 0;
+    else if (dv % v != 0) {
+        dv++; // value was rounded down last time -> increment it to round up now
+        dv -= dv % v;
+    }
+    v = StrengthTbl[pc] + dv / 2u;
+    plr._pBaseStr = v;
+
+    // validate the magic
+    dv = plr._pBaseMag - MagicTbl[pc];
+    if (dv < 0)
+        dv = 0;
+    dv *= 2;
+    v = plr._pBuildType._pbMag;
+    if (v > 6) {
+        v = plr._pBuildType._pbMag = 6;
+    }
+    if (v == 0)
+        dv = 0;
+    else if (dv % v != 0) {
+        dv++; // value was rounded down last time -> increment it to round up now
+        dv -= dv % v;
+    }
+    v = MagicTbl[pc] + dv / 2u;
+    plr._pBaseMag = v;
+
+    // validate the dexterity
+    dv = plr._pBaseDex - DexterityTbl[pc];
+    if (dv < 0)
+        dv = 0;
+    dv *= 2;
+    v = plr._pBuildType._pbDex;
+    if (v > 6) {
+        v = plr._pBuildType._pbDex = 6;
+    }
+    if (v == 0)
+        dv = 0;
+    else if (dv % v != 0) {
+        dv++; // value was rounded down last time -> increment it to round up now
+        dv -= dv % v;
+    }
+    v = DexterityTbl[pc] + dv / 2u;
+    plr._pBaseDex = v;
+
+    // validate the vitality
+    dv = plr._pBaseVit - VitalityTbl[pc];
+    if (dv < 0)
+        dv = 0;
+    dv *= 2;
+    v = plr._pBuildType._pbVit;
+    if (v > 6) {
+        v = plr._pBuildType._pbVit = 6;
+    }
+    if (v == 0)
+        dv = 0;
+    else if (dv % v != 0) {
+        dv++; // value was rounded down last time -> increment it to round up now
+        dv -= dv % v;
+    }
+    v = VitalityTbl[pc] + dv / 2u;
+    plr._pBaseVit = v;
 
     // if (change) {
         // RestorePlrHpVit
@@ -1434,49 +1460,54 @@ void D1Hero::rebalance()
         //     StrengthTbl[plr._pClass], MagicTbl[plr._pClass], DexterityTbl[plr._pClass], VitalityTbl[plr._pClass], plr._pStatPts);
 
         int usedStatPts[4];
-        switch (plr._pClass) {
-        case PC_WARRIOR:
-            usedStatPts[0] = ((plr._pBaseStr - StrengthTbl[PC_WARRIOR]) * 2 + 4) / 5;
-            usedStatPts[1] = plr._pBaseMag - MagicTbl[PC_WARRIOR];
-            usedStatPts[2] = ((plr._pBaseDex - DexterityTbl[PC_WARRIOR]) * 2 + 2) / 3;
-            usedStatPts[3] = (plr._pBaseVit - VitalityTbl[PC_WARRIOR]) / 2;
-            break;
-        case PC_ROGUE:
-            usedStatPts[0] = plr._pBaseStr - StrengthTbl[PC_ROGUE];
-            usedStatPts[1] = (plr._pBaseMag - MagicTbl[PC_ROGUE]) / 2;
-            usedStatPts[2] = (plr._pBaseDex - DexterityTbl[PC_ROGUE]) / 3;
-            usedStatPts[3] = plr._pBaseVit - VitalityTbl[PC_ROGUE];
-            break;
-        case PC_SORCERER:
-            usedStatPts[0] = plr._pBaseStr - StrengthTbl[PC_SORCERER];
-            usedStatPts[1] = (plr._pBaseMag - MagicTbl[PC_SORCERER]) / 3;
-            usedStatPts[2] = ((plr._pBaseDex - DexterityTbl[PC_SORCERER]) * 2 + 2) / 3;
-            usedStatPts[3] = ((plr._pBaseVit - VitalityTbl[PC_SORCERER]) * 2 + 2) / 3;
-            break;
-#ifdef HELLFIRE
-        case PC_MONK:
-            usedStatPts[0] = (plr._pBaseStr - StrengthTbl[PC_MONK]) / 2;
-            usedStatPts[1] = ((plr._pBaseMag - MagicTbl[PC_MONK]) * 2 + 2) / 3;
-            usedStatPts[2] = (plr._pBaseDex - DexterityTbl[PC_MONK]) / 2;
-            usedStatPts[3] = ((plr._pBaseVit - VitalityTbl[PC_MONK]) * 2 + 2) / 3;
-            break;
-        case PC_BARD:
-            usedStatPts[0] = plr._pBaseStr - StrengthTbl[PC_BARD];
-            usedStatPts[1] = ((plr._pBaseMag - MagicTbl[PC_BARD]) * 2 + 2) / 3;
-            usedStatPts[2] = (plr._pBaseDex - DexterityTbl[PC_BARD]) / 3;
-            usedStatPts[3] = ((plr._pBaseVit - VitalityTbl[PC_BARD]) * 2 + 2) / 3;
-            break;
-        case PC_BARBARIAN:
-            usedStatPts[0] = (plr._pBaseStr - StrengthTbl[PC_BARBARIAN]) / 3;
-            usedStatPts[1] = plr._pBaseMag - MagicTbl[PC_BARBARIAN];
-            usedStatPts[2] = plr._pBaseDex - DexterityTbl[PC_BARBARIAN];
-            usedStatPts[3] = (plr._pBaseVit - VitalityTbl[PC_BARBARIAN]) / 2;
-            break;
-#endif
-        default:
-            ASSUME_UNREACHABLE
-                break;
+        // calculate the points used for strength
+        dv = plr._pBaseStr - StrengthTbl[pc];
+        dv *= 2;
+        v = plr._pBuildType._pbStr;
+        if (v == 0)
+            dv = 0;
+        else {
+            if (dv % v != 0)
+                dv++; // value was rounded down last time -> increment it to round up now
+            dv = dv / v;
         }
+        usedStatPts[0] = dv;
+        // calculate the points used for magic
+        dv = plr._pBaseMag - MagicTbl[pc];
+        dv *= 2;
+        v = plr._pBuildType._pbMag;
+        if (v == 0)
+            dv = 0;
+        else {
+            if (dv % v != 0)
+                dv++; // value was rounded down last time -> increment it to round up now
+            dv = dv / v;
+        }
+        usedStatPts[1] = dv;
+        // calculate the points used for dexterity
+        dv = plr._pBaseDex - DexterityTbl[pc];
+        dv *= 2;
+        v = plr._pBuildType._pbDex;
+        if (v == 0)
+            dv = 0;
+        else {
+            if (dv % v != 0)
+                dv++; // value was rounded down last time -> increment it to round up now
+            dv = dv / v;
+        }
+        usedStatPts[2] = dv;
+        // calculate the points used for vitality
+        dv = plr._pBaseVit - VitalityTbl[pc];
+        dv *= 2;
+        v = plr._pBuildType._pbVit;
+        if (v == 0)
+            dv = 0;
+        else {
+            if (dv % v != 0)
+                dv++; // value was rounded down last time -> increment it to round up now
+            dv = dv / v;
+        }
+        usedStatPts[3] = dv;
 
         int totalUsedStatPts = usedStatPts[0] + usedStatPts[1] + usedStatPts[2] + usedStatPts[3];
         // LogErrorF("UsedStats: %d [str%d mag%d dex%d vit%d] vs %d (bonus%d)", totalUsedStatPts, usedStatPts[0], usedStatPts[1], usedStatPts[2], usedStatPts[3], remStatPts, plr._pStatPts);

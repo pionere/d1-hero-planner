@@ -81,14 +81,14 @@ void ItemPropertiesWidget::initialize(const ItemStruct *is)
     this->ui->itemPower6Text->setVisible(active > 5);
 
     active = 0;
-    if ((is->_iMinStr | is->_iMinMag | is->_iMinDex) != 0) {
+    if ((is->_iReqStr | is->_iReqMag | is->_iReqDex) != 0) {
         text.clear();
-        if (is->_iMinStr)
-            text.append(tr("%1 Str  ").arg(is->_iMinStr));
-        if (is->_iMinMag)
-            text.append(tr("%1 Mag  ").arg(is->_iMinMag));
-        if (is->_iMinDex)
-            text.append(tr("%1 Dex  ").arg(is->_iMinDex));
+        if (is->_iReqStr)
+            text.append(tr("%1 Str  ").arg(is->_iReqStr));
+        if (is->_iReqMag)
+            text.append(tr("%1 Mag  ").arg(is->_iReqMag));
+        if (is->_iReqDex)
+            text.append(tr("%1 Dex  ").arg(is->_iReqDex));
         this->ui->itemRequirementsText->setText(text);
         active = 1;
     }

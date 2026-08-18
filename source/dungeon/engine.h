@@ -13,6 +13,8 @@
 #ifndef __ENGINE_H__
 #define __ENGINE_H__
 
+extern POS32 myview;
+
 /* Set the current RNG seed */
 void SetRndSeed(int32_t s);
 /* Retrieve the current RNG seed */
@@ -60,7 +62,7 @@ inline constexpr int lengthof(T (&array)[N])
  * The NULL terminated content of src is copied to dest.
  */
 template <size_t N1, size_t N2>
-inline void copy_str(char (&dest)[N1], char (&src)[N2])
+inline void copy_str(char (&dest)[N1], const char (&src)[N2])
 {
 	static_assert(N1 >= N2, "String does not fit the destination.");
 	DISABLE_WARNING(deprecated-declarations, deprecated-declarations, 4996)
@@ -76,8 +78,8 @@ template <size_t N1, size_t N2>
 inline void copy_cstr(char (&dest)[N1], const char (&src)[N2])
 {
 	static_assert(N1 >= N2, "String does not fit the destination.");
-	const size_t src_len = ((N2 + sizeof(int) - 1) / sizeof(int)) * sizeof(int);
-	const size_t len = N1 >= src_len ? src_len : N1;
+	constexpr size_t src_len = ((N2 + sizeof(int) - 1) / sizeof(int)) * sizeof(int);
+	constexpr size_t len = N1 >= src_len ? src_len : N1;
 	memcpy(dest, src, len);
 }
 

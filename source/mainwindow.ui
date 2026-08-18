@@ -74,8 +74,6 @@
     <addaction name="actionNew_Rogue"/>
     <addaction name="actionNew_Sorcerer"/>
     <addaction name="actionNew_Monk"/>
-    <addaction name="actionNew_Bard"/>
-    <addaction name="actionNew_Barbarian"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -221,16 +219,6 @@
   <action name="actionNew_Monk">
    <property name="text">
     <string>Monk</string>
-   </property>
-  </action>
-  <action name="actionNew_Bard">
-   <property name="text">
-    <string>Bard</string>
-   </property>
-  </action>
-  <action name="actionNew_Barbarian">
-   <property name="text">
-    <string>Barbarian</string>
    </property>
   </action>
   <action name="actionQuit">

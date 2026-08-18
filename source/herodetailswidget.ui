@@ -155,16 +155,6 @@
          <string>Monk</string>
         </property>
        </item>
-       <item>
-        <property name="text">
-         <string>Bard</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Barbarian</string>
-        </property>
-       </item>
       </widget>
      </item>
      <item row="1" column="0">

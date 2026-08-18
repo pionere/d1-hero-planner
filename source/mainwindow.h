@@ -139,8 +139,6 @@ private slots:
     void on_actionNew_Rogue_triggered();
     void on_actionNew_Sorcerer_triggered();
     void on_actionNew_Monk_triggered();
-    void on_actionNew_Bard_triggered();
-    void on_actionNew_Barbarian_triggered();
 
     void on_actionOpen_triggered();
     void on_actionOpenAs_triggered();

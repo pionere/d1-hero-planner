@@ -523,16 +523,6 @@ void MainWindow::on_actionNew_Monk_triggered()
     this->openNew(OPEN_HERO_CLASS::MONK);
 }
 
-void MainWindow::on_actionNew_Bard_triggered()
-{
-    this->openNew(OPEN_HERO_CLASS::BARD);
-}
-
-void MainWindow::on_actionNew_Barbarian_triggered()
-{
-    this->openNew(OPEN_HERO_CLASS::BARBARIAN);
-}
-
 void MainWindow::on_actionToggle_View_triggered()
 {
 }
