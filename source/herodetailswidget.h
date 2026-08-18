@@ -37,6 +37,11 @@ private slots:
     void on_heroRankEdit_returnPressed();
     void on_heroRankEdit_escPressed();
 
+    void on_heroBuildTypeStrComboBox_activated(int index);
+    void on_heroBuildTypeMagComboBox_activated(int index);
+    void on_heroBuildTypeDexComboBox_activated(int index);
+    void on_heroBuildTypeVitComboBox_activated(int index);
+
     // void on_heroSkillsButton_clicked();
     // void on_heroMonstersButton_clicked();
 

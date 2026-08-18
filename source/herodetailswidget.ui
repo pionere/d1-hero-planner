@@ -248,6 +248,60 @@
        <item>
         <widget class="QLabel" name="heroStatPtsLabel"/>
        </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="text">
+          <string>Build Type -</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="text">
+          <string>Strength:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="heroBuildTypeStrComboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="text">
+          <string>Magic:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="heroBuildTypeMagComboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="text">
+          <string>Dexterity:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="heroBuildTypeDexComboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel">
+         <property name="text">
+          <string>Vitality:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="heroBuildTypeVitComboBox"/>
+       </item>
       </layout>
      </item>
      <item row="2" column="0">

@@ -10,6 +10,23 @@
 
 #include "dungeon/all.h"
 
+static void setupBtDropdown(QComboBox* comboBox, int value, int maxValue, int remPoints)
+{
+    comboBox->clear();
+
+    comboBox->addItem(QApplication::tr("Poor"), QVariant::fromValue(2));
+    if (value + remPoints >= 3)
+        comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
+    if (value + remPoints >= 4)
+        comboBox->addItem(QApplication::tr("Normal"), QVariant::fromValue(4));
+    if (value + remPoints >= 5 && maxValue >= 5)
+        comboBox->addItem(QApplication::tr("Good"), QVariant::fromValue(5));
+    if (value + remPoints >= 6 && maxValue >= 6)
+        comboBox->addItem(QApplication::tr("Great"), QVariant::fromValue(6));
+
+    comboBox->setCurrentIndex(comboBox->findData(QVariant::fromValue(value)));
+}
+
 HeroDetailsWidget::HeroDetailsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::HeroDetailsWidget())
@@ -195,6 +212,13 @@ void HeroDetailsWidget::updateFields()
     this->ui->heroIncLevelButton->setEnabled(bv < MAXCHARLEVEL);
     this->ui->heroRankEdit->setText(QString::number(this->hero->getRank()));
 
+    // setup the dropdowns
+    bv = 14 - (this->hero->getBtStr() + this->hero->getBtMag() + this->hero->getBtDex() + this->hero->getBtVit());
+    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), hc == PC_ROGUE ? 4 : 6, bv);
+    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), hc == PC_WARRIOR ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), hc == PC_SORCERER ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeVitComboBox, this->hero->getBtVit(), 6, bv);
+
     int statPts = this->hero->getStatPoints();
     this->ui->heroStatPtsLabel->setText(QString::number(statPts));
     this->ui->heroAddStrengthButton->setEnabled(statPts > 0);
@@ -368,6 +392,34 @@ void HeroDetailsWidget::on_heroRankEdit_escPressed()
     // update heroRankEdit
     this->updateFields();
     this->ui->heroRankEdit->clearFocus();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeStrComboBox_activated(int index)
+{
+    this->hero->setBtStr(this->ui->heroBuildTypeStrComboBox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeMagComboBox_activated(int index)
+{
+    this->hero->setBtMag(this->ui->heroBuildTypeMagComboBox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeDexComboBox_activated(int index)
+{
+    this->hero->setBtDex(this->ui->heroBuildTypeDexComboBox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeVitComboBox_activated(int index)
+{
+    this->hero->setBtVit(this->ui->heroBuildTypeVitComboBox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
 }
 
 /*void HeroDetailsWidget::on_heroSkillsButton_clicked()
