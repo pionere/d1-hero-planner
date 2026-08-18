@@ -214,9 +214,9 @@ void HeroDetailsWidget::updateFields()
 
     // setup the dropdowns
     bv = 14 - (this->hero->getBtStr() + this->hero->getBtMag() + this->hero->getBtDex() + this->hero->getBtVit());
-    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), pc == PC_ROGUE ? 4 : 6, bv);
-    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), pc == PC_WARRIOR ? 4 : 6,  bv);
-    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), pc == PC_SORCERER ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), hc == PC_ROGUE ? 4 : 6, bv);
+    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), hc == PC_WARRIOR ? 4 : 6,  bv);
+    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), hc == PC_SORCERER ? 4 : 6,  bv);
     setupBtDropdown(this->ui->heroBuildTypeVitComboBox, this->hero->getBtVit(), 6, bv);
 
     int statPts = this->hero->getStatPoints();
