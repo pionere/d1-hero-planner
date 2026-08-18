@@ -125,9 +125,9 @@
      </item>
      <item row="0" column="4">
       <widget class="QLabel">
-       <property name="minimumWidth">
+       <!--property name="minimumWidth">
         <number>48</number>
-       </property>
+       </property-->
        <property name="text">
         <string>Class:</string>
        </property>
@@ -220,9 +220,9 @@
        </item>
        <item>
         <widget class="QLabel">
-         <property name="minimumWidth">
+         <!--property name="minimumWidth">
           <number>48</number>
-         </property>
+         </property-->
          <property name="text">
           <string>Rank:</string>
          </property>
@@ -258,14 +258,14 @@
        <item>
         <widget class="QLabel">
          <property name="text">
-          <string>Build Type:</string>
+          <string>Build Type -</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QLabel">
          <property name="text">
-          <string>Strength</string>
+          <string>Strength:</string>
          </property>
         </widget>
        </item>
@@ -275,7 +275,7 @@
        <item>
         <widget class="QLabel">
          <property name="text">
-          <string>Magic</string>
+          <string>Magic:</string>
          </property>
         </widget>
        </item>
@@ -285,7 +285,7 @@
        <item>
         <widget class="QLabel">
          <property name="text">
-          <string>Dexterity</string>
+          <string>Dexterity:</string>
          </property>
         </widget>
        </item>
@@ -295,7 +295,7 @@
        <item>
         <widget class="QLabel">
          <property name="text">
-          <string>Vitality</string>
+          <string>Vitality:</string>
          </property>
         </widget>
        </item>
@@ -429,9 +429,9 @@
        </item>
        <item>
         <widget class="QLabel">
-         <property name="minimumWidth">
+         <!--property name="minimumWidth">
           <number>48</number>
-         </property>
+         </property-->
          <property name="text">
           <string>Magic:</string>
          </property>
@@ -481,9 +481,9 @@
        </item>
        <item>
         <widget class="QLabel">
-         <property name="minimumWidth">
+         <!--property name="minimumWidth">
           <number>48</number>
-         </property>
+         </property-->
          <property name="text">
           <string>Dexterity:</string>
          </property>
@@ -533,9 +533,9 @@
        </item>
        <item>
         <widget class="QLabel">
-         <property name="minimumWidth">
+         <!--property name="minimumWidth">
           <number>48</number>
-         </property>
+         </property-->
          <property name="text">
           <string>Vitality:</string>
          </property>
