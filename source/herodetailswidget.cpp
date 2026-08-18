@@ -10,13 +10,21 @@
 
 #include "dungeon/all.h"
 
-static void initBtDropdown(QComboBox* comboBox)
+static void setupBtDropdown(QComboBox* comboBox, int value, int remPoints)
 {
+    comboBox->clear();
+
     comboBox->addItem(QApplication::tr("Poor"), QVariant::fromValue(2));
-    comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
-    comboBox->addItem(QApplication::tr("Normal"), QVariant::fromValue(4));
-    comboBox->addItem(QApplication::tr("Good"), QVariant::fromValue(5));
-    comboBox->addItem(QApplication::tr("Great"), QVariant::fromValue(6));
+    if (value + remPoints >= 3)
+        comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
+    if (value + remPoints >= 4)
+        comboBox->addItem(QApplication::tr("Normal"), QVariant::fromValue(4));
+    if (value + remPoints >= 5)
+        comboBox->addItem(QApplication::tr("Good"), QVariant::fromValue(5));
+    if (value + remPoints >= 6)
+        comboBox->addItem(QApplication::tr("Great"), QVariant::fromValue(6));
+
+    comboBox->setCurrentIndex(comboBox->findData(QVariant::fromValue(value)));
 }
 
 HeroDetailsWidget::HeroDetailsWidget(QWidget *parent)
@@ -24,12 +32,6 @@ HeroDetailsWidget::HeroDetailsWidget(QWidget *parent)
     , ui(new Ui::HeroDetailsWidget())
 {
     ui->setupUi(this);
-
-    // initialize the dropdowns
-    initBtDropdown(this->ui->heroBuildTypeStrComboBox);
-    initBtDropdown(this->ui->heroBuildTypeMagComboBox);
-    initBtDropdown(this->ui->heroBuildTypeDexComboBox);
-    initBtDropdown(this->ui->heroBuildTypeVitComboBox);
 
     // connect esc events of LineEditWidgets
     QObject::connect(this->ui->heroNameEdit, SIGNAL(cancel_signal()), this, SLOT(on_heroNameEdit_escPressed()));
@@ -210,10 +212,12 @@ void HeroDetailsWidget::updateFields()
     this->ui->heroIncLevelButton->setEnabled(bv < MAXCHARLEVEL);
     this->ui->heroRankEdit->setText(QString::number(this->hero->getRank()));
 
-    this->ui->heroBuildTypeStrComboBox->setCurrentIndex(this->ui->heroBuildTypeStrComboBox->findData(QVariant::fromValue(this->hero->getBtStr())));
-    this->ui->heroBuildTypeMagComboBox->setCurrentIndex(this->ui->heroBuildTypeMagComboBox->findData(QVariant::fromValue(this->hero->getBtMag())));
-    this->ui->heroBuildTypeDexComboBox->setCurrentIndex(this->ui->heroBuildTypeDexComboBox->findData(QVariant::fromValue(this->hero->getBtDex())));
-    this->ui->heroBuildTypeVitComboBox->setCurrentIndex(this->ui->heroBuildTypeVitComboBox->findData(QVariant::fromValue(this->hero->getBtVit())));
+    // setup the dropdowns
+    bv = 14 - (this->hero->getBtStr() + this->hero->getBtMag() + this->hero->getBtDex() + this->hero->getBtVit());
+    setupBtDropdown(this->ui->heroBuildTypeStrComboBox, this->hero->getBtStr(), bv);
+    setupBtDropdown(this->ui->heroBuildTypeMagComboBox, this->hero->getBtMag(), bv);
+    setupBtDropdown(this->ui->heroBuildTypeDexComboBox, this->hero->getBtDex(), bv);
+    setupBtDropdown(this->ui->heroBuildTypeVitComboBox, this->hero->getBtVit(), bv);
 
     int statPts = this->hero->getStatPoints();
     this->ui->heroStatPtsLabel->setText(QString::number(statPts));
