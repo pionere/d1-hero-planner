@@ -10,11 +10,26 @@
 
 #include "dungeon/all.h"
 
+static void initBtDropdown(QComboBox* combobox)
+{
+    comboBox->addItem(QApplication::tr("Poor"), QVariant::fromValue(2));
+    comboBox->addItem(QApplication::tr("Low"), QVariant::fromValue(3));
+    comboBox->addItem(QApplication::tr("Normal"), QVariant::fromValue(4));
+    comboBox->addItem(QApplication::tr("Good"), QVariant::fromValue(5));
+    comboBox->addItem(QApplication::tr("Great"), QVariant::fromValue(6));
+}
+
 HeroDetailsWidget::HeroDetailsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::HeroDetailsWidget())
 {
     ui->setupUi(this);
+
+    // initialize the dropdowns
+    initBtDropdown(this->ui->heroBuildTypeStrCombobox);
+    initBtDropdown(this->ui->heroBuildTypeMagCombobox);
+    initBtDropdown(this->ui->heroBuildTypeDexCombobox);
+    initBtDropdown(this->ui->heroBuildTypeVitCombobox);
 
     // connect esc events of LineEditWidgets
     QObject::connect(this->ui->heroNameEdit, SIGNAL(cancel_signal()), this, SLOT(on_heroNameEdit_escPressed()));
@@ -195,6 +210,11 @@ void HeroDetailsWidget::updateFields()
     this->ui->heroIncLevelButton->setEnabled(bv < MAXCHARLEVEL);
     this->ui->heroRankEdit->setText(QString::number(this->hero->getRank()));
 
+    this->ui->heroBuildTypeStrCombobox->setCurrentIndex(this->ui->heroBuildTypeStrCombobox->findData(QVariant::fromValue(this->hero->getBtStr())));
+    this->ui->heroBuildTypeMagCombobox->setCurrentIndex(this->ui->heroBuildTypeMagCombobox->findData(QVariant::fromValue(this->hero->getBtMag())));
+    this->ui->heroBuildTypeDexCombobox->setCurrentIndex(this->ui->heroBuildTypeDexCombobox->findData(QVariant::fromValue(this->hero->getBtDex())));
+    this->ui->heroBuildTypeVitCombobox->setCurrentIndex(this->ui->heroBuildTypeVitCombobox->findData(QVariant::fromValue(this->hero->getBtVit())));
+
     int statPts = this->hero->getStatPoints();
     this->ui->heroStatPtsLabel->setText(QString::number(statPts));
     this->ui->heroAddStrengthButton->setEnabled(statPts > 0);
@@ -368,6 +388,34 @@ void HeroDetailsWidget::on_heroRankEdit_escPressed()
     // update heroRankEdit
     this->updateFields();
     this->ui->heroRankEdit->clearFocus();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeStrCombobox_activated(int index)
+{
+    this->hero->setBtStr(this->ui->heroBuildTypeStrCombobox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeMagCombobox_activated(int index)
+{
+    this->hero->setBtMag(this->ui->heroBuildTypeMagCombobox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeDexCombobox_activated(int index)
+{
+    this->hero->setBtDex(this->ui->heroBuildTypeDexCombobox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
+}
+
+void HeroDetailsWidget::on_heroBuildTypeVitCombobox_activated(int index)
+{
+    this->hero->setBtVit(this->ui->heroBuildTypeVitCombobox->currentData().value<int>());
+
+    dMainWindow().updateWindow();
 }
 
 /*void HeroDetailsWidget::on_heroSkillsButton_clicked()

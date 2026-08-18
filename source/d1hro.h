@@ -58,6 +58,15 @@ public:
     void setRank(int rank);
     int getStatPoints() const;
 
+    int getBtStr() const;
+    void setBtStr(int v);
+    int getBtMag() const;
+    void setBtMag(int v);
+    int getBtDex() const;
+    void setBtDex(int v);
+    int getBtVit() const;
+    void setBtVit(int v);
+
     int getStrength() const;
     void setStrength(int value);
     int getBaseStrength() const;

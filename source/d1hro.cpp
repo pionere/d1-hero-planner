@@ -878,6 +878,77 @@ void D1Hero::setRank(int rank)
     this->modified = true;
 }
 
+int D1Hero::getBtStr() const
+{
+    return players[this->pnum]._pBuildType._pbStr;
+}
+
+void D1Hero::setBtStr(int v)
+{
+    if (players[this->pnum]._pBuildType._pbStr == v)
+        return;
+    players[this->pnum]._pBuildType._pbStr = v;
+
+    this->rebalance();
+
+    this->calcInv();
+
+    this->modified = true;
+}
+
+int D1Hero::getBtMag() const
+{
+    return players[this->pnum]._pBuildType._pbMag;
+}
+
+void D1Hero::setBtMag(int v)
+{
+    if (players[this->pnum]._pBuildType._pbMag == v)
+        return;
+    players[this->pnum]._pBuildType._pbMag = v;
+
+    this->rebalance();
+
+    this->calcInv();
+
+    this->modified = true;
+}
+
+int D1Hero::getBtDex() const
+{
+    return players[this->pnum]._pBuildType._pbDex;
+}
+
+void D1Hero::setBtDex(int v)
+{
+    if (players[this->pnum]._pBuildType._pbDex == v)
+        return;
+    players[this->pnum]._pBuildType._pbDex = v;
+
+    this->rebalance();
+
+    this->calcInv();
+
+    this->modified = true;
+}
+int D1Hero::getBtVit() const
+{
+    return players[this->pnum]._pBuildType._pbVit;
+}
+
+void D1Hero::setBtVit(int v)
+{
+    if (players[this->pnum]._pBuildType._pbVit == v)
+        return;
+    players[this->pnum]._pBuildType._pbVit = v;
+
+    this->rebalance();
+
+    this->calcInv();
+
+    this->modified = true;
+}
+
 int D1Hero::getStrength() const
 {
     return players[this->pnum]._pStrength;

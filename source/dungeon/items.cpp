@@ -372,7 +372,7 @@ void CalcPlrItemVals(int pnum, bool Loadgfx)
 		}
 	}
 
-	plr._pISpells |= spells;
+	plr._pISpells = spells;
 
 	plr._pHasUnidItem = idi;
 	plr._pIAbsAnyHit = absAnyHit << 6;
@@ -2213,13 +2213,13 @@ float ItemDropChance(int wIndex, int sn, int lvl, int numPlayers, bool uniqueMon
         func = &RndItemOk;
     }
 
-	int i, ri;
-	int ril[NUM_IDI - IDI_RNDDROP_FIRST];
+    int i, ri;
+    int ril[NUM_IDI - IDI_RNDDROP_FIRST];
 
-	for (i = IDI_RNDDROP_FIRST; i < (IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO); i++) {
-		ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
-	}
-	ri = 0;
+    for (i = IDI_RNDDROP_FIRST; i < (IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO); i++) {
+        ril[i - IDI_RNDDROP_FIRST] = (!func(AllItemList[i], arg) || lvl < AllItemList[i].iMinMLvl) ? 0 : AllItemList[i].iRnd;
+    }
+    ri = 0;
     for (i = 0; i < ((IsHellfireGame ? NUM_IDI : NUM_IDI_DIABLO) - IDI_RNDDROP_FIRST); i++)
         ri += ril[i];
 
