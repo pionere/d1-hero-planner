@@ -106,7 +106,7 @@ int D1Cl2Frame::load(D1GfxFrame &frame, const QByteArray rawData, const OpenAsPa
         width = D1Cl2Frame::computeWidthFromHeader(rawData);
         clipped = true; // Assume the presence of the {CEL FRAME HEADER}
     //} else {
-    //    clipped = params.clipped == OPEN_CLIPPED_TYPE::TRUE;
+    //    clipped = params.clipped == OPEN_CLIPPED_TYPE::YES;
     //    if (clipped) {
     //        // Try to compute frame width from frame header
     //        width = D1Cl2Frame::computeWidthFromHeader(rawData);
@@ -182,7 +182,7 @@ int D1Cl2Frame::load(D1GfxFrame &frame, const QByteArray rawData, const OpenAsPa
     if (!pixelLine.empty()) {
         if (params.clipped == OPEN_CLIPPED_TYPE::AUTODETECT) {
             OpenAsParam oParams = params;
-            oParams.clipped = clipped ? OPEN_CLIPPED_TYPE::FALSE : OPEN_CLIPPED_TYPE::TRUE;
+            oParams.clipped = clipped ? OPEN_CLIPPED_TYPE::NO : OPEN_CLIPPED_TYPE::YES;
             return D1Cl2Frame::load(frame, rawData, oParams);
         }
 

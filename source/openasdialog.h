@@ -5,8 +5,8 @@
 
 enum class OPEN_CLIPPED_TYPE {
     AUTODETECT,
-    TRUE,
-    FALSE,
+    YES,
+    NO,
 };
 
 enum class OPEN_HERO_TYPE {
