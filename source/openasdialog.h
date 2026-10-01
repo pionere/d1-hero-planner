@@ -3,6 +3,12 @@
 #include <QDialog>
 #include <QString>
 
+enum class OPEN_CLIPPED_TYPE {
+    AUTODETECT,
+    YES,
+    NO,
+};
+
 enum class OPEN_HERO_TYPE {
     AUTODETECT,
     DIABLO_HERO,
@@ -20,6 +26,7 @@ enum class OPEN_HERO_CLASS {
 class OpenAsParam {
 public:
     QString filePath;
+    OPEN_CLIPPED_TYPE clipped = OPEN_CLIPPED_TYPE::AUTODETECT;
     OPEN_HERO_TYPE heroType = OPEN_HERO_TYPE::AUTODETECT;
     OPEN_HERO_CLASS heroClass = OPEN_HERO_CLASS::AUTODETECT;
 };
