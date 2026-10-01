@@ -1,6 +1,5 @@
 #include "d1celframe.h"
 
-#include <QApplication>
 #include <QDataStream>
 
 #include "progressdialog.h"
@@ -36,19 +35,19 @@ int D1CelFrame::load(D1GfxFrame &frame, const QByteArray &rawData, const OpenAsP
     //        width = D1CelFrame::computeWidthFromHeader(rawData);
     //    }
     //}
-    //if (params.celWidth != 0)
+    //if (params.celWidth != 0) {
     //    width = params.celWidth;
-
+    //}
     // If width could not be calculated with frame header,
     // attempt to calculate it from the frame data (by identifying pixel groups line wraps)
-    if (width == 0)
+    if (width == 0) {
         width = D1CelFrame::computeWidthFromData(rawData, clipped);
-
+    }
     // check if a positive width was found
     if (width == 0) {
-        return rawData.size() == 0 ? (clipped ? 1 : 0) : -1;
+        return rawData.size() == 0 ? (params.clipped == OPEN_CLIPPED_TYPE::AUTODETECT ? 2 : (clipped ? 1 : 0)) : -1;
     }
-    // READ {CEL FRAME DATA}
+    // calculate the offset in case of a clipped frame
     int frameDataStartOffset = 0;
     if (clipped) {
         if (rawData.size() != 0) {
@@ -59,7 +58,7 @@ int D1CelFrame::load(D1GfxFrame &frame, const QByteArray &rawData, const OpenAsP
                 return -2;
         }
     }
-
+    // READ {CEL FRAME DATA}
     std::vector<std::vector<D1GfxPixel>> pixels;
     std::vector<D1GfxPixel> pixelLine;
     for (int o = frameDataStartOffset; o < rawData.size(); o++) {
@@ -78,9 +77,9 @@ int D1CelFrame::load(D1GfxFrame &frame, const QByteArray &rawData, const OpenAsP
                 break;
             }
 
-            if (readByte == 0x00) {
-                dProgressWarn() << QApplication::tr("Invalid CEL frame data (0x00 found)");
-            }
+            // if (readByte == 0x00) {
+            //    dProgressWarn() << QString("Invalid CEL frame data (0x00 found)");
+            // }
             for (int i = 0; i < readByte; i++) {
                 // Go to the next palette index offset
                 o++;
@@ -98,6 +97,12 @@ int D1CelFrame::load(D1GfxFrame &frame, const QByteArray &rawData, const OpenAsP
         }
     }
     if (!pixelLine.empty()) {
+        if (params.clipped == OPEN_CLIPPED_TYPE::AUTODETECT) {
+            OpenAsParam oParams = params;
+            oParams.clipped = clipped ? OPEN_CLIPPED_TYPE::FALSE : OPEN_CLIPPED_TYPE::TRUE;
+            return D1CelFrame::load(frame, rawData, oParams);
+        }
+
         return -2;
     }
 
@@ -114,16 +119,16 @@ unsigned D1CelFrame::computeWidthFromHeader(const QByteArray &rawFrameData)
     // Reading the frame header {CEL FRAME HEADER}
     const quint8 *data = (const quint8 *)rawFrameData.constData();
     const quint16 *header = (const quint16 *)data;
-    const quint8 *dataEnd = data + rawFrameData.size();
+    const unsigned dataSize = rawFrameData.size();
 
-    if (rawFrameData.size() < SUB_HEADER_SIZE)
+    if (dataSize < SUB_HEADER_SIZE)
         return 0; // invalid header
     unsigned celFrameHeaderSize = SwapLE16(header[0]);
     if (celFrameHeaderSize & 1)
         return 0; // invalid header
     if (celFrameHeaderSize < SUB_HEADER_SIZE)
         return 0; // invalid header
-    if (data + celFrameHeaderSize > dataEnd)
+    if (celFrameHeaderSize > dataSize)
         return 0; // invalid header
     // Decode the 32 pixel-lines blocks to calculate the image width
     unsigned celFrameWidth = 0;
@@ -137,7 +142,10 @@ unsigned D1CelFrame::computeWidthFromHeader(const QByteArray &rawFrameData)
                 if (SwapLE16(header[i]) != 0)
                     return 0; // invalid header
             }
-            break;
+            if (celFrameWidth != 0)
+                break;
+            // last attempt using the size of the frame
+            nextFrameOffset = dataSize;
         }
 
         unsigned pixelCount = 0;
@@ -145,8 +153,8 @@ unsigned D1CelFrame::computeWidthFromHeader(const QByteArray &rawFrameData)
         if (lastFrameOffset >= nextFrameOffset)
             return 0; // invalid data
         // calculate width based on the data-block
-        for (int j = lastFrameOffset; j < nextFrameOffset; j++) {
-            if (data + j >= dataEnd)
+        for (unsigned j = lastFrameOffset; j < nextFrameOffset; j++) {
+            if (j >= dataSize)
                 return 0; // invalid data
 
             quint8 readByte = data[j];
@@ -159,7 +167,8 @@ unsigned D1CelFrame::computeWidthFromHeader(const QByteArray &rawFrameData)
                 j += readByte;
             }
         }
-
+        if (pixelCount % CEL_BLOCK_HEIGHT)
+            return 0; // invalid block
         unsigned width = pixelCount / CEL_BLOCK_HEIGHT;
         // The calculated width has to be identical for each 32 pixel-line block
         if (celFrameWidth == 0) {
@@ -184,11 +193,22 @@ static bool isValidWidth(unsigned width, unsigned globalPixelCount, const std::v
 
     unsigned pixelCount = 0;
     for (unsigned i = 1; i < pixelGroups.size(); i++) {
-        unsigned currPixelCount = pixelGroups[i - 1].getPixelCount();
-        if (((pixelCount % width) + currPixelCount) > width) {
-            return false; // group does not align with width
+        unsigned cpc = pixelGroups[i - 1].getPixelCount();
+        // gpc: [width]*lpc
+        unsigned lpc = pixelCount % width; // pixels in the last line
+        unsigned rpc = width - lpc; // possible remaining pixels in the last line
+        if (cpc > rpc) {
+            if (pixelGroups[i - 1].isTransparent()) {
+                // cpc: [0x80]*[width]*[0x80]*pc
+                if ((rpc % 0x80) != 0)
+                    return false; // group does not align with width
+            } else {
+                // cpc: [0x7F]*[width]*[0x7F]*pc
+                if ((rpc % 0x7F) != 0)
+                    return false; // group does not align with width
+            }
         }
-        pixelCount += currPixelCount;
+        pixelCount += cpc;
         if (pixelGroups[i - 1].isTransparent() == pixelGroups[i].isTransparent()) {
             if ((pixelCount % width) != 0) {
                 return false; // last line(?) does not fit to the width
@@ -255,7 +275,7 @@ unsigned D1CelFrame::computeWidthFromData(const QByteArray &rawFrameData, bool c
         if ((globalPixelCount % width) == 0) {
             return width;
         }
-        return 0; // should not happen
+        return globalPixelCount; // single line
     }
 
     // Going through pixel groups to find pixel-lines wraps
